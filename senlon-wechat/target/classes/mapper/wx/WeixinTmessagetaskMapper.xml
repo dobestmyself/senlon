@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.WeixinTmessagetaskMapper">
+    
+    <resultMap type="com.ss.wx.domain.WeixinTmessagetask" id="WeixinTmessagetaskResult">
+        <result property="id"    column="id"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="jwid"    column="jwid"    />
+        <result property="sendType"    column="send_type"    />
+        <result property="tagId"    column="tag_id"    />
+        <result property="openid"    column="openid"    />
+        <result property="redirectMode"    column="redirect_mode"    />
+        <result property="url"    column="url"    />
+        <result property="miniAppid"    column="mini_appid"    />
+        <result property="pagepath"    column="pagepath"    />
+        <result property="color"    column="color"    />
+        <result property="totalCount"    column="total_count"    />
+        <result property="successCount"    column="success_count"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="taskSendTime"    column="task_send_time"    />
+        <result property="taskSendStatus"    column="task_send_status"    />
+        <result property="sendTime"    column="send_time"    />
+        <result property="dataJson"    column="data_json"    />
+        <result property="title"    column="title"    />
+    </resultMap>
+
+    <sql id="selectWeixinTmessagetaskVo">
+        select id, template_id, jwid, send_type, tag_id, openid, redirect_mode, url, mini_appid, pagepath, color, total_count, success_count, create_date, task_send_time, task_send_status, send_time, data_json, title from weixin_tmessagetask
+    </sql>
+
+    <select id="selectTmessagetaskList" parameterType="com.ss.wx.domain.WeixinTmessagetask" resultMap="WeixinTmessagetaskResult">
+        select tmt.id, tmt.template_id,tm.title as templateName, tmt.jwid, tmt.send_type, tmt.tag_id,t.name as tagName, tmt.openid, tmt.redirect_mode, tmt.url, tmt.mini_appid, tmt.pagepath, tmt.color, tmt.total_count, tmt.success_count, tmt.create_date, tmt.task_send_time, tmt.task_send_status, tmt.send_time, tmt.data_json, tmt.title from weixin_tmessagetask tmt
+        left join weixin_tmessage tm on tm.template_id = tmt.template_id
+        left join weixin_tag t on t.tagid = tmt.tag_id
+        <where>
+            <if test="templateId != null  and templateId != ''"> and tmt.template_id = #{templateId}</if>
+            <if test="jwid != null  and jwid != ''"> and tmt.jwid = #{jwid}</if>
+            <if test="sendType != null  and sendType != ''"> and tmt.send_type = #{sendType}</if>
+            <if test="tagId != null  and tagId != ''"> and tmt.tag_id = #{tagId}</if>
+            <if test="openid != null  and openid != ''"> and tmt.openid = #{openid}</if>
+            <if test="redirectMode != null  and redirectMode != ''"> and tmt.redirect_mode = #{redirectMode}</if>
+            <if test="url != null  and url != ''"> and tmt.url = #{url}</if>
+            <if test="miniAppid != null  and miniAppid != ''"> and tmt.mini_appid = #{miniAppid}</if>
+            <if test="pagepath != null  and pagepath != ''"> and tmt.pagepath = #{pagepath}</if>
+            <if test="color != null  and color != ''"> and tmt.color = #{color}</if>
+            <if test="totalCount != null "> and tmt.total_count = #{totalCount}</if>
+            <if test="successCount != null "> and tmt.success_count = #{successCount}</if>
+            <if test="createDate != null "> and tmt.create_date = #{createDate}</if>
+            <if test="taskSendTime != null "> and tmt.task_send_time = #{taskSendTime}</if>
+            <if test="taskSendStatus != null  and taskSendStatus != ''"> and tmt.task_send_status = #{taskSendStatus}</if>
+            <if test="sendTime != null "> and tmt.send_time = #{sendTime}</if>
+            <if test="dataJson != null  and dataJson != ''"> and tmt.data_json = #{dataJson}</if>
+            <if test="title != null  and title != ''"> and tmt.title = #{title}</if>
+        </where>
+    </select>
+
+    <select id="selectWeixinTmessagetaskList" parameterType="com.ss.wx.domain.WeixinTmessagetask" resultMap="WeixinTmessagetaskResult">
+        <include refid="selectWeixinTmessagetaskVo"/>
+        <where>  
+            <if test="templateId != null  and templateId != ''"> and template_id = #{templateId}</if>
+            <if test="jwid != null  and jwid != ''"> and jwid = #{jwid}</if>
+            <if test="sendType != null  and sendType != ''"> and send_type = #{sendType}</if>
+            <if test="tagId != null  and tagId != ''"> and tag_id = #{tagId}</if>
+            <if test="openid != null  and openid != ''"> and openid = #{openid}</if>
+            <if test="redirectMode != null  and redirectMode != ''"> and redirect_mode = #{redirectMode}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="miniAppid != null  and miniAppid != ''"> and mini_appid = #{miniAppid}</if>
+            <if test="pagepath != null  and pagepath != ''"> and pagepath = #{pagepath}</if>
+            <if test="color != null  and color != ''"> and color = #{color}</if>
+            <if test="totalCount != null "> and total_count = #{totalCount}</if>
+            <if test="successCount != null "> and success_count = #{successCount}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+            <if test="taskSendTime != null "> and task_send_time = #{taskSendTime}</if>
+            <if test="taskSendStatus != null  and taskSendStatus != ''"> and task_send_status = #{taskSendStatus}</if>
+            <if test="sendTime != null "> and send_time = #{sendTime}</if>
+            <if test="dataJson != null  and dataJson != ''"> and data_json = #{dataJson}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+        </where>
+    </select>
+    
+    <select id="selectWeixinTmessagetaskById" parameterType="String" resultMap="WeixinTmessagetaskResult">
+        <include refid="selectWeixinTmessagetaskVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWeixinTmessagetask" parameterType="com.ss.wx.domain.WeixinTmessagetask">
+        insert into weixin_tmessagetask
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="templateId != null  and templateId != ''">template_id,</if>
+            <if test="jwid != null  and jwid != ''">jwid,</if>
+            <if test="sendType != null  and sendType != ''">send_type,</if>
+            <if test="tagId != null  and tagId != ''">tag_id,</if>
+            <if test="openid != null  and openid != ''">openid,</if>
+            <if test="redirectMode != null  and redirectMode != ''">redirect_mode,</if>
+            <if test="url != null  and url != ''">url,</if>
+            <if test="miniAppid != null  and miniAppid != ''">mini_appid,</if>
+            <if test="pagepath != null  and pagepath != ''">pagepath,</if>
+            <if test="color != null  and color != ''">color,</if>
+            <if test="totalCount != null ">total_count,</if>
+            <if test="successCount != null ">success_count,</if>
+            <if test="createDate != null ">create_date,</if>
+            <if test="taskSendTime != null ">task_send_time,</if>
+            <if test="taskSendStatus != null  and taskSendStatus != ''">task_send_status,</if>
+            <if test="sendTime != null ">send_time,</if>
+            <if test="dataJson != null  and dataJson != ''">data_json,</if>
+            <if test="title != null  and title != ''">title,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="templateId != null  and templateId != ''">#{templateId},</if>
+            <if test="jwid != null  and jwid != ''">#{jwid},</if>
+            <if test="sendType != null  and sendType != ''">#{sendType},</if>
+            <if test="tagId != null  and tagId != ''">#{tagId},</if>
+            <if test="openid != null  and openid != ''">#{openid},</if>
+            <if test="redirectMode != null  and redirectMode != ''">#{redirectMode},</if>
+            <if test="url != null  and url != ''">#{url},</if>
+            <if test="miniAppid != null  and miniAppid != ''">#{miniAppid},</if>
+            <if test="pagepath != null  and pagepath != ''">#{pagepath},</if>
+            <if test="color != null  and color != ''">#{color},</if>
+            <if test="totalCount != null ">#{totalCount},</if>
+            <if test="successCount != null ">#{successCount},</if>
+            <if test="createDate != null ">#{createDate},</if>
+            <if test="taskSendTime != null ">#{taskSendTime},</if>
+            <if test="taskSendStatus != null  and taskSendStatus != ''">#{taskSendStatus},</if>
+            <if test="sendTime != null ">#{sendTime},</if>
+            <if test="dataJson != null  and dataJson != ''">#{dataJson},</if>
+            <if test="title != null  and title != ''">#{title},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeixinTmessagetask" parameterType="com.ss.wx.domain.WeixinTmessagetask">
+        update weixin_tmessagetask
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="templateId != null  and templateId != ''">template_id = #{templateId},</if>
+            <if test="jwid != null  and jwid != ''">jwid = #{jwid},</if>
+            <if test="sendType != null  and sendType != ''">send_type = #{sendType},</if>
+            <if test="tagId != null  and tagId != ''">tag_id = #{tagId},</if>
+            <if test="openid != null  and openid != ''">openid = #{openid},</if>
+            <if test="redirectMode != null  and redirectMode != ''">redirect_mode = #{redirectMode},</if>
+            <if test="url != null  and url != ''">url = #{url},</if>
+            <if test="miniAppid != null  and miniAppid != ''">mini_appid = #{miniAppid},</if>
+            <if test="pagepath != null  and pagepath != ''">pagepath = #{pagepath},</if>
+            <if test="color != null  and color != ''">color = #{color},</if>
+            <if test="totalCount != null ">total_count = #{totalCount},</if>
+            <if test="successCount != null ">success_count = #{successCount},</if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+            <if test="taskSendTime != null ">task_send_time = #{taskSendTime},</if>
+            <if test="taskSendStatus != null  and taskSendStatus != ''">task_send_status = #{taskSendStatus},</if>
+            <if test="sendTime != null ">send_time = #{sendTime},</if>
+            <if test="dataJson != null  and dataJson != ''">data_json = #{dataJson},</if>
+            <if test="title != null  and title != ''">title = #{title},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWeixinTmessagetaskById" parameterType="String">
+        delete from weixin_tmessagetask where id = #{id}
+    </delete>
+
+    <delete id="deleteWeixinTmessagetaskByIds" parameterType="String">
+        delete from weixin_tmessagetask where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

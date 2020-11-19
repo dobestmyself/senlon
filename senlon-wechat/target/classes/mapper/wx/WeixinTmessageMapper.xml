@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.WeixinTmessageMapper">
+    
+    <resultMap type="com.ss.wx.domain.WeixinTmessage" id="WeixinTmessageResult">
+        <result property="id"    column="id"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="jwid"    column="jwid"    />
+        <result property="title"    column="title"    />
+        <result property="industry"    column="industry"    />
+        <result property="subIndustry"    column="sub_industry"    />
+        <result property="content"    column="content"    />
+        <result property="example"    column="example"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+    <sql id="selectWeixinTmessageVo">
+        select id, template_id, jwid, title, industry, sub_industry, content, example, create_date from weixin_tmessage
+    </sql>
+
+    <select id="selectWeixinTmessageList" parameterType="com.ss.wx.domain.WeixinTmessage" resultMap="WeixinTmessageResult">
+        <include refid="selectWeixinTmessageVo"/>
+        <where>  
+            <if test="templateId != null  and templateId != ''"> and template_id = #{templateId}</if>
+            <if test="jwid != null  and jwid != ''"> and jwid = #{jwid}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="industry != null  and industry != ''"> and industry = #{industry}</if>
+            <if test="subIndustry != null  and subIndustry != ''"> and sub_industry = #{subIndustry}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="example != null  and example != ''"> and example = #{example}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectWeixinTmessageById" parameterType="String" resultMap="WeixinTmessageResult">
+        <include refid="selectWeixinTmessageVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWeixinTmessage" parameterType="com.ss.wx.domain.WeixinTmessage">
+        insert into weixin_tmessage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="templateId != null  and templateId != ''">template_id,</if>
+            <if test="jwid != null  and jwid != ''">jwid,</if>
+            <if test="title != null  and title != ''">title,</if>
+            <if test="industry != null  and industry != ''">industry,</if>
+            <if test="subIndustry != null  and subIndustry != ''">sub_industry,</if>
+            <if test="content != null  and content != ''">content,</if>
+            <if test="example != null  and example != ''">example,</if>
+            <if test="createDate != null ">create_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="templateId != null  and templateId != ''">#{templateId},</if>
+            <if test="jwid != null  and jwid != ''">#{jwid},</if>
+            <if test="title != null  and title != ''">#{title},</if>
+            <if test="industry != null  and industry != ''">#{industry},</if>
+            <if test="subIndustry != null  and subIndustry != ''">#{subIndustry},</if>
+            <if test="content != null  and content != ''">#{content},</if>
+            <if test="example != null  and example != ''">#{example},</if>
+            <if test="createDate != null ">#{createDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeixinTmessage" parameterType="com.ss.wx.domain.WeixinTmessage">
+        update weixin_tmessage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="templateId != null  and templateId != ''">template_id = #{templateId},</if>
+            <if test="jwid != null  and jwid != ''">jwid = #{jwid},</if>
+            <if test="title != null  and title != ''">title = #{title},</if>
+            <if test="industry != null  and industry != ''">industry = #{industry},</if>
+            <if test="subIndustry != null  and subIndustry != ''">sub_industry = #{subIndustry},</if>
+            <if test="content != null  and content != ''">content = #{content},</if>
+            <if test="example != null  and example != ''">example = #{example},</if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWeixinTmessageById" parameterType="String">
+        delete from weixin_tmessage where id = #{id}
+    </delete>
+
+    <delete id="deleteWeixinTmessageByIds" parameterType="String">
+        delete from weixin_tmessage where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectTmessageByTemplateId" parameterType="String" resultMap="WeixinTmessageResult">
+        <include refid="selectWeixinTmessageVo"/>
+        <where>
+            and template_id = #{templateId}
+        </where>
+    </select>
+
+</mapper>

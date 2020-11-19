@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增住院医师基本信息')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-baseinfo-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">姓名：</label>
+                <div class="col-sm-8">
+                    <input name="name" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">性别：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box" th:each="dict : ${@dict.getType('sys_dict_sex')}">
+                        <input type="radio" th:id="${'gender_' + dict.dictCode}" name="gender" th:value="${dict.dictValue}" th:checked="${dict.default}">
+                        <label th:for="${'gender_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">民族：</label>
+                <div class="col-sm-8">
+                    <select name="nation" class="form-control m-b" th:with="type=${@dict.getType('sys_dict_nation')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">出生日期：</label>
+                <div class="col-sm-8">
+                    <!--<input name="birthdate" class="form-control" type="text">-->
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <!--<input name="birthdate" class="form-control" placeholder="yyyy-MM-dd" type="text">-->
+                        <input type="text" class="layui-input" id="birthdate" name="birthdate" placeholder="yyyy-MM-dd">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">婚姻状况：</label>
+                <div class="col-sm-8">
+                    <select name="marries" class="form-control m-b" th:with="type=${@dict.getType('sys_dict_marries')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">国籍：</label>
+                <div class="col-sm-8">
+                    <!--<input name="nationality" class="form-control" type="text">-->
+                    <select name="nationality" class="form-control m-b" th:with="type=${@dict.getType('sys_dict_nationality')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">身份证件类型：</label>
+                <div class="col-sm-8">
+                    <select name="idcardType" class="form-control m-b" th:with="type=${@dict.getType('sys_dict_idcard')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">身份证件号码：</label>
+                <div class="col-sm-8">
+                    <input name="idcard" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">行政区划：</label>
+                <div class="col-sm-8">
+                    <select name="area" class="form-control m-b" th:with="type=${@dict.getType('sys_dict_area')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">电话类型：</label>
+                <div class="col-sm-8">
+                    <select name="phoneType" class="form-control m-b">
+                        <option value="">所有</option>
+                        <option value="FP">固话</option>
+                        <option value="telephone">移动电话</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">电话号码：</label>
+                <div class="col-sm-8">
+                    <input name="phoneNumber" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">QQ：</label>
+                <div class="col-sm-8">
+                    <input name="qq" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">邮箱：</label>
+                <div class="col-sm-8">
+                    <input name="email" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">医师资格考试通过标志：</label>
+                <div class="col-sm-8">
+                    <select name="isModicalQualifyExamPass" class="form-control m-b" th:with="type=${@dict.getType('sys_yes_no')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">通过医师资格日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="passModicalQualifyDate" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">医师资格证书：</label>
+                <div class="col-sm-8">
+                    <!--<input name="modicalQualifyCertificate" class="form-control" type="text">-->
+                    <select name="modicalQualifyCertificate" class="form-control m-b" th:with="type=${@dict.getType('sys_yes_no')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">取得医师资格证书日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="achieveModicalQualifyCertificateDate" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">医师资格类别：</label>
+                <div class="col-sm-8">
+                    <select name="modicalQualifyLevel" class="form-control m-b" th:with="type=${@dict.getType('sys_hospital_level')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">医师资格类型：</label>
+                <div class="col-sm-8">
+                    <select name="modicalQualifyType" class="form-control m-b" th:with="type=${@dict.getType('sys_doctor_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">医师资格证书编码：</label>
+                <div class="col-sm-8">
+                    <input name="modicalQualifyCertificateCode" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">语言级别考试类型：</label>
+                <div class="col-sm-8">
+                    <select name="languageLevelExamType" class="form-control m-b" th:with="type=${@dict.getType('language_test_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">英语等级：</label>
+                <div class="col-sm-8">
+                    <select name="englishLevel" class="form-control m-b" th:with="type=${@dict.getType('sys_english_level')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">外语等级：</label>
+                <div class="col-sm-8">
+                    <input name="languageLevel" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">外语等级考试证书编码：</label>
+                <div class="col-sm-8">
+                    <input name="languageLevelExamCertificateCode" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">外语等级考试证书取得日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="languageLevelExamCertificateDate" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script type="text/javascript">
+        var prefix = ctx + "resident/baseinfo"
+        $("#form-baseinfo-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-baseinfo-add').serialize());
+            }
+        }
+
+        layui.use('laydate',function () {
+            var laydate = layui.laydate;
+            laydate.render({
+                elem:'#birthdate'
+            })
+        })
+
+        $("input[name='passModicalQualifyDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='achieveModicalQualifyCertificateDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='languageLevelExamCertificateDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

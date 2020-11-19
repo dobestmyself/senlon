@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.WeixinMenuMapper">
+    
+    <resultMap type="com.ss.wx.domain.WeixinMenu" id="WeixinMenuResult">
+        <result property="id"    column="id"    />
+        <result property="fatherId"    column="father_id"    />
+        <result property="menuKey"    column="menu_key"    />
+        <result property="menuType"    column="menu_type"    />
+        <result property="menuName"    column="menu_name"    />
+        <result property="url"    column="url"    />
+        <result property="msgtype"    column="msgtype"    />
+        <result property="orders"    column="orders"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="jwid"    column="jwid"    />
+        <result property="miniprogramAppid"    column="miniprogram_appid"    />
+        <result property="miniprogramPagepath"    column="miniprogram_pagepath"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="parentName" column="parent_name" />
+    </resultMap>
+
+    <sql id="selectWeixinMenuVo">
+        select id, father_id, menu_key, menu_type, menu_name, url, msgtype, orders, template_id, jwid, miniprogram_appid, miniprogram_pagepath, create_by, create_time, update_by, update_time from weixin_menu
+    </sql>
+
+    <select id="selectWeixinMenuList" parameterType="com.ss.wx.domain.WeixinMenu" resultMap="WeixinMenuResult">
+        <include refid="selectWeixinMenuVo"/>
+        <where>  
+            <if test="fatherId != null"> and father_id = #{fatherId}</if>
+            <if test="menuKey != null  and menuKey != ''"> and menu_key = #{menuKey}</if>
+            <if test="menuType != null  and menuType != ''"> and menu_type = #{menuType}</if>
+            <if test="menuName != null  and menuName != ''"> and menu_name like concat('%', #{menuName}, '%')</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="msgtype != null  and msgtype != ''"> and msgtype = #{msgtype}</if>
+            <if test="orders != null  and orders != ''"> and orders = #{orders}</if>
+            <if test="templateId != null  and templateId != ''"> and template_id = #{templateId}</if>
+            <if test="jwid != null  and jwid != ''"> and jwid = #{jwid}</if>
+            <if test="miniprogramAppid != null  and miniprogramAppid != ''"> and miniprogram_appid = #{miniprogramAppid}</if>
+            <if test="miniprogramPagepath != null  and miniprogramPagepath != ''"> and miniprogram_pagepath = #{miniprogramPagepath}</if>
+        </where>
+        order by father_id
+    </select>
+    
+    <select id="selectWeixinMenuById" parameterType="Long" resultMap="WeixinMenuResult">
+        select t.id, t.father_id, t.menu_key, t.menu_type, t.menu_name, t.url, t.msgtype, t.orders, t.template_id, t.jwid, t.miniprogram_appid, t.miniprogram_pagepath, t.create_by, t.create_time, t.update_by, t.update_time, p.menu_name as parent_name
+        from weixin_menu t
+        left join weixin_menu p on p.id = t.father_id
+        where t.id = #{id}
+    </select>
+        
+    <insert id="insertWeixinMenu" parameterType="com.ss.wx.domain.WeixinMenu">
+        insert into weixin_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="fatherId != null">father_id,</if>  <!--  and fatherId != ''-->
+            <if test="menuKey != null  and menuKey != ''">menu_key,</if>
+            <if test="menuType != null  and menuType != ''">menu_type,</if>
+            <if test="menuName != null  and menuName != ''">menu_name,</if>
+            <if test="url != null  and url != ''">url,</if>
+            <if test="msgtype != null  and msgtype != ''">msgtype,</if>
+            <if test="orders != null  and orders != ''">orders,</if>
+            <if test="templateId != null  and templateId != ''">template_id,</if>
+            <if test="jwid != null  and jwid != ''">jwid,</if>
+            <if test="miniprogramAppid != null  and miniprogramAppid != ''">miniprogram_appid,</if>
+            <if test="miniprogramPagepath != null  and miniprogramPagepath != ''">miniprogram_pagepath,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="fatherId != null">#{fatherId},</if><!--  and fatherId != ''-->
+            <if test="menuKey != null  and menuKey != ''">#{menuKey},</if>
+            <if test="menuType != null  and menuType != ''">#{menuType},</if>
+            <if test="menuName != null  and menuName != ''">#{menuName},</if>
+            <if test="url != null  and url != ''">#{url},</if>
+            <if test="msgtype != null  and msgtype != ''">#{msgtype},</if>
+            <if test="orders != null  and orders != ''">#{orders},</if>
+            <if test="templateId != null  and templateId != ''">#{templateId},</if>
+            <if test="jwid != null  and jwid != ''">#{jwid},</if>
+            <if test="miniprogramAppid != null  and miniprogramAppid != ''">#{miniprogramAppid},</if>
+            <if test="miniprogramPagepath != null  and miniprogramPagepath != ''">#{miniprogramPagepath},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeixinMenu" parameterType="com.ss.wx.domain.WeixinMenu">
+        update weixin_menu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fatherId != null  and fatherId != ''">father_id = #{fatherId},</if>
+            <if test="menuKey != null  and menuKey != ''">menu_key = #{menuKey},</if>
+            <if test="menuType != null  and menuType != ''">menu_type = #{menuType},</if>
+            <if test="menuName != null  and menuName != ''">menu_name = #{menuName},</if>
+            <if test="url != null  and url != ''">url = #{url},</if>
+            <if test="msgtype != null  and msgtype != ''">msgtype = #{msgtype},</if>
+            <if test="orders != null  and orders != ''">orders = #{orders},</if>
+            <if test="templateId != null  and templateId != ''">template_id = #{templateId},</if>
+            <if test="jwid != null  and jwid != ''">jwid = #{jwid},</if>
+            <if test="miniprogramAppid != null  and miniprogramAppid != ''">miniprogram_appid = #{miniprogramAppid},</if>
+            <if test="miniprogramPagepath != null  and miniprogramPagepath != ''">miniprogram_pagepath = #{miniprogramPagepath},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWeixinMenuById" parameterType="Long">
+        delete from weixin_menu where id = #{id}
+    </delete>
+
+    <delete id="deleteWeixinMenuByIds" parameterType="String">
+        delete from weixin_menu where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="queryByOrders" parameterType="Object" resultMap="WeixinMenuResult">
+        <include refid="selectWeixinMenuVo"/>
+        <where>
+            and orders = #{orders}
+            and jwid = #{jwid}
+        </where>
+    </select>
+
+    <!-- 根据orders获取父级id -->
+    <select id="getFatherIdByorders" parameterType="Object" resultType="java.lang.Long">
+		SELECT id
+		FROM weixin_menu
+		WHERE orders=LEFT(#{orders},1) AND jwid =#{jwid} AND length(#{orders})>1
+	</select>
+    <select id="queryMenuByIdAndJwid" parameterType="Object" resultMap="WeixinMenuResult">
+        <include refid="selectWeixinMenuVo"/>
+        <where>
+            and id = #{id}
+            and jwid = #{jwid}
+        </where>
+    </select>
+
+    <select id="queryMenuByFatherId" parameterType="Long" resultMap="WeixinMenuResult">
+        <include refid="selectWeixinMenuVo"/>
+        <where>
+            and father_id = #{fatherId}
+        </where>
+    </select>
+
+</mapper>

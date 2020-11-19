@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('消息模板列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <p>模板ID：</p>
+                                <input type="text" name="templateId"/>
+                            </li>
+                            <li>
+                                <p>标题：</p>
+                                <input type="text" name="title"/>
+                            </li>
+
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <!--<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="wx:tmessage:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>-->
+                <!--<a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="wx:tmessage:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>-->
+                <a class="btn btn-success" onclick="syncTmessage()">
+                    <i class="fa fa-refresh"></i>同步
+                </a>
+                <!--<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="wx:tmessage:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>-->
+                <!--<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="wx:tmessage:export">
+                    <i class="fa fa-download"></i> 导出
+                 </a>-->
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('wx:tmessage:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('wx:tmessage:remove')}]];
+        var prefix = ctx + "wx/tmessage";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove/{id}",
+                exportUrl: prefix + "/export",
+                modalName: "消息模板",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field : 'id', 
+                    title : 'ID',
+                    visible: false
+                },
+
+                {
+                    field : 'title', 
+                    title : '标题'
+                },
+                {
+                    field : 'industry', 
+                    title : '行业'
+                },
+                {
+                    field : 'subIndustry', 
+                    title : '子行业'
+                },
+                {
+                    field : 'example', 
+                    title : '示例'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-eye"></i>详情</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+        //同步模板消息
+        function syncTmessage() {
+            $.ajax({
+               url: prefix + '/syncTmessage',
+               type:"post",
+               dataType: "json",
+               success: function (data) {
+                   $.modal.alertSuccess(data.msg);
+                   location.href = '';
+               },
+               error: function (data) {
+                   $.modal.alertError(data.msg);
+               }
+            });
+        }
+
+    </script>
+</body>
+</html>

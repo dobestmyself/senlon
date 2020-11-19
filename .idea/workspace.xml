@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="cc2cb901-f30e-4d30-a1f1-ca0521069dc9" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="F:/soft/java/apache-maven-3.3.9" />
+        <option name="userSettingsFile" value="F:\soft\java\apache-maven-3.3.9\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1kDqvqFbfCtbEzbHujN1kSPWSn0" />
+  <component name="PropertiesComponent">
+    <property name="ExpandSpringBootJavaOptionsPanel" value="true" />
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="extract.method.default.visibility" value="private" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Springboot_v2-master" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.42857143" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+      <recent name="com.ss.service" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\LearnMyself\ZGCY\senlon\senlon-admin\src\main\resources\templates" />
+      <recent name="E:\LearnMyself\ZGCY\senlon\senlon-admin\src\main\resources\static" />
+      <recent name="E:\LearnMyself\ZGCY\senlon\senlon-cp-wx\src\main\java\com\ss" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="SenlonApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="senlon-admin" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ss.SenlonApplication" />
+      <option name="VM_PARAMETERS" value="-Dhttp.proxyHost=luckystar.natapp1.cc -Dhttp.proxyPort=4444" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="UPDATE_ACTION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="cc2cb901-f30e-4d30-a1f1-ca0521069dc9" name="Default Changelist" comment="" />
+      <created>1605245742196</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1605245742196</updated>
+      <workItem from="1605245743851" duration="13205000" />
+      <workItem from="1605313270602" duration="3980000" />
+      <workItem from="1605345274863" duration="1863000" />
+      <workItem from="1605406112961" duration="14895000" />
+      <workItem from="1605487254662" duration="23200000" />
+      <workItem from="1605568685593" duration="1831000" />
+      <workItem from="1605572989765" duration="1629000" />
+      <workItem from="1605574714837" duration="27841000" />
+      <workItem from="1605615993341" duration="6080000" />
+      <workItem from="1605659544417" duration="2134000" />
+      <workItem from="1605663626744" duration="13108000" />
+      <workItem from="1605745504408" duration="12832000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="java-line">
+          <url>jar://D:/Program Files/Java/jdk1.8.0_171/src.zip!/java/util/Arrays.java</url>
+          <line>3520</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

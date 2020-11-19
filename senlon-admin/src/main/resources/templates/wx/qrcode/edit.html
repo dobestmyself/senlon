@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改二维码')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-qrcode-edit" th:object="${weixinQrcode}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">二维码标题：</label>
+                <div class="col-sm-8">
+                    <input type="text" name="actionInfo" id="actionInfo" class="form-control" th:field="*{actionInfo}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <!--QR_SCENE：临时整型，QR_STR_SCENE：临时字符串，QR_LIMIT_SCENE：永久整型，QR_LIMIT_STR_SCENE：永久字符串：-->
+                <label class="col-sm-3 control-label">二维码类型：</label>
+                <div class="col-sm-8">
+                    <input name="actionName" id="actionName" th:field="*{actionName}" class="form-control" type="hidden"><!--actionNameCheck-->
+                    <input type="radio" name="actionNameCheck" value="QR_SCENE" onclick="changeActionName('QR_SCENE')" style="margin-left: 10px;" th:checked="${weixinQrcode.actionName}=='QR_SCENE' ? true : false">临时二维码
+                    <input type="radio" name="actionNameCheck" value="QR_LIMIT_SCENE" onclick="changeActionName('QR_LIMIT_SCENE')" style="margin-left: 10px;" th:checked="${weixinQrcode.actionName}=='QR_LIMIT_SCENE' ? true : false">永久二维码
+                </div>
+            </div>
+           <!-- <div class="form-group">
+                <label class="col-sm-3 control-label">整型场景值ID：</label>
+                <div class="col-sm-8">
+                    <input name="sceneId" th:field="*{sceneId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">字符串场景值ID：</label>
+                <div class="col-sm-8">
+                    <input name="sceneStr" th:field="*{sceneStr}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">二维码ticket：</label>
+                <div class="col-sm-8">
+                    <input name="ticket" th:field="*{ticket}" class="form-control" type="text">
+                </div>
+            </div>-->
+            <div class="form-group" id="expire">
+                <label class="col-sm-3 control-label">有效时间(秒)：</label>
+                <div class="col-sm-8">
+                    <input name="expireSeconds" th:field="*{expireSeconds}" class="form-control" type="text" onclick="setScends()">
+                    <input type="radio" name="expireSecond"th:checked="${weixinQrcode.expireSeconds}=='3600' ? true : false" id="oneM" onclick="changeScends('3600')" style="margin-left: 10px;"> 1小时
+                    <input type="radio" name="expireSecond"th:checked="${weixinQrcode.expireSeconds}=='86400' ? true : false" id="oneD" onclick="changeScends('86400')" style="margin-left: 10px;"> 1天
+                    <input type="radio" name="expireSecond"th:checked="${weixinQrcode.expireSeconds}=='604800' ? true : false" id="oneW" onclick="changeScends('604800')" style="margin-left: 10px;"> 7天
+                    <input type="radio" name="expireSecond"th:checked="${weixinQrcode.expireSeconds}=='2592000' ? true : false" id="oneMonth" onclick="changeScends('2592000')" style="margin-left: 10px;"> 30天
+                </div>
+            </div>
+            <!--<div class="form-group">
+                <label class="col-sm-3 control-label">过期时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="expireDate" th:value="${#dates.format(weixinQrcode.expireDate, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">二维码地址：</label>
+                <div class="col-sm-8">
+                    <textarea name="qrcodeUrl" class="form-control">[[*{qrcodeUrl}]]</textarea>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">公众帐号ID：</label>
+                <div class="col-sm-8">
+                    <input name="jwid" th:field="*{jwid}" class="form-control" type="text">
+                </div>
+            </div>-->
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">消息响应类型：</label>
+                <div class="col-sm-8">
+                    <select name="msgType" id="msgType" onchange="showTag()" class="form-control m-b">
+                        <option value="text" th:selected="${weixinQrcode.msgType}=='text' ? true : false">文本</option>
+                        <option value="news" th:selected="${weixinQrcode.msgType}=='news' ? true : false">图文</option>
+                    </select>
+                </div>
+            </div>
+            <div id="text">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">文本内容：</label>
+                    <div class="col-sm-8">
+                        <!--<input name="textContent" th:field="*{textContent}" class="form-control" type="text">-->
+                        <textarea class="form-control" rows="5" style="resize:vertical" id="textContent" datatype="*" name="textContent" placeholder="请在此编辑您的文本">[[*{textContent}]]</textarea>
+                        <a href="javascript:insertText(document.getElementById('textContent'))"><i class="fa fa-link"></i>插入超链接</a>
+                    </div>
+                </div>
+            </div>
+            <div style="display: none;" id="news">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">图文选择类型：</label>
+                    <div class="col-sm-8">
+                        <input type="hidden" name="actionNewsType" id="actionNewsType" th:field="*{actionNewsType}" style="margin-left: 10px;"><!--checkNewsType-->
+                        <input type="radio" name="checkNewsType" value="1" th:checked="${weixinQrcode.actionNewsType}=='1' ? true : false" onclick="changeNewsType('1')" style="margin-left: 10px;">自定义
+                        <input type="radio" name="checkNewsType" value="2" th:checked="${weixinQrcode.actionNewsType}=='2' ? true : false" onclick="changeNewsType('2')" style="margin-left: 10px;">选择素材
+                    </div>
+                </div>
+                <div style="display: none;" id="custom">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">图文标题：</label>
+                        <div class="col-sm-8">
+                            <input name="newsTitle" th:field="*{newsTitle}" class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">图文摘要：</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="newsDesc" class="form-control" th:field="*{newsDesc}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">图文封面图：</label>
+                        <div class="col-sm-8">
+                            <input id="newsImg" name="newsImg" class="form-control" th:field="*{newsImg}" type="hidden"/>
+                            <input type="file" id="file" name="file" style="display: none;"/>
+                            <button id="uploadBtn"  type="button" class="btn btn-sm btn-primary" style="display: inline-block; width: 95px;position: relative;float: left;height: 33px;"><i class="fa fa-check"></i>选择图片</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"></label>
+                        <div class="col-sm-8">
+                            <!--@{/img/noimg.jpg}-->
+                            <img src="" style="width: 180px;height: 180px;" id="pic_view">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">图文跳转链接：</label>
+                        <div class="col-sm-8">
+                            <input name="newsUrl" id="newsUrl" class="form-control" type="text" th:field="*{newsUrl}">
+                        </div>
+                    </div>
+                </div>
+                <div id="material">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">图文素材：</label>
+                        <div class="col-sm-8">
+                            <input type="hidden" id="templateid" th:value="${weixinQrcode.newsTemplateid}"/>
+                            <select name="newsTemplateid" id="newsTemplateid" class="form-control">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">标签：</label>
+                <div class="col-sm-8">
+                    <input type="text" name="tags" id="tags" class="form-control" th:field="*{tags}"/>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script type="text/javascript" th:src="@{/ajax/libs/plupload/plupload.full.min.js}"></script>
+    <script type="text/javascript">
+        var prefix = ctx + "wx/qrcode";
+        $("#form-qrcode-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $("#actionName").val($('input[name="actionNameCheck"]:checked').val());
+                $("#actionNewsType").val($('input[name="checkNewsType"]:checked').val());
+                $.operate.save(prefix + "/edit", $('#form-qrcode-edit').serialize());
+            }
+        }
+
+        $("input[name='expireDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        function changeActionName(type) {
+            if(type == 'QR_SCENE'){
+                $("#expire").css("display","block");
+            }else if(type == 'QR_LIMIT_SCENE'){
+                $("#expireSeconds").val("");
+                $("#expire").css('display','none');
+            }
+        }
+
+        function showTag() {
+            var msgType = $("#msgType option:selected").val();
+            if(msgType == 'text'){
+                $("#textContent").val("");
+                $("#text").css('display','block');
+                $("#news").css('display','none');
+            }else if(msgType == 'news'){
+                $("#text").css('display','none');
+                $("#news").css('display','block');
+            }
+        }
+
+        function changeNewsType(type) {
+            if(type == '1'){
+                $("#custom").css("display",'block');
+                $("#material").css('display','none');
+            }else if(type == '2'){
+                $("#newsTitle").val("");
+                $("#newsDesc").val("");
+                $("#newsImg").val("");
+                $("#newsUrl").val("");
+                $("#pic_view").attr("src","/img/noimg.jpg");
+                $("#custom").css('display','none');
+                $("#material").css('display','block');
+                loadNewsTemplate();
+            }
+        }
+
+        $(function () {
+            var actionName = $("#actionName").val();
+            changeActionName(actionName);
+            showTag();
+            var actionNewsType = $("#actionNewsType").val();
+            changeNewsType(actionNewsType);
+            loadNewsTemplate();
+        });
+
+        function loadNewsTemplate() {
+            $.ajax({
+                url: prefix + '/loadTemplate',
+                type: "post",
+                data:{},
+                dataType:"json",
+                success: function (res) {
+                    var data =res.data;
+                    var templateid = $("#templateid").val();
+                    $("#newsTemplateid").html("");
+                    $("#newsTemplateid").html('<option value="">---请选择---</option>');
+                    $(data).each(function(index,obj){
+                        if(templateid == obj.templateId){
+                            $("#newsTemplateid").append('<option value="'+obj.templateId+'" selected>'+obj.templateName+'</option>')
+                        }else{
+                            $("#newsTemplateid").append('<option value="'+obj.templateId+'">'+obj.templateName+'</option>');
+                        }
+                    })
+                }
+            });
+        }
+
+        function changeScends(scendsNum){
+            $('#expireSeconds').val(scendsNum);
+        }
+
+        function setScends() {
+            $("#expireSeconds").val("");
+            $("#oneM").prop("checked",false);
+            $("#oneD").prop("checked",false);
+            $("#oneW").prop("checked",false);
+            $("#oneMonth").prop("checked",false);
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        var uploader = new plupload.Uploader({ //实例化一个plupload上传对象
+            runtimes: 'html5,silverlight,html4,flash',
+            browse_button : 'uploadBtn',
+            url : ctx + "wx/qrcode/upload",
+            flash_swf_url : "/ajax/libs/plupload/Moxie.swf",
+            silverlight_xap_url : "/ajax/libs/plupload/Moxie.xap",
+            filters: {
+                max_file_size: '10mb', //最大上传文件大小（格式100b, 10kb, 10mb, 1gb）
+                mime_types : [{ title : "图片文件", extensions:"jpg,jpeg,gif,png,bmp" },
+                    {title: "视频文件", extensions: "mp4,mpeg4,3gp,wav,wma,wmv"},
+                    {title: "文本文件", extensions: "txt,pdf,doc,docx,xls,xlsx,ppt,pptx,ini"},
+                    {title: "视频文件", extensions: "zip,rar,gz,bz2,jar"},
+                    {title: "音频文件", extensions: "mp3,mid,wav,wma,avi"}
+                ]
+            }//只允许上传图片文件
+        });
+        //绑定文件添加进队列事件
+        uploader.bind('FilesAdded',function(uploader,files){
+            uploader.start(); //开始上传
+        });
+        uploader.bind('Error',function(up, err){
+            alert(err.message);//上传出错的时候触发
+        });
+        uploader.bind("FileUploaded", function(up, file, res){
+            var json=res.response;
+            json=JSON.parse(json);
+
+            if(json.code!=0&&json.code!='0'){
+                $.modal.alertError(json.msg);
+            }
+            uploadCallback(json.data);
+
+        })
+        window.onload = function() {
+            uploader.init(); //初始化
+        };
+        function uploadCallback(json){
+            var end = "jpg,jpeg,gif,png,bmp";
+            var array = end.split(",");
+
+            var subfix = json.name.substring(json.name.lastIndexOf(".")+1);
+            if($.inArray(subfix,array)){
+                layer.alert("只能上传jpg,jpeg,gif,png,bmp图片格式文件!",{
+                    icon:2,
+                    title:"提示"
+                });
+                return;
+            }
+            $("#newsImg").val(json.path);
+            $("#pic_view").attr("src",json.url);
+        }
+        $(function(){
+            var currentPath = window.document.location.href;
+            var pathName = window.document.location.pathname;
+            var pos = currentPath.indexOf(pathName);
+            var cpath = currentPath.substr(0,pos);
+            var newsImgUrl = cpath +"/profile"+$("#newsImg").val();
+            $("#pic_view").attr("src",newsImgUrl);
+        });
+    </script>
+
+</body>
+</html>

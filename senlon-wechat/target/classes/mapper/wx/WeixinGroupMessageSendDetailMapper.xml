@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.WeixinGroupMessageSendDetailMapper">
+    
+    <resultMap type="com.ss.wx.domain.WeixinGroupMessageSendDetail" id="WeixinGroupMessageSendDetailResult">
+        <result property="id"    column="id"    />
+        <result property="sendLogId"    column="send_log_id"    />
+        <result property="sendJwid"    column="send_jwid"    />
+        <result property="sendJwidName"    column="send_jwid_name"    />
+        <result property="msgType"    column="msg_type"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="templateName"    column="template_name"    />
+        <result property="mediaId"    column="media_id"    />
+        <result property="sendStatus"    column="send_status"    />
+        <result property="sendTime"    column="send_time"    />
+        <result property="returnErrcode"    column="return_errcode"    />
+        <result property="returnErrmsg"    column="return_errmsg"    />
+        <result property="returnMsgId"    column="return_msg_id"    />
+        <result property="returnMsgDataId"    column="return_msg_data_id"    />
+        <result property="pushStatus"    column="push_status"    />
+        <result property="pushTotalcount"    column="push_totalCount"    />
+        <result property="pushFiltercount"    column="push_filterCount"    />
+        <result property="pushSendcount"    column="push_sendCount"    />
+        <result property="pushErrorcount"    column="push_errorCount"    />
+    </resultMap>
+
+    <sql id="selectWeixinGroupMessageSendDetailVo">
+        select id, send_log_id, send_jwid, send_jwid_name, msg_type, template_id, template_name, media_id, send_status, send_time, return_errcode, return_errmsg, return_msg_id, return_msg_data_id, push_status, push_totalCount, push_filterCount, push_sendCount, push_errorCount from weixin_group_message_send_detail
+    </sql>
+
+    <select id="selectWeixinGroupMessageSendDetailList" parameterType="com.ss.wx.domain.WeixinGroupMessageSendDetail" resultMap="WeixinGroupMessageSendDetailResult">
+        <include refid="selectWeixinGroupMessageSendDetailVo"/>
+        <where>  
+            <if test="sendLogId != null  and sendLogId != ''"> and send_log_id = #{sendLogId}</if>
+            <if test="sendJwid != null  and sendJwid != ''"> and send_jwid = #{sendJwid}</if>
+            <if test="sendJwidName != null  and sendJwidName != ''"> and send_jwid_name like concat('%', #{sendJwidName}, '%')</if>
+            <if test="msgType != null  and msgType != ''"> and msg_type = #{msgType}</if>
+            <if test="templateId != null  and templateId != ''"> and template_id = #{templateId}</if>
+            <if test="templateName != null  and templateName != ''"> and template_name like concat('%', #{templateName}, '%')</if>
+            <if test="mediaId != null  and mediaId != ''"> and media_id = #{mediaId}</if>
+            <if test="sendStatus != null  and sendStatus != ''"> and send_status = #{sendStatus}</if>
+            <if test="sendTime != null "> and send_time = #{sendTime}</if>
+            <if test="returnErrcode != null  and returnErrcode != ''"> and return_errcode = #{returnErrcode}</if>
+            <if test="returnErrmsg != null  and returnErrmsg != ''"> and return_errmsg = #{returnErrmsg}</if>
+            <if test="returnMsgId != null  and returnMsgId != ''"> and return_msg_id = #{returnMsgId}</if>
+            <if test="returnMsgDataId != null  and returnMsgDataId != ''"> and return_msg_data_id = #{returnMsgDataId}</if>
+            <if test="pushStatus != null  and pushStatus != ''"> and push_status = #{pushStatus}</if>
+            <if test="pushTotalcount != null "> and push_totalCount = #{pushTotalcount}</if>
+            <if test="pushFiltercount != null "> and push_filterCount = #{pushFiltercount}</if>
+            <if test="pushSendcount != null "> and push_sendCount = #{pushSendcount}</if>
+            <if test="pushErrorcount != null "> and push_errorCount = #{pushErrorcount}</if>
+        </where>
+    </select>
+    
+    <select id="selectWeixinGroupMessageSendDetailById" parameterType="String" resultMap="WeixinGroupMessageSendDetailResult">
+        <include refid="selectWeixinGroupMessageSendDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWeixinGroupMessageSendDetail" parameterType="com.ss.wx.domain.WeixinGroupMessageSendDetail">
+        insert into weixin_group_message_send_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="sendLogId != null  and sendLogId != ''">send_log_id,</if>
+            <if test="sendJwid != null  and sendJwid != ''">send_jwid,</if>
+            <if test="sendJwidName != null  and sendJwidName != ''">send_jwid_name,</if>
+            <if test="msgType != null  and msgType != ''">msg_type,</if>
+            <if test="templateId != null  and templateId != ''">template_id,</if>
+            <if test="templateName != null  and templateName != ''">template_name,</if>
+            <if test="mediaId != null  and mediaId != ''">media_id,</if>
+            <if test="sendStatus != null  and sendStatus != ''">send_status,</if>
+            <if test="sendTime != null ">send_time,</if>
+            <if test="returnErrcode != null  and returnErrcode != ''">return_errcode,</if>
+            <if test="returnErrmsg != null  and returnErrmsg != ''">return_errmsg,</if>
+            <if test="returnMsgId != null  and returnMsgId != ''">return_msg_id,</if>
+            <if test="returnMsgDataId != null  and returnMsgDataId != ''">return_msg_data_id,</if>
+            <if test="pushStatus != null  and pushStatus != ''">push_status,</if>
+            <if test="pushTotalcount != null ">push_totalCount,</if>
+            <if test="pushFiltercount != null ">push_filterCount,</if>
+            <if test="pushSendcount != null ">push_sendCount,</if>
+            <if test="pushErrorcount != null ">push_errorCount,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="sendLogId != null  and sendLogId != ''">#{sendLogId},</if>
+            <if test="sendJwid != null  and sendJwid != ''">#{sendJwid},</if>
+            <if test="sendJwidName != null  and sendJwidName != ''">#{sendJwidName},</if>
+            <if test="msgType != null  and msgType != ''">#{msgType},</if>
+            <if test="templateId != null  and templateId != ''">#{templateId},</if>
+            <if test="templateName != null  and templateName != ''">#{templateName},</if>
+            <if test="mediaId != null  and mediaId != ''">#{mediaId},</if>
+            <if test="sendStatus != null  and sendStatus != ''">#{sendStatus},</if>
+            <if test="sendTime != null ">#{sendTime},</if>
+            <if test="returnErrcode != null  and returnErrcode != ''">#{returnErrcode},</if>
+            <if test="returnErrmsg != null  and returnErrmsg != ''">#{returnErrmsg},</if>
+            <if test="returnMsgId != null  and returnMsgId != ''">#{returnMsgId},</if>
+            <if test="returnMsgDataId != null  and returnMsgDataId != ''">#{returnMsgDataId},</if>
+            <if test="pushStatus != null  and pushStatus != ''">#{pushStatus},</if>
+            <if test="pushTotalcount != null ">#{pushTotalcount},</if>
+            <if test="pushFiltercount != null ">#{pushFiltercount},</if>
+            <if test="pushSendcount != null ">#{pushSendcount},</if>
+            <if test="pushErrorcount != null ">#{pushErrorcount},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeixinGroupMessageSendDetail" parameterType="com.ss.wx.domain.WeixinGroupMessageSendDetail">
+        update weixin_group_message_send_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sendLogId != null  and sendLogId != ''">send_log_id = #{sendLogId},</if>
+            <if test="sendJwid != null  and sendJwid != ''">send_jwid = #{sendJwid},</if>
+            <if test="sendJwidName != null  and sendJwidName != ''">send_jwid_name = #{sendJwidName},</if>
+            <if test="msgType != null  and msgType != ''">msg_type = #{msgType},</if>
+            <if test="templateId != null  and templateId != ''">template_id = #{templateId},</if>
+            <if test="templateName != null  and templateName != ''">template_name = #{templateName},</if>
+            <if test="mediaId != null  and mediaId != ''">media_id = #{mediaId},</if>
+            <if test="sendStatus != null  and sendStatus != ''">send_status = #{sendStatus},</if>
+            <if test="sendTime != null ">send_time = #{sendTime},</if>
+            <if test="returnErrcode != null  and returnErrcode != ''">return_errcode = #{returnErrcode},</if>
+            <if test="returnErrmsg != null  and returnErrmsg != ''">return_errmsg = #{returnErrmsg},</if>
+            <if test="returnMsgId != null  and returnMsgId != ''">return_msg_id = #{returnMsgId},</if>
+            <if test="returnMsgDataId != null  and returnMsgDataId != ''">return_msg_data_id = #{returnMsgDataId},</if>
+            <if test="pushStatus != null  and pushStatus != ''">push_status = #{pushStatus},</if>
+            <if test="pushTotalcount != null ">push_totalCount = #{pushTotalcount},</if>
+            <if test="pushFiltercount != null ">push_filterCount = #{pushFiltercount},</if>
+            <if test="pushSendcount != null ">push_sendCount = #{pushSendcount},</if>
+            <if test="pushErrorcount != null ">push_errorCount = #{pushErrorcount},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWeixinGroupMessageSendDetailById" parameterType="String">
+        delete from weixin_group_message_send_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteWeixinGroupMessageSendDetailByIds" parameterType="String">
+        delete from weixin_group_message_send_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

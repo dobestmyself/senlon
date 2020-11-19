@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('模板消息发送列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <p>模板名称：</p>
+                                <select name="templateId" id="templateId">
+                                </select>
+                            </li>
+                            <li>
+                                <p>发送模式：</p>
+                                <select name="sendType">
+                                    <option value="">--请选择--</option>
+                                    <option value="0">标签模式</option>
+                                    <option value="1">列表模式</option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="wx:tmessagetask:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="wx:tmessagetask:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="wx:tmessagetask:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <!--<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="wx:tmessagetask:export">
+                    <i class="fa fa-download"></i> 导出
+                 </a>-->
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+
+        </div>
+    </div>
+
+
+     <!--弹出框begin-->
+     <button  data-toggle="modal" data-target=".bs-example-modal-lg" id="myModalButton" style="display:none"></button>
+     <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="myModel">
+         <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
+             <div class="modal-content" style="height:80%;min-height:550px">
+                 <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                     <h4 class="modal-title" id="myLargeModalLabel">发送信息日志列表</h4>
+                 </div>
+                 <div id="modalContent">
+                     <iframe scrolling="yes" id="showframe" src="" frameborder="0" style="width:100%;height:400px;"></iframe>
+                 </div>
+                 <div class="modal-footer">
+                     <!--<a href="javascript:getCkValue()"><button type="button" class="btn btn-primary">确定</button></a>-->
+                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 关闭</button>
+                 </div>
+             </div>
+         </div>
+     </div>
+     <!--弹出框end-->
+
+
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('wx:tmessagetask:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('wx:tmessagetask:remove')}]];
+        var prefix = ctx + "wx/tmessagetask";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "模板消息发送",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field : 'id', 
+                    title : 'ID',
+                    visible: false
+                },
+                    {
+                        field : 'title',
+                        title : '标题'
+                    },
+                {
+                    field : 'templateId', 
+                    title : '模板名称',
+                    formatter: function (value,row,index) {
+                        return row.templateName;
+                    }
+                },
+
+                {
+                    field : 'sendType', 
+                    title : '发送模式',
+                    formatter: function (value, row, index) {
+                        if(row.sendType == 0){
+                            return "标签模式";
+                        }else if(row.sendType == 1){
+                            return "列表模式";
+                        }
+                    }
+                },
+                {
+                    field : 'tagId', 
+                    title : '标签',
+                    formatter: function (value,row,index) {
+                        return row.tagName;
+                    }
+                },
+                {
+                    field : 'createDate', 
+                    title : '创建时间'
+                },
+
+                {
+                    field : 'taskSendStatus', 
+                    title : '发送状态',
+                    formatter: function(value,row,index){
+                        if(row.taskSendStatus == 0){
+                            return "未发送";
+                        }else if(row.taskSendStatus == 1){
+                            return "已发送";
+                        }else if(row.taskSendStatus == 2){
+                            return "发送失败";
+                        }else if(row.taskSendStatus == 9){
+                            return "定时发送";
+                        }
+                    }
+
+                },
+
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-primary btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="sendMessage(\'' + row.id + '\')"><i class="fa fa-user"></i>消息发送</a> ');
+                        actions.push('<a class="btn btn-warning btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="sendLog(\'' + row.id + '\')"><i class="fa fa-info"></i>发送日志</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        $(function(){
+            $.ajax({
+                url: ctx + 'wx/tmessage/list',
+                type: "POST",
+                dataType: "json",
+                success: function (res) {
+                    var data = res.rows;
+                    $("#templateId").html("");
+                    $("#templateId").html('<option value="">--请选择--</option>');
+                    $(data).each(function(){
+                        var opt = '<option value="'+this.templateId+'">'+this.title+'</option>';
+                        $("#templateId").append(opt);
+                    });
+                }
+            });
+        });
+
+        function sendMessage(id) {
+            $.ajax({
+               url: prefix + "/sendTemplateMsg",
+               type: "post",
+                data:{
+                   taskId:id
+                },
+                dataType:"json",
+                success: function (res) {
+                    $.modal.alertSuccess(res.msg);
+               },
+                error:function (data) {
+                    $.modal.alertError(res.msg);
+                }
+            });
+        }
+
+        function sendLog(taskId) {
+            $("#showframe").attr("src",ctx + 'wx/sendlog/'+taskId);
+            $("#myModalButton").click();
+        }
+
+    </script>
+</body>
+</html>

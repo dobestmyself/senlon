@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.system.mapper.JwSystemRoleMapper">
+    
+    <resultMap type="com.ss.system.domain.JwSystemRole" id="JwSystemRoleResult">
+        <result property="id"    column="id"    />
+        <result property="roleId"    column="role_id"    />
+        <result property="roleName"    column="role_name"    />
+        <result property="crtOperator"    column="crt_operator"    />
+        <result property="crtDt"    column="crt_dt"    />
+        <result property="roleTyp"    column="role_typ"    />
+        <result property="delStat"    column="del_stat"    />
+        <result property="creator"    column="creator"    />
+        <result property="editor"    column="editor"    />
+        <result property="createDt"    column="create_dt"    />
+        <result property="editDt"    column="edit_dt"    />
+        <result property="lastEditDt"    column="last_edit_dt"    />
+        <result property="recordVersion"    column="record_version"    />
+    </resultMap>
+
+    <sql id="selectJwSystemRoleVo">
+        select id, role_id, role_name, crt_operator, crt_dt, role_typ, del_stat, creator, editor, create_dt, edit_dt, last_edit_dt, record_version from jw_system_role
+    </sql>
+
+    <select id="selectJwSystemRoleList" parameterType="com.ss.system.domain.JwSystemRole" resultMap="JwSystemRoleResult">
+        <include refid="selectJwSystemRoleVo"/>
+        <where>  
+            <if test="roleId != null  and roleId != ''"> and role_id = #{roleId}</if>
+            <if test="roleName != null  and roleName != ''"> and role_name like concat('%', #{roleName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectJwSystemRoleById" parameterType="Long" resultMap="JwSystemRoleResult">
+        <include refid="selectJwSystemRoleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertJwSystemRole" parameterType="com.ss.system.domain.JwSystemRole" useGeneratedKeys="true" keyProperty="id">
+        insert into jw_system_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleId != null  and roleId != ''">role_id,</if>
+            <if test="roleName != null  and roleName != ''">role_name,</if>
+            <if test="crtOperator != null  and crtOperator != ''">crt_operator,</if>
+            <if test="crtDt != null ">crt_dt,</if>
+            <if test="roleTyp != null  and roleTyp != ''">role_typ,</if>
+            <if test="delStat != null  and delStat != ''">del_stat,</if>
+            <if test="creator != null  and creator != ''">creator,</if>
+            <if test="editor != null  and editor != ''">editor,</if>
+            <if test="createDt != null ">create_dt,</if>
+            <if test="editDt != null ">edit_dt,</if>
+            <if test="lastEditDt != null ">last_edit_dt,</if>
+            <if test="recordVersion != null  and recordVersion != ''">record_version,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null  and roleId != ''">#{roleId},</if>
+            <if test="roleName != null  and roleName != ''">#{roleName},</if>
+            <if test="crtOperator != null  and crtOperator != ''">#{crtOperator},</if>
+            <if test="crtDt != null ">#{crtDt},</if>
+            <if test="roleTyp != null  and roleTyp != ''">#{roleTyp},</if>
+            <if test="delStat != null  and delStat != ''">#{delStat},</if>
+            <if test="creator != null  and creator != ''">#{creator},</if>
+            <if test="editor != null  and editor != ''">#{editor},</if>
+            <if test="createDt != null ">#{createDt},</if>
+            <if test="editDt != null ">#{editDt},</if>
+            <if test="lastEditDt != null ">#{lastEditDt},</if>
+            <if test="recordVersion != null  and recordVersion != ''">#{recordVersion},</if>
+         </trim>
+    </insert>
+
+    <update id="updateJwSystemRole" parameterType="com.ss.system.domain.JwSystemRole">
+        update jw_system_role
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roleId != null  and roleId != ''">role_id = #{roleId},</if>
+            <if test="roleName != null  and roleName != ''">role_name = #{roleName},</if>
+            <if test="crtOperator != null  and crtOperator != ''">crt_operator = #{crtOperator},</if>
+            <if test="crtDt != null ">crt_dt = #{crtDt},</if>
+            <if test="roleTyp != null  and roleTyp != ''">role_typ = #{roleTyp},</if>
+            <if test="delStat != null  and delStat != ''">del_stat = #{delStat},</if>
+            <if test="creator != null  and creator != ''">creator = #{creator},</if>
+            <if test="editor != null  and editor != ''">editor = #{editor},</if>
+            <if test="createDt != null ">create_dt = #{createDt},</if>
+            <if test="editDt != null ">edit_dt = #{editDt},</if>
+            <if test="lastEditDt != null ">last_edit_dt = #{lastEditDt},</if>
+            <if test="recordVersion != null  and recordVersion != ''">record_version = #{recordVersion},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteJwSystemRoleById" parameterType="Long">
+        delete from jw_system_role where id = #{id}
+    </delete>
+
+    <delete id="deleteJwSystemRoleByIds" parameterType="String">
+        delete from jw_system_role where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="checkRoleIdUnique" parameterType="string" resultMap="JwSystemRoleResult">
+        <include refid="selectJwSystemRoleVo"/>
+        <where>
+            and role_id = #{roleId}
+        </where>
+    </select>
+
+    <select id="checkRoleNameUnique" parameterType="string" resultMap="JwSystemRoleResult">
+        <include refid="selectJwSystemRoleVo"/>
+        <where>
+            and role_name = #{roleName}
+        </where>
+    </select>
+
+    <select id="selectRolesByUserId" parameterType="Long" resultMap="JwSystemRoleResult">
+        select distinct r.id, r.role_id, r.role_name, r.crt_operator, r.crt_dt, r.role_typ, r.del_stat, r.creator, r.editor, r.create_dt, r.edit_dt, r.last_edit_dt, r.record_version from jw_system_role r
+        left join jw_system_user_role_rel ur on ur.role_id = r.role_id
+        left join sys_user u on u.user_id = ur.user_id
+        left join sys_dept d on u.dept_id = d.dept_id
+        where r.del_stat = '0' and ur.user_id = #{userId}
+    </select>
+</mapper>

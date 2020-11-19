@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.system.mapper.JwSystemRoleAuthRelMapper">
+    
+    <resultMap type="com.ss.system.domain.JwSystemRoleAuthRel" id="JwSystemRoleAuthRelResult">
+        <result property="roleId"    column="role_id"    />
+        <result property="authId"    column="auth_id"    />
+    </resultMap>
+
+    <sql id="selectJwSystemRoleAuthRelVo">
+        select role_id, auth_id from jw_system_role_auth_rel
+    </sql>
+
+    <select id="selectJwSystemRoleAuthRelList" parameterType="com.ss.system.domain.JwSystemRoleAuthRel" resultMap="JwSystemRoleAuthRelResult">
+        <include refid="selectJwSystemRoleAuthRelVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectJwSystemRoleAuthRelById" parameterType="String" resultMap="JwSystemRoleAuthRelResult">
+        <include refid="selectJwSystemRoleAuthRelVo"/>
+        where role_id = #{roleId}
+    </select>
+        
+    <insert id="insertJwSystemRoleAuthRel" parameterType="com.ss.system.domain.JwSystemRoleAuthRel">
+        insert into jw_system_role_auth_rel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleId != null  and roleId != ''">role_id,</if>
+            <if test="authId != null  and authId != ''">auth_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null  and roleId != ''">#{roleId},</if>
+            <if test="authId != null  and authId != ''">#{authId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateJwSystemRoleAuthRel" parameterType="com.ss.system.domain.JwSystemRoleAuthRel">
+        update jw_system_role_auth_rel
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="authId != null  and authId != ''">auth_id = #{authId},</if>
+        </trim>
+        where role_id = #{roleId}
+    </update>
+
+    <delete id="deleteJwSystemRoleAuthRelById" parameterType="String">
+        delete from jw_system_role_auth_rel where role_id = #{roleId}
+    </delete>
+
+    <delete id="deleteJwSystemRoleAuthRelByIds" parameterType="String">
+        delete from jw_system_role_auth_rel where role_id in 
+        <foreach item="roleId" collection="array" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+    </delete>
+    <!--批量新增角色菜单信息-->
+    <insert id="batchRoleAuth">
+        insert into jw_system_role_auth_rel(role_id,auth_id) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.roleId},#{item.authId})
+        </foreach>
+    </insert>
+
+    <select id="selectCountRoleAuthByAuthId" parameterType="long" resultType="integer">
+        select count(1) from jw_system_role_auth_rel where auth_id = #{authId}
+    </select>
+
+</mapper>

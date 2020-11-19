@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.JwWebJwidMapper">
+    
+    <resultMap type="com.ss.wx.domain.JwWebJwid" id="JwWebJwidResult">
+        <result property="id"    column="id"    />
+        <result property="jwid"    column="jwid"    />
+        <result property="name"    column="name"    />
+        <result property="applicationType"    column="application_type"    />
+        <result property="qrcodeimg"    column="qrcodeimg"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="weixinNumber"    column="weixin_number"    />
+        <result property="weixinAppid"    column="weixin_appid"    />
+        <result property="weixinAppsecret"    column="weixin_appsecret"    />
+        <result property="accountType"    column="account_type"    />
+        <result property="authStatus"    column="auth_status"    />
+        <result property="accessToken"    column="access_token"    />
+        <result property="tokenGettime"    column="token_gettime"    />
+        <result property="apiticket"    column="apiticket"    />
+        <result property="apiticketGettime"    column="apiticket_gettime"    />
+        <result property="jsapiticket"    column="jsapiticket"    />
+        <result property="jsapiticketGettime"    column="jsapiticket_gettime"    />
+        <result property="authType"    column="auth_type"    />
+        <result property="businessInfo"    column="business_info"    />
+        <result property="funcInfo"    column="func_info"    />
+        <result property="nickName"    column="nick_name"    />
+        <result property="headimgurl"    column="headimgurl"    />
+        <result property="authorizationInfo"    column="authorization_info"    />
+        <result property="authorizerRefreshToken"    column="authorizer_refresh_token"    />
+        <result property="token"    column="token"    />
+        <result property="authorizationStatus"    column="authorization_status"    />
+    </resultMap>
+
+    <sql id="selectJwWebJwidVo">
+        select id, jwid, name, application_type, qrcodeimg, create_by, create_time, weixin_number, weixin_appid, weixin_appsecret, account_type, auth_status, access_token, token_gettime, apiticket, apiticket_gettime, jsapiticket, jsapiticket_gettime, auth_type, business_info, func_info, nick_name, headimgurl, authorization_info, authorizer_refresh_token, token, authorization_status from jw_web_jwid
+    </sql>
+
+    <select id="selectJwWebJwidList" parameterType="com.ss.wx.domain.JwWebJwid" resultMap="JwWebJwidResult">
+        <include refid="selectJwWebJwidVo"/>
+        <where>  
+            <if test="jwid != null  and jwid != ''"> and jwid = #{jwid}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="createBy != null and createBy != ''"> and create_by = #{createBy}</if>
+        </where>
+    </select>
+    
+    <select id="selectJwWebJwidById" parameterType="String" resultMap="JwWebJwidResult">
+        <include refid="selectJwWebJwidVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertJwWebJwid" parameterType="com.ss.wx.domain.JwWebJwid">
+        insert into jw_web_jwid
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="jwid != null  and jwid != ''">jwid,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="applicationType != null  and applicationType != ''">application_type,</if>
+            <if test="qrcodeimg != null  and qrcodeimg != ''">qrcodeimg,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="weixinNumber != null  and weixinNumber != ''">weixin_number,</if>
+            <if test="weixinAppid != null  and weixinAppid != ''">weixin_appid,</if>
+            <if test="weixinAppsecret != null  and weixinAppsecret != ''">weixin_appsecret,</if>
+            <if test="accountType != null  and accountType != ''">account_type,</if>
+            <if test="authStatus != null  and authStatus != ''">auth_status,</if>
+            <if test="accessToken != null  and accessToken != ''">access_token,</if>
+            <if test="tokenGettime != null ">token_gettime,</if>
+            <if test="apiticket != null  and apiticket != ''">apiticket,</if>
+            <if test="apiticketGettime != null ">apiticket_gettime,</if>
+            <if test="jsapiticket != null  and jsapiticket != ''">jsapiticket,</if>
+            <if test="jsapiticketGettime != null ">jsapiticket_gettime,</if>
+            <if test="authType != null  and authType != ''">auth_type,</if>
+            <if test="businessInfo != null  and businessInfo != ''">business_info,</if>
+            <if test="funcInfo != null  and funcInfo != ''">func_info,</if>
+            <if test="nickName != null  and nickName != ''">nick_name,</if>
+            <if test="headimgurl != null  and headimgurl != ''">headimgurl,</if>
+            <if test="authorizationInfo != null  and authorizationInfo != ''">authorization_info,</if>
+            <if test="authorizerRefreshToken != null  and authorizerRefreshToken != ''">authorizer_refresh_token,</if>
+            <if test="token != null  and token != ''">token,</if>
+            <if test="authorizationStatus != null  and authorizationStatus != ''">authorization_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="jwid != null  and jwid != ''">#{jwid},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="applicationType != null  and applicationType != ''">#{applicationType},</if>
+            <if test="qrcodeimg != null  and qrcodeimg != ''">#{qrcodeimg},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="weixinNumber != null  and weixinNumber != ''">#{weixinNumber},</if>
+            <if test="weixinAppid != null  and weixinAppid != ''">#{weixinAppid},</if>
+            <if test="weixinAppsecret != null  and weixinAppsecret != ''">#{weixinAppsecret},</if>
+            <if test="accountType != null  and accountType != ''">#{accountType},</if>
+            <if test="authStatus != null  and authStatus != ''">#{authStatus},</if>
+            <if test="accessToken != null  and accessToken != ''">#{accessToken},</if>
+            <if test="tokenGettime != null ">#{tokenGettime},</if>
+            <if test="apiticket != null  and apiticket != ''">#{apiticket},</if>
+            <if test="apiticketGettime != null ">#{apiticketGettime},</if>
+            <if test="jsapiticket != null  and jsapiticket != ''">#{jsapiticket},</if>
+            <if test="jsapiticketGettime != null ">#{jsapiticketGettime},</if>
+            <if test="authType != null  and authType != ''">#{authType},</if>
+            <if test="businessInfo != null  and businessInfo != ''">#{businessInfo},</if>
+            <if test="funcInfo != null  and funcInfo != ''">#{funcInfo},</if>
+            <if test="nickName != null  and nickName != ''">#{nickName},</if>
+            <if test="headimgurl != null  and headimgurl != ''">#{headimgurl},</if>
+            <if test="authorizationInfo != null  and authorizationInfo != ''">#{authorizationInfo},</if>
+            <if test="authorizerRefreshToken != null  and authorizerRefreshToken != ''">#{authorizerRefreshToken},</if>
+            <if test="token != null  and token != ''">#{token},</if>
+            <if test="authorizationStatus != null  and authorizationStatus != ''">#{authorizationStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateJwWebJwid" parameterType="com.ss.wx.domain.JwWebJwid">
+        update jw_web_jwid
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="jwid != null  and jwid != ''">jwid = #{jwid},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="applicationType != null  and applicationType != ''">application_type = #{applicationType},</if>
+            <if test="qrcodeimg != null  and qrcodeimg != ''">qrcodeimg = #{qrcodeimg},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="weixinNumber != null  and weixinNumber != ''">weixin_number = #{weixinNumber},</if>
+            <if test="weixinAppid != null  and weixinAppid != ''">weixin_appid = #{weixinAppid},</if>
+            <if test="weixinAppsecret != null  and weixinAppsecret != ''">weixin_appsecret = #{weixinAppsecret},</if>
+            <if test="accountType != null  and accountType != ''">account_type = #{accountType},</if>
+            <if test="authStatus != null  and authStatus != ''">auth_status = #{authStatus},</if>
+            <if test="accessToken != null  and accessToken != ''">access_token = #{accessToken},</if>
+            <if test="tokenGettime != null ">token_gettime = #{tokenGettime},</if>
+            <if test="apiticket != null  and apiticket != ''">apiticket = #{apiticket},</if>
+            <if test="apiticketGettime != null ">apiticket_gettime = #{apiticketGettime},</if>
+            <if test="jsapiticket != null  and jsapiticket != ''">jsapiticket = #{jsapiticket},</if>
+            <if test="jsapiticketGettime != null ">jsapiticket_gettime = #{jsapiticketGettime},</if>
+            <if test="authType != null  and authType != ''">auth_type = #{authType},</if>
+            <if test="businessInfo != null  and businessInfo != ''">business_info = #{businessInfo},</if>
+            <if test="funcInfo != null  and funcInfo != ''">func_info = #{funcInfo},</if>
+            <if test="nickName != null  and nickName != ''">nick_name = #{nickName},</if>
+            <if test="headimgurl != null  and headimgurl != ''">headimgurl = #{headimgurl},</if>
+            <if test="authorizationInfo != null  and authorizationInfo != ''">authorization_info = #{authorizationInfo},</if>
+            <if test="authorizerRefreshToken != null  and authorizerRefreshToken != ''">authorizer_refresh_token = #{authorizerRefreshToken},</if>
+            <if test="token != null  and token != ''">token = #{token},</if>
+            <if test="authorizationStatus != null  and authorizationStatus != ''">authorization_status = #{authorizationStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteJwWebJwidById" parameterType="String">
+        delete from jw_web_jwid where id = #{id}
+    </delete>
+
+    <delete id="deleteJwWebJwidByIds" parameterType="String">
+        delete from jw_web_jwid where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <select id="queryOneByCreateBy" parameterType="string" resultMap="JwWebJwidResult">
+        <include refid="selectJwWebJwidVo"/>
+        <where>
+            and create_by = #{createBy}
+        </where>
+    </select>
+
+    <select id="queryByJwid" parameterType="string" resultMap="JwWebJwidResult">
+        <include refid="selectJwWebJwidVo"/>
+        <where>
+            and jwid = #{jwid}
+        </where>
+    </select>
+
+
+    <!--
+	方法名称: queryResetTokenList
+	调用路径: com.jeecg.p3.system.entity.MyJwWebJwid.queryResetTokenList
+	开发信息:
+	处理信息: 根据token的创建时间查询需要重置token的信息
+	-->
+    <select id="queryResetTokenList" parameterType="Object"  resultMap="JwWebJwidResult">
+		    SELECT
+                   jwj.id                            /*  */
+                  ,jwj.jwid                          /* 公众号 */
+                  ,jwj.name                          /* 名称 */
+                  ,jwj.application_type              /* 应用类型 */
+                  ,jwj.qrcodeimg              		 /* 二维码 */
+                  ,jwj.create_by					 /* 创建人 */
+                  ,jwj.create_time					 /* 创建时间 */
+                  ,jwj.weixin_number				 /* 微信号 */
+                  ,jwj.weixin_appid					 /* 微信AppId */
+                  ,jwj.weixin_appsecret				 /* 微信AppSecret */
+                  ,jwj.account_type					 /* 公众号类型 */
+                  ,jwj.auth_status					 /* 是否认证 0不认证 1认证 */
+                  ,jwj.access_token					 /* AccessToken */
+                  ,jwj.token_gettime				 /* token获取时间 */
+                  ,jwj.auth_type                     /*类型：1手动授权，2扫码授权*/
+                  ,jwj.business_info                 /* 功能的开通状况：1代表已开通*/
+                  ,jwj.func_info                     /* 公众号授权给开发者的权限集*/
+                  ,jwj.nick_name                     /* 授权方昵称*/
+                  ,jwj.headimgurl                    /* 授权方头像*/
+                  ,jwj.authorization_info            /* 授权信息*/
+                  ,jwj.authorizer_refresh_token      /* 刷新token*/
+                  ,jwj.token						 /* 令牌 */
+                  ,jwj.authorization_status			 /* 授权状态 */
+		FROM   	 jw_web_jwid      AS jwj      /*  */
+		<![CDATA[WHERE jwj.token_gettime<#{refDate}]]> OR ISNULL(jwj.token_gettime)
+	</select>
+
+    <!--操作userjwid表-->
+    <insert id="doAddSystemUserJwid" parameterType="Object">
+        INSERT  INTO  jw_system_user_jwid   /* 微信公众号字典表 */
+					(
+                      id                            /*  */
+                     ,user_id                       /* 用户编码 */
+                     ,jwid                          /* 公众号 */
+					)
+			values (
+                      #{id,jdbcType=VARCHAR}                            /*  */
+                     ,#{createBy,jdbcType=VARCHAR}                        /* 用户编码 */
+                     ,#{jwid,jdbcType=VARCHAR}                          /* 公众号 */
+					)
+    </insert>
+
+    <!-- 操作userjwid 表 -->
+    <delete id="doDelSystemUserJwid" parameterType="Object">
+		DELETE 	FROM jw_system_user_jwid 	/*  */
+		WHERE
+			jwid = #{jwid}					/* 序号 */
+	</delete>
+
+</mapper>

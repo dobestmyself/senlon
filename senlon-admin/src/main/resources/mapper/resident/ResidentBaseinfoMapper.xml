@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.resident.mapper.ResidentBaseinfoMapper">
+    
+    <resultMap type="com.ss.resident.domain.ResidentBaseinfo" id="ResidentBaseinfoResult">
+        <result property="residentId"    column="resident_id"    />
+        <result property="name"    column="name"    />
+        <result property="gender"    column="gender"    />
+        <result property="nation"    column="nation"    />
+        <result property="birthdate"    column="birthdate"    />
+        <result property="marries"    column="marries"    />
+        <result property="nationality"    column="nationality"    />
+        <result property="idcardType"    column="idcard_type"    />
+        <result property="idcard"    column="idcard"    />
+        <result property="area"    column="area"    />
+        <result property="phoneType"    column="phone_type"    />
+        <result property="phoneNumber"    column="phone_number"    />
+        <result property="qq"    column="qq"    />
+        <result property="email"    column="email"    />
+        <result property="isModicalQualifyExamPass"    column="is_modical_qualify_exam_pass"    />
+        <result property="passModicalQualifyDate"    column="pass_modical_qualify_date"    />
+        <result property="modicalQualifyCertificate"    column="modical_qualify_certificate"    />
+        <result property="achieveModicalQualifyCertificateDate"    column="achieve_modical_qualify_certificate_date"    />
+        <result property="modicalQualifyLevel"    column="modical_qualify_level"    />
+        <result property="modicalQualifyType"    column="modical_qualify_type"    />
+        <result property="modicalQualifyCertificateCode"    column="modical_qualify_certificate_code"    />
+        <result property="languageLevelExamType"    column="language_level_exam_type"    />
+        <result property="englishLevel"    column="english_level"    />
+        <result property="languageLevel"    column="language_level"    />
+        <result property="languageLevelExamCertificateCode"    column="language_level_exam_certificate_code"    />
+        <result property="languageLevelExamCertificateDate"    column="language_level_exam_certificate_date"    />
+    </resultMap>
+
+    <sql id="selectResidentBaseinfoVo">
+        select resident_id, name, gender, nation, birthdate, marries, nationality, idcard_type, idcard, area, phone_type, phone_number, qq, email, is_modical_qualify_exam_pass, pass_modical_qualify_date, modical_qualify_certificate, achieve_modical_qualify_certificate_date, modical_qualify_level, modical_qualify_type, modical_qualify_certificate_code, language_level_exam_type, english_level, language_level, language_level_exam_certificate_code, language_level_exam_certificate_date from resident_baseinfo
+    </sql>
+
+    <select id="selectResidentBaseinfoList" parameterType="com.ss.resident.domain.ResidentBaseinfo" resultMap="ResidentBaseinfoResult">
+        <include refid="selectResidentBaseinfoVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="idcard != null  and idcard != ''"> and idcard = #{idcard}</if>
+            <if test="area != null  and area != ''"> and area = #{area}</if>
+            <if test="modicalQualifyLevel != null  and modicalQualifyLevel != ''"> and modical_qualify_level = #{modicalQualifyLevel}</if>
+            <if test="modicalQualifyType != null  and modicalQualifyType != ''"> and modical_qualify_type = #{modicalQualifyType}</if>
+        </where>
+    </select>
+    
+    <select id="selectResidentBaseinfoById" parameterType="Long" resultMap="ResidentBaseinfoResult">
+        <include refid="selectResidentBaseinfoVo"/>
+        where resident_id = #{residentId}
+    </select>
+        
+    <insert id="insertResidentBaseinfo" parameterType="com.ss.resident.domain.ResidentBaseinfo" useGeneratedKeys="true" keyProperty="residentId">
+        insert into resident_baseinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">name,</if>
+            <if test="gender != null  and gender != ''">gender,</if>
+            <if test="nation != null  and nation != ''">nation,</if>
+            <if test="birthdate != null">birthdate,</if>
+            <if test="marries != null  and marries != ''">marries,</if>
+            <if test="nationality != null  and nationality != ''">nationality,</if>
+            <if test="idcardType != null  and idcardType != ''">idcard_type,</if>
+            <if test="idcard != null  and idcard != ''">idcard,</if>
+            <if test="area != null  and area != ''">area,</if>
+            <if test="phoneType != null  and phoneType != ''">phone_type,</if>
+            <if test="phoneNumber != null  and phoneNumber != ''">phone_number,</if>
+            <if test="qq != null  and qq != ''">qq,</if>
+            <if test="email != null  and email != ''">email,</if>
+            <if test="isModicalQualifyExamPass != null  and isModicalQualifyExamPass != ''">is_modical_qualify_exam_pass,</if>
+            <if test="passModicalQualifyDate != null ">pass_modical_qualify_date,</if>
+            <if test="modicalQualifyCertificate != null  and modicalQualifyCertificate != ''">modical_qualify_certificate,</if>
+            <if test="achieveModicalQualifyCertificateDate != null ">achieve_modical_qualify_certificate_date,</if>
+            <if test="modicalQualifyLevel != null  and modicalQualifyLevel != ''">modical_qualify_level,</if>
+            <if test="modicalQualifyType != null  and modicalQualifyType != ''">modical_qualify_type,</if>
+            <if test="modicalQualifyCertificateCode != null  and modicalQualifyCertificateCode != ''">modical_qualify_certificate_code,</if>
+            <if test="languageLevelExamType != null  and languageLevelExamType != ''">language_level_exam_type,</if>
+            <if test="englishLevel != null  and englishLevel != ''">english_level,</if>
+            <if test="languageLevel != null  and languageLevel != ''">language_level,</if>
+            <if test="languageLevelExamCertificateCode != null  and languageLevelExamCertificateCode != ''">language_level_exam_certificate_code,</if>
+            <if test="languageLevelExamCertificateDate != null ">language_level_exam_certificate_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="gender != null  and gender != ''">#{gender},</if>
+            <if test="nation != null  and nation != ''">#{nation},</if>
+            <if test="birthdate != null">#{birthdate},</if>
+            <if test="marries != null  and marries != ''">#{marries},</if>
+            <if test="nationality != null  and nationality != ''">#{nationality},</if>
+            <if test="idcardType != null  and idcardType != ''">#{idcardType},</if>
+            <if test="idcard != null  and idcard != ''">#{idcard},</if>
+            <if test="area != null  and area != ''">#{area},</if>
+            <if test="phoneType != null  and phoneType != ''">#{phoneType},</if>
+            <if test="phoneNumber != null  and phoneNumber != ''">#{phoneNumber},</if>
+            <if test="qq != null  and qq != ''">#{qq},</if>
+            <if test="email != null  and email != ''">#{email},</if>
+            <if test="isModicalQualifyExamPass != null  and isModicalQualifyExamPass != ''">#{isModicalQualifyExamPass},</if>
+            <if test="passModicalQualifyDate != null ">#{passModicalQualifyDate},</if>
+            <if test="modicalQualifyCertificate != null  and modicalQualifyCertificate != ''">#{modicalQualifyCertificate},</if>
+            <if test="achieveModicalQualifyCertificateDate != null ">#{achieveModicalQualifyCertificateDate},</if>
+            <if test="modicalQualifyLevel != null  and modicalQualifyLevel != ''">#{modicalQualifyLevel},</if>
+            <if test="modicalQualifyType != null  and modicalQualifyType != ''">#{modicalQualifyType},</if>
+            <if test="modicalQualifyCertificateCode != null  and modicalQualifyCertificateCode != ''">#{modicalQualifyCertificateCode},</if>
+            <if test="languageLevelExamType != null  and languageLevelExamType != ''">#{languageLevelExamType},</if>
+            <if test="englishLevel != null  and englishLevel != ''">#{englishLevel},</if>
+            <if test="languageLevel != null  and languageLevel != ''">#{languageLevel},</if>
+            <if test="languageLevelExamCertificateCode != null  and languageLevelExamCertificateCode != ''">#{languageLevelExamCertificateCode},</if>
+            <if test="languageLevelExamCertificateDate != null ">#{languageLevelExamCertificateDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateResidentBaseinfo" parameterType="com.ss.resident.domain.ResidentBaseinfo">
+        update resident_baseinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="gender != null  and gender != ''">gender = #{gender},</if>
+            <if test="nation != null  and nation != ''">nation = #{nation},</if>
+            <if test="birthdate != null">birthdate = #{birthdate},</if>
+            <if test="marries != null  and marries != ''">marries = #{marries},</if>
+            <if test="nationality != null  and nationality != ''">nationality = #{nationality},</if>
+            <if test="idcardType != null  and idcardType != ''">idcard_type = #{idcardType},</if>
+            <if test="idcard != null  and idcard != ''">idcard = #{idcard},</if>
+            <if test="area != null  and area != ''">area = #{area},</if>
+            <if test="phoneType != null  and phoneType != ''">phone_type = #{phoneType},</if>
+            <if test="phoneNumber != null  and phoneNumber != ''">phone_number = #{phoneNumber},</if>
+            <if test="qq != null  and qq != ''">qq = #{qq},</if>
+            <if test="email != null  and email != ''">email = #{email},</if>
+            <if test="isModicalQualifyExamPass != null  and isModicalQualifyExamPass != ''">is_modical_qualify_exam_pass = #{isModicalQualifyExamPass},</if>
+            <if test="passModicalQualifyDate != null ">pass_modical_qualify_date = #{passModicalQualifyDate},</if>
+            <if test="modicalQualifyCertificate != null  and modicalQualifyCertificate != ''">modical_qualify_certificate = #{modicalQualifyCertificate},</if>
+            <if test="achieveModicalQualifyCertificateDate != null ">achieve_modical_qualify_certificate_date = #{achieveModicalQualifyCertificateDate},</if>
+            <if test="modicalQualifyLevel != null  and modicalQualifyLevel != ''">modical_qualify_level = #{modicalQualifyLevel},</if>
+            <if test="modicalQualifyType != null  and modicalQualifyType != ''">modical_qualify_type = #{modicalQualifyType},</if>
+            <if test="modicalQualifyCertificateCode != null  and modicalQualifyCertificateCode != ''">modical_qualify_certificate_code = #{modicalQualifyCertificateCode},</if>
+            <if test="languageLevelExamType != null  and languageLevelExamType != ''">language_level_exam_type = #{languageLevelExamType},</if>
+            <if test="englishLevel != null  and englishLevel != ''">english_level = #{englishLevel},</if>
+            <if test="languageLevel != null  and languageLevel != ''">language_level = #{languageLevel},</if>
+            <if test="languageLevelExamCertificateCode != null  and languageLevelExamCertificateCode != ''">language_level_exam_certificate_code = #{languageLevelExamCertificateCode},</if>
+            <if test="languageLevelExamCertificateDate != null ">language_level_exam_certificate_date = #{languageLevelExamCertificateDate},</if>
+        </trim>
+        where resident_id = #{residentId}
+    </update>
+
+    <delete id="deleteResidentBaseinfoById" parameterType="Long">
+        delete from resident_baseinfo where resident_id = #{residentId}
+    </delete>
+
+    <delete id="deleteResidentBaseinfoByIds" parameterType="String">
+        delete from resident_baseinfo where resident_id in 
+        <foreach item="residentId" collection="array" open="(" separator="," close=")">
+            #{residentId}
+        </foreach>
+    </delete>
+    
+</mapper>

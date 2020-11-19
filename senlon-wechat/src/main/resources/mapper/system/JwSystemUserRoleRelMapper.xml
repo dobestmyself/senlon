@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.system.mapper.JwSystemUserRoleRelMapper">
+    
+    <resultMap type="com.ss.system.domain.JwSystemUserRoleRel" id="JwSystemUserRoleRelResult">
+        <result property="userId"    column="user_id"    />
+        <result property="roleId"    column="role_id"    />
+    </resultMap>
+
+    <sql id="selectJwSystemUserRoleRelVo">
+        select user_id, role_id from jw_system_user_role_rel
+    </sql>
+
+    <select id="selectJwSystemUserRoleRelList" parameterType="com.ss.system.domain.JwSystemUserRoleRel" resultMap="JwSystemUserRoleRelResult">
+        <include refid="selectJwSystemUserRoleRelVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectJwSystemUserRoleRelById" parameterType="Long" resultMap="JwSystemUserRoleRelResult">
+        <include refid="selectJwSystemUserRoleRelVo"/>
+        where user_id = #{userId}
+    </select>
+        
+    <insert id="insertJwSystemUserRoleRel" parameterType="com.ss.system.domain.JwSystemUserRoleRel">
+        insert into jw_system_user_role_rel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null ">user_id,</if>
+            <if test="roleId != null  and roleId != ''">role_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null ">#{userId},</if>
+            <if test="roleId != null  and roleId != ''">#{roleId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateJwSystemUserRoleRel" parameterType="com.ss.system.domain.JwSystemUserRoleRel">
+        update jw_system_user_role_rel
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roleId != null  and roleId != ''">role_id = #{roleId},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="deleteJwSystemUserRoleRelById" parameterType="Long">
+        delete from jw_system_user_role_rel where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteJwSystemUserRoleRelByIds" parameterType="String">
+        delete from jw_system_user_role_rel where user_id in 
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+    <insert id="batchUserRole">
+        insert into jw_system_user_role_rel(user_id,role_id) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.userId},#{item.roleId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteAuthUser" parameterType="com.ss.system.domain.JwSystemUserRoleRel">
+        delete from jw_system_user_role_rel where role_id = #{roleId} and user_id = #{userId}
+    </delete>
+
+</mapper>

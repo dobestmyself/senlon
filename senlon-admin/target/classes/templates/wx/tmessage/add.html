@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('新增消息模板')"/>
+    <th:block th:include="include :: datetimepicker-css"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-tmessage-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">模板ID：</label>
+            <div class="col-sm-8">
+                <input name="templateId" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">标题：</label>
+            <div class="col-sm-8">
+                <input name="title" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">行业：</label>
+            <div class="col-sm-8">
+                <select name="industry" id="industry" onchange="selectSub()" class="form-control">
+                    <option value="1">IT科技</option>
+                    <option value="2">金融业</option>
+                    <option value="3">餐饮</option>
+                    <option value="4">酒店旅游</option>
+                    <option value="5">运输与仓储</option>
+                    <option value="6">教育</option>
+                    <option value="7">政府与公共事业</option>
+                    <option value="8">医药护理</option>
+                    <option value="9">交通工具</option>
+                    <option value="10">房地产</option>
+                    <option value="11">消费品</option>
+                    <option value="12">商业服务</option>
+                    <option value="13">文体娱乐</option>
+                    <option value="14">印刷</option>
+                    <option value="15">其它</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">子行业：</label>
+            <div class="col-sm-8">
+                <select id="sub" onchange="getTemplateId()" name="subIndustry"class="form-control">
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">内容：</label>
+            <div class="col-sm-8">
+                <!--<input name="content" class="form-control" type="text">-->
+                <textarea name="content" id="content" class="form-control" style="height:200px;"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">示例：</label>
+            <div class="col-sm-8">
+                <!--<input name="example" class="form-control" type="text">-->
+                <textarea name="example" id="example" class="form-control" style="height:200px;"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<script type="text/javascript">
+    var prefix = ctx + "wx/tmessage"
+    $("#form-tmessage-add").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-tmessage-add').serialize());
+        }
+    }
+
+    $("input[name='createDate']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+    function selectSub() {
+        var type = $("#industry").val();
+        if(type == 1){
+            $("#sub").html("");
+            $("#sub").append('<option value="1">互联网/电子商务\t</option>');
+            $("#sub").append('<option value="2">IT软件与服务</option>');
+            $("#sub").append('<option value="3">IT硬件与设备</option>');
+            $("#sub").append('<option value="4">电子技术</option>');
+            $("#sub").append('<option value="5">通信与运营商</option>');
+            $("#sub").append('<option value="6">网络游戏</option>');
+        }else if(type == 2){
+            $("#sub").html("");
+            $("#sub").append('<option value="7">银行</option>');
+            $("#sub").append('<option value="8">基金理财信托</option>');
+            $("#sub").append('<option value="9">保险</option>');
+        }else if(type == 3){
+            $("#sub").html("");
+            $("#sub").append('<option value="10">餐饮</option>');
+        }else if(type == 4){
+            $("#sub").html("");
+            $("#sub").append('<option value="11">酒店</option>');
+            $("#sub").append('<option value="12">旅游</option>');
+
+        }else if(type == 5){
+            $("#sub").html("");
+            $("#sub").append('<option value="13">快递</option>');
+            $("#sub").append('<option value="14">物流</option>');
+            $("#sub").append('<option value="15">仓储</option>');
+
+        }else if(type == 6){
+            $("#sub").html("");
+            $("#sub").append('<option value="16">培训</option>');
+            $("#sub").append('<option value="17">院校</option>');
+
+
+        }else if(type == 7){
+            $("#sub").html("");
+            $("#sub").append('<option value="18">学术科研</option>');
+            $("#sub").append('<option value="19">交警</option>');
+            $("#sub").append('<option value="20">博物馆</option>');
+            $("#sub").append('<option value="21">公共事业非盈利机构</option>');
+
+        }else if(type == 8){
+            $("#sub").html("");
+            $("#sub").append('<option value="22">医药医疗</option>');
+            $("#sub").append('<option value="23">护理美容</option>');
+            $("#sub").append('<option value="24">保健与卫生</option>');
+
+        }else if(type == 9){
+            $("#sub").html("");
+            $("#sub").append('<option value="25">汽车相关</option>');
+            $("#sub").append('<option value="26">摩托车相关</option>');
+            $("#sub").append('<option value="27">火车相关</option>');
+            $("#sub").append('<option value="28">飞机相关</option>');
+
+        }else if(type == 10){
+            $("#sub").html("");
+            $("#sub").append('<option value="29">建筑</option>');
+            $("#sub").append('<option value="30">物业</option>');
+
+
+        }else if(type == 11){
+            $("#sub").html("");
+            $("#sub").append('<option value="31">消费品</option>');
+
+        }else if(type == 12){
+            $("#sub").html("");
+            $("#sub").append('<option value="32">法律</option>');
+            $("#sub").append('<option value="33">会展</option>');
+            $("#sub").append('<option value="34">中介服务</option>');
+            $("#sub").append('<option value="35">认证</option>');
+            $("#sub").append('<option value="36">审计</option>');
+
+        }else if(type == 13){
+            $("#sub").html("");
+            $("#sub").append('<option value="37">传媒</option>');
+            $("#sub").append('<option value="38">体育</option>');
+            $("#sub").append('<option value="39">娱乐休闲</option>');
+
+
+
+        }else if(type == 14){
+            $("#sub").html("");
+            $("#sub").append('<option value="40">印刷</option>');
+
+        }else if(type == 15){
+            $("#sub").html("");
+            $("#sub").append('<option value="41">其它</option>');
+
+        }
+    }
+    //获取所选子行业的行业代码
+    function getTemplateId(){
+        var industryCode = $("#sub").val();
+        $.ajax({
+            url: prefix + "/getTemplateId/"+industryCode,
+            type:"get",
+            dataType: "json",
+            success: function (res) {
+                alert(JSON.stringify(res));
+
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

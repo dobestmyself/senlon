@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改模板消息发送')"/>
+    <th:block th:include="include :: datetimepicker-css"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-tmessagetask-edit" th:object="${weixinTmessagetask}">
+        <input name="id" th:field="*{id}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">标题：</label>
+            <div class="col-sm-8">
+                <input name="title" th:field="*{title}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">模板：</label>
+            <div class="col-sm-8">
+                <!--<input name="templateId" th:field="*{templateId}" class="form-control" type="text">-->
+                <select name="templateId" id="templateId" th:field="*{templateId}" onchange="changeTemplate()" class="form-control">
+                    <option value="">--请选择--</option>
+                    <option th:each="task:${tmessages}" th:value="${task.templateId}" th:text="${task.title}" th:selected="${weixinTmessagetask.templateId eq task.templateId}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">发送模式：</label>
+            <div class="col-sm-8">
+                <select name="sendType" id="sendType" onchange="changeSendType()" class="form-control m-b">
+                    <option value="0" th:selected="${weixinTmessagetask.sendType} == '0' ? true : false">标签模式</option>
+                    <option value="1" th:selected="${weixinTmessagetask.sendType} == '1' ? true : false">列表模式</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group" id="tag">
+            <label class="col-sm-3 control-label">标签：</label>
+            <div class="col-sm-8">
+                <!--<input name="tagId" th:field="*{tagId}" class="form-control" type="text">-->
+                <select name="tagId" id="tagId" th:field="*{tagId}" class="form-control">
+                    <option value="">--请选择--</option>
+                    <option th:each="tag:${tags}" th:value="${tag.tagid}" th:text="${tag.name}" th:selected="${weixinTmessagetask.tagId eq tag.tagid}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group" style="display: none;" id="openid">
+            <label class="col-sm-3 control-label">OPENID：</label>
+            <div class="col-sm-8">
+                <input name="openid" id="oid" onclick="getUser()" th:field="*{openid}" class="form-control" type="text"
+                       readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">跳转方式：</label>
+            <div class="col-sm-8">
+                <!--<input name="redirectMode" th:field="*{redirectMode}" class="form-control" type="text">-->
+                <select name="redirectMode" class="form-control" onchange="changeRedirectMode()" id="redirectMode">
+                    <option value="0" th:selected="${weixinTmessagetask.redirectMode} == '0' ? true : false">跳转链接</option>
+                    <option value="1" th:selected="${weixinTmessagetask.redirectMode} == '1' ? true : false">跳转小程序</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group" id="url">
+            <label class="col-sm-3 control-label">跳转链接：</label>
+            <div class="col-sm-8">
+                <input name="url" th:field="*{url}" class="form-control" type="text">
+            </div>
+        </div>
+        <div style="display: none;" id="mini">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">小程序APPID：</label>
+                <div class="col-sm-8">
+                    <input name="miniAppid" th:field="*{miniAppid}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">小程序跳转链接：</label>
+                <div class="col-sm-8">
+                    <input name="pagepath" th:field="*{pagepath}" class="form-control" type="text">
+                </div>
+            </div>
+        </div>
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab-basic" data-toggle="tab" aria-expanded="true">模板设置</a></li>
+            </ul>
+            <div class="tab-pane active" id="tab-basic">
+                <div class="form-group">
+                    <table class="table table-striped" style="margin-top: 15px;text-align: center;">
+                        <thead>
+                        <tr class="tr">
+                            <th id="dataKey">Key</th>
+                            <th id="dataValue">值</th>
+                            <th id="dataColor">颜色</th>
+                        </tr>
+                        </thead>
+                        <tbody id="wxTmessageTaskList">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="dataJson" id="dataJson"/>
+
+    </form>
+</div>
+
+<!--弹出框begin-->
+<button  data-toggle="modal" data-target=".bs-example-modal-lg" id="myModalButton" style="display:none"></button>
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="myModel">
+    <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
+        <div class="modal-content" style="height:80%;min-height:550px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myLargeModalLabel">用户信息列表</h4>
+            </div>
+            <div id="modalContent">
+                <iframe scrolling="yes" id="showframe" src="" frameborder="0" style="width:100%;height:400px;"></iframe>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:getCkValue()"><button type="button" class="btn btn-primary">确定</button></a>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> 关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--弹出框end-->
+
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<script type="text/javascript">
+    var prefix = ctx + "wx/tmessagetask";
+    $("#form-tmessagetask-edit").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-tmessagetask-edit').serialize());
+        }
+    }
+
+    $(function () {
+        getTemplateParamList();
+        changeSendType();
+        changeRedirectMode();
+    });
+
+    function changeSendType() {
+        var sendType= $("#sendType").val();
+        if(sendType == 0){
+            $("#tag").css("display","block");
+            $("#openid").css("display","none");
+            $("#openid").val("");
+        }else if(sendType == 1){
+            $("#tag").css("display","none");
+            $("#openid").css("display","block");
+            $("#tag").val("");
+        }
+    }
+
+    function changeRedirectMode() {
+        var redirectMode = $("#redirectMode").val();
+        if(redirectMode == 0){
+            $("#url").css("display","block");
+            $("#mini").css("display","none");
+            $("#miniAppid").val("");
+            $("#pagepath").val("");
+        }else if(redirectMode == 1){
+            $("#url").css("display","none");
+            $("#mini").css("display","block");
+            $("#url").val("");
+        }
+    }
+
+    function changeTemplate() {
+        getTemplateParamList();
+    }
+
+    function getTemplateParamList() {
+        var templateId = $("#templateId").find("option:selected").val();
+        jQuery.ajax({
+            url: ctx + 'wx/tmessagetask/getTemplateInfo',
+            type:'post',
+            dataType:'json',
+            data:{
+                templateId:templateId
+            },
+            success:function(data){
+                $("#wxTmessageTaskList").html();
+                var content = data.obj;
+                var htmlData = "";
+                for(var i = 0; i < content.length; i++) {
+                    htmlData += "<tr><td><input type=\"text\" class=\"form-control\" name=\"wxTmessageTaskList["+i+"].dataKey\" readonly=\"readonly\" value=\""+content[i]+"\" /></td>";
+                    htmlData += "<td><input type=\"text\" class=\"form-control\" name=\"wxTmessageTaskList["+i+"].dataValue\" /></td>";
+                    htmlData += "<td><input type=\"text\" class=\"form-control\" name=\"wxTmessageTaskList["+i+"].dataColor\" value=\"#173177\"/></td></tr>";
+                }
+                $("#wxTmessageTaskList").html(htmlData);
+            },
+            error:function(data){
+                alert(data.msg);
+            }
+        });
+    }
+
+    //jquery获取复选框值
+    function getCkValue(){
+        var openIds = document.getElementById("showframe").contentWindow.getCkValue();
+        $("#oid").val(openIds);
+        $('#myModel').modal('hide');
+    }
+
+    function getUser() {
+        $("#showframe").attr("src",ctx + 'wx/gzuser/list');
+        $("#myModalButton").click();
+    }
+
+</script>
+</body>
+</html>

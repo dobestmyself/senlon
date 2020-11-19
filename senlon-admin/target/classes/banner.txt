@@ -1,0 +1,7 @@
+Application Version: ${senlon.version}
+Spring Boot Version: ${spring-boot.version}
+ ____  _____ _      _     ____  _
+/ ___\/  __// \  /|/ \   /  _ \/ \  /|
+|    \|  \  | |\ ||| |   | / \|| |\ ||
+\___ ||  /_ | | \||| |_/\| \_/|| | \||
+\____/\____\\_/  \|\____/\____/\_/  \|

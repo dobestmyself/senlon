@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.WeixinReceptMsgMapper">
+    
+    <resultMap type="com.ss.wx.domain.WeixinReceptMsg" id="WeixinReceptMsgResult">
+        <result property="id"    column="ID"    />
+        <result property="content"    column="content"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="fromUsername"    column="from_username"    />
+        <result property="toUsername"    column="to_username"    />
+        <result property="msgtype"    column="msgtype"    />
+        <result property="mediaid"    column="mediaid"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="sendStauts"    column="send_stauts"    />
+        <result property="jwid"    column="jwid"    />
+    </resultMap>
+
+    <sql id="selectWeixinReceptMsgVo">
+        select ID, content, create_time, from_username, to_username, msgtype, mediaid, template_id, send_stauts, jwid from weixin_recept_msg
+    </sql>
+
+    <select id="selectWeixinReceptMsgList" parameterType="com.ss.wx.domain.WeixinReceptMsg" resultMap="WeixinReceptMsgResult">
+        <include refid="selectWeixinReceptMsgVo"/>
+        <where>  
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="fromUsername != null  and fromUsername != ''"> and from_username like concat('%', #{fromUsername}, '%')</if>
+            <if test="toUsername != null  and toUsername != ''"> and to_username like concat('%', #{toUsername}, '%')</if>
+            <if test="msgtype != null  and msgtype != ''"> and msgtype = #{msgtype}</if>
+            <if test="mediaid != null  and mediaid != ''"> and mediaid = #{mediaid}</if>
+            <if test="templateId != null  and templateId != ''"> and template_id = #{templateId}</if>
+            <if test="sendStauts != null  and sendStauts != ''"> and send_stauts = #{sendStauts}</if>
+            <if test="jwid != null  and jwid != ''"> and jwid = #{jwid}</if>
+        </where>
+    </select>
+    
+    <select id="selectWeixinReceptMsgById" parameterType="String" resultMap="WeixinReceptMsgResult">
+        <include refid="selectWeixinReceptMsgVo"/>
+        where ID = #{id}
+    </select>
+        
+    <insert id="insertWeixinReceptMsg" parameterType="com.ss.wx.domain.WeixinReceptMsg">
+        insert into weixin_recept_msg
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">ID,</if>
+            <if test="content != null  and content != ''">content,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="fromUsername != null  and fromUsername != ''">from_username,</if>
+            <if test="toUsername != null  and toUsername != ''">to_username,</if>
+            <if test="msgtype != null  and msgtype != ''">msgtype,</if>
+            <if test="mediaid != null  and mediaid != ''">mediaid,</if>
+            <if test="templateId != null  and templateId != ''">template_id,</if>
+            <if test="sendStauts != null  and sendStauts != ''">send_stauts,</if>
+            <if test="jwid != null  and jwid != ''">jwid,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="content != null  and content != ''">#{content},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="fromUsername != null  and fromUsername != ''">#{fromUsername},</if>
+            <if test="toUsername != null  and toUsername != ''">#{toUsername},</if>
+            <if test="msgtype != null  and msgtype != ''">#{msgtype},</if>
+            <if test="mediaid != null  and mediaid != ''">#{mediaid},</if>
+            <if test="templateId != null  and templateId != ''">#{templateId},</if>
+            <if test="sendStauts != null  and sendStauts != ''">#{sendStauts},</if>
+            <if test="jwid != null  and jwid != ''">#{jwid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeixinReceptMsg" parameterType="com.ss.wx.domain.WeixinReceptMsg">
+        update weixin_recept_msg
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="content != null  and content != ''">content = #{content},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="fromUsername != null  and fromUsername != ''">from_username = #{fromUsername},</if>
+            <if test="toUsername != null  and toUsername != ''">to_username = #{toUsername},</if>
+            <if test="msgtype != null  and msgtype != ''">msgtype = #{msgtype},</if>
+            <if test="mediaid != null  and mediaid != ''">mediaid = #{mediaid},</if>
+            <if test="templateId != null  and templateId != ''">template_id = #{templateId},</if>
+            <if test="sendStauts != null  and sendStauts != ''">send_stauts = #{sendStauts},</if>
+            <if test="jwid != null  and jwid != ''">jwid = #{jwid},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteWeixinReceptMsgById" parameterType="String">
+        delete from weixin_recept_msg where ID = #{id}
+    </delete>
+
+    <delete id="deleteWeixinReceptMsgByIds" parameterType="String">
+        delete from weixin_recept_msg where ID in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改关键字')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-autoresponse-edit" th:object="${weixinAutoresponse}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">关键字：</label>
+                <div class="col-sm-8">
+                    <input name="keyword" th:field="*{keyword}" class="form-control" type="text">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">关键字类型：</label>
+                <div class="col-sm-8">
+                    <select name="keywordType" class="form-control m-b" id="keywordType">
+                        <option value="">所有</option>>
+                        <option value="" th:selected="${weixinAutoresponse.keywordType} == '1' ? true : false">全匹配</option>
+                        <option value="" th:selected="${weixinAutoresponse.keywordType} == '2' ? true : false">模糊匹配</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">是否启用：</label>
+                <div class="col-sm-8">
+                    <select name="iswork" class="form-control m-b" id="iswork">
+                        <option value="">---请选择---</option>
+                        <option value="1" th:selected="${weixinAutoresponse.iswork} == '1' ? true : false">是</option>
+                        <option value="2" th:selected="${weixinAutoresponse.iswork} == '2' ? true : false">否</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">消息类型：</label>
+                <div class="col-sm-8">
+                    <select name="msgType" id="msgType" class="form-control m-b" onchange="loadTemplate()">
+                        <option value="">---请选择---</option>
+                        <option value="text" th:selected="${weixinAutoresponse.msgType} == 'text' ? true : false">文本消息</option>
+                        <option value="news" th:selected="${weixinAutoresponse.msgType} == 'news' ? true : false">图文消息</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">关联模板名称：</label>
+                <div class="col-sm-8">
+                    <input name="templateName" id="templateName" th:field="*{templateName}" class="form-control" type="hidden">
+                    <select class="form-control m-b" name="templateId" id="templateId" th:field="*{templateId}">
+
+                    </select>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "wx/autoresponse";
+        $("#form-autoresponse-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $("#templateName").val($("#templateId option:selected").text());
+                $.operate.save(prefix + "/edit", $('#form-autoresponse-edit').serialize());
+            }
+        }
+
+        $(function(){
+           loadTemplate();
+        });
+
+        function loadTemplate() {
+            debugger;
+            var msgType = $("#msgType").val();
+            var templateName = $("#templateName").val();
+            $.ajax({
+                url: prefix + "/loadTemplate",
+                type: "post",
+                data:{
+                    msgType : msgType
+                },
+                dataType: "json",
+                success: function (res) {
+                    var data = res.data;
+                    $("#templateId").html("<option value=''>---请选择---</option>");
+                    var temp;
+                    $(data).each(function (index,obj) {
+                        if(templateName == obj.templateName){
+                            temp = '<option value="'+obj.templateId+'" selected>'+obj.templateName+'</option>';
+                        }else{
+                            temp = '<option value="'+obj.templateId+'">'+obj.templateName+'</option>';
+                        }
+
+                        $("#templateId").append(temp);
+                    })
+                }
+            });
+        }
+    </script>
+</body>
+</html>

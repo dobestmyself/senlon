@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改微信菜单')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-menu-edit" th:object="${weixinMenu}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">父id：</label>
+                <div class="col-sm-8">
+                    <div class="input-group">
+                        <input id="treeId" name="fatherId" type="hidden" th:field="*{fatherId}" />
+                        <input class="form-control" type="text" onclick="selectMenuTree()" id="treeName" readonly="true" th:field="*{parentName}">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="form-group">
+                <label class="col-sm-3 control-label">菜单KEY：</label>
+                <div class="col-sm-8">
+                    <input name="menuKey" th:field="*{menuKey}" class="form-control" type="text">
+                </div>
+            </div>-->
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">菜单名称：</label>
+                <div class="col-sm-8">
+                    <input name="menuName" th:field="*{menuName}" class="form-control" type="text">
+                </div>
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">菜单类型：</label>
+                <div class="col-sm-8">
+                    <select name="menuType" id="menuType" class="form-control m-b">
+                        <option value="click" th:selected="${weixinMenu.menuType}=='click'">消息触发类</option>
+                        <option value="view" th:selected="${weixinMenu.menuType}=='view'">网页链接类</option>
+                        <option value="miniprogram" th:selected="${weixinMenu.menuType}=='miniprogram'">小程序类</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">菜单位置：</label>
+                <div class="col-sm-8">
+                    <!--<input name="orders" th:field="*{orders}" class="form-control" type="text">-->
+                    <select name="orders" class="form-control m-b">
+                        <option value="1"  th:selected="${weixinMenu.orders}=='1'">一级菜单1</option>
+                        <option value="11" th:selected="${weixinMenu.orders}=='11'">----子菜单1*1</option>
+                        <option value="12" th:selected="${weixinMenu.orders}=='12'">----子菜单1*2</option>
+                        <option value="13" th:selected="${weixinMenu.orders}=='13'">----子菜单1*3</option>
+                        <option value="14" th:selected="${weixinMenu.orders}=='14'">----子菜单1*4</option>
+                        <option value="15" th:selected="${weixinMenu.orders}=='15'">----子菜单1*5</option>
+                        <option value="2"  th:selected="${weixinMenu.orders}=='2'">一级菜单2</option>
+                        <option value="21" th:selected="${weixinMenu.orders}=='21'">----子菜单2*1</option>
+                        <option value="22" th:selected="${weixinMenu.orders}=='22'">----子菜单2*2</option>
+                        <option value="23" th:selected="${weixinMenu.orders}=='23'">----子菜单2*3</option>
+                        <option value="24" th:selected="${weixinMenu.orders}=='24'">----子菜单2*4</option>
+                        <option value="25" th:selected="${weixinMenu.orders}=='25'">----子菜单2*5</option>
+                        <option value="3"  th:selected="${weixinMenu.orders}=='3'">一级菜单3</option>
+                        <option value="31" th:selected="${weixinMenu.orders}=='31'">----子菜单3*1</option>
+                        <option value="32" th:selected="${weixinMenu.orders}=='32'">----子菜单3*2</option>
+                        <option value="33" th:selected="${weixinMenu.orders}=='33'">----子菜单3*3</option>
+                        <option value="34" th:selected="${weixinMenu.orders}=='34'">----子菜单3*4</option>
+                        <option value="35" th:selected="${weixinMenu.orders}=='35'">----子菜单3*5</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="clk">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">相应消息类型：</label>
+                    <div class="col-sm-8">
+                        <select name="msgtype" id="msgtype" class="form-control m-b">
+                            <option value="text" th:selected="${weixinMenu.msgtype}=='text'">文本</option>
+                            <option value="news" th:selected="${weixinMenu.msgtype}=='news'">图文</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">关联素材：</label>
+                    <div class="col-sm-8">
+                        <!--<input name="templateId" th:field="*{templateId}" class="form-control" type="text">-->
+
+                        <select name="templateId" id="tId" class="form-control m-b">
+
+                        </select>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" id="url" style="display: none;">
+                <label class="col-sm-3 control-label">网页链接：</label>
+                <div class="col-sm-8">
+                    <textarea name="url" class="form-control">[[*{url}]]</textarea>
+                </div>
+            </div>
+            <div id="miniprogram" style="display: none;">
+                <div class="form-group">
+                <label class="col-sm-3 control-label">小程序appid：</label>
+                <div class="col-sm-8">
+                    <input name="miniprogramAppid" th:field="*{miniprogramAppid}" class="form-control" type="text">
+                </div>
+            </div>
+                <div class="form-group">
+                <label class="col-sm-3 control-label">小程序页面路径：</label>
+                <div class="col-sm-8">
+                    <input name="miniprogramPagepath" th:field="*{miniprogramPagepath}" class="form-control" type="text">
+                </div>
+            </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "wx/menu";
+        $("#form-menu-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-menu-edit').serialize());
+            }
+        }
+
+        /*微信菜单-新增-选择父部门树*/
+        function selectMenuTree() {
+            var options = {
+                title: '微信菜单选择',
+                width: "380",
+                url: prefix + "/selectMenuTree/" + $("#treeId").val(),
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        }
+
+        function doSubmit(index, layero){
+            var body = layer.getChildFrame('body', index);
+               $("#treeId").val(body.find('#treeId').val());
+               $("#treeName").val(body.find('#treeName').val());
+               layer.close(index);
+        }
+
+
+        $(function () {
+            $("#clk").css("display","block");
+            $("#url").css("display","none");
+            $("#miniprogram").css("display","none");
+
+            var type = $("#msgtype").val();
+            toggleForm();
+            if(type == "text"){
+                getTexttemplateList();
+            }else if(type == 'news'){
+                getNewstemplateList();
+            }
+
+        });
+
+        $("#menuType").change(function () {
+            toggleForm();
+        });
+
+        function toggleForm(){
+            var type = $("#menuType").val();
+            if(type == "click"){
+                $("#clk").css("display","block");
+                $("#url").css("display","none");
+                $("#miniprogram").css("display","none");
+            }else if(type == "view"){
+                $("#clk").css("display","none");
+                $("#url").css("display","block");
+                $("#miniprogram").css("display","none");
+            }else if(type == "miniprogram"){
+                $("#clk").css("display","none");
+                $("#url").css("display","none");
+                $("#miniprogram").css("display","block");
+            }
+        }
+
+        $("#msgtype").change(function () {
+            var type = $("#msgtype").val();
+            if(type == "text"){
+                getTexttemplateList();
+            }else if(type == 'news'){
+                getNewstemplateList();
+            }
+        });
+
+        function getTexttemplateList(){
+            $.ajax({
+                url: ctx + "wx/texttemplate/list",
+                type: "post",
+                dataType: "json",
+                success: function(res){
+                    debugger;
+                    var data = res.rows;
+                    $("#tId").html("");
+                    $(data).each(function () {
+                        var option = '<option value="'+this.templateId+'" th:selected="${weixinMenu.templateId}=='+this.templateId+'">'+this.templateName+'</option>'
+                        $("#tId").append(option);
+                    });
+                }
+            });
+        }
+
+        function getNewstemplateList(){
+            $.ajax({
+                url: ctx + "wx/newstemplate/findNewstmeplateByJwidAndUploadType",
+                type: "POST",
+                dataType: "json",
+                success: function (res) {
+                    var data = res.rows;
+                    $("#tId").html("");
+                    $(data).each(function(){
+                        var option = '<option value="'+this.templateId+'" th:selected="${weixinMenu.templateId}=='+this.templateId+'">'+this.templateName+'</option>';
+                        $("#tId").append(option);
+                    });
+                }
+            });
+        }
+
+
+
+    </script>
+</body>
+</html>

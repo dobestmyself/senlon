@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.WeixinGzuserMapper">
+    
+    <resultMap type="com.ss.wx.domain.WeixinGzuser" id="WeixinGzuserResult">
+        <result property="id"    column="id"    />
+        <result property="openid"    column="openid"    />
+        <result property="nickname"    column="nickname"    />
+        <result property="nicknameTxt"    column="nickname_txt"    />
+        <result property="bzname"    column="bzname"    />
+        <result property="headimgurl"    column="headimgurl"    />
+        <result property="sex"    column="sex"    />
+        <result property="subscribe"    column="subscribe"    />
+        <result property="subscribeTime"    column="subscribe_time"    />
+        <result property="subscribeScene"    column="subscribe_scene"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="bindStatus"    column="bind_status"    />
+        <result property="bindTime"    column="bind_time"    />
+        <result property="tagidList"    column="tagid_list"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="country"    column="country"    />
+        <result property="qrScene"    column="qr_scene"    />
+        <result property="qrSceneStr"    column="qr_scene_str"    />
+        <result property="groupid"    column="groupid"    />
+        <result property="language"    column="language"    />
+        <result property="unionid"    column="unionid"    />
+        <result property="jwid"    column="jwid"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectWeixinGzuserVo">
+        select id, openid, nickname, nickname_txt, bzname, headimgurl, sex, subscribe, subscribe_time, subscribe_scene, mobile, bind_status, bind_time, tagid_list, province, city, country, qr_scene, qr_scene_str, groupid, language, unionid, jwid, create_time from weixin_gzuser
+    </sql>
+
+    <select id="selectWeixinGzuserList" parameterType="com.ss.wx.domain.WeixinGzuser" resultMap="WeixinGzuserResult">
+        <include refid="selectWeixinGzuserVo"/>
+        <where>  
+            <if test="openid != null  and openid != ''"> and openid = #{openid}</if>
+            <if test="nickname != null  and nickname != ''"> and nickname like concat('%', #{nickname}, '%')</if>
+            <if test="nicknameTxt != null  and nicknameTxt != ''"> and nickname_txt like concat('%',#{nicknameTxt},'%')</if>
+            <if test="bzname != null  and bzname != ''"> and bzname like concat('%', #{bzname}, '%')</if>
+            <if test="headimgurl != null  and headimgurl != ''"> and headimgurl = #{headimgurl}</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="subscribe != null  and subscribe != ''"> and subscribe = #{subscribe}</if>
+            <if test="subscribeTime != null  and subscribeTime != ''"> and subscribe_time = #{subscribeTime}</if>
+            <if test="subscribeScene != null  and subscribeScene != ''"> and subscribe_scene = #{subscribeScene}</if>
+            <if test="mobile != null  and mobile != ''"> and mobile = #{mobile}</if>
+            <if test="bindStatus != null  and bindStatus != ''"> and bind_status = #{bindStatus}</if>
+            <if test="bindTime != null "> and bind_time = #{bindTime}</if>
+            <if test="tagidList != null  and tagidList != ''"> and tagid_list = #{tagidList}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="country != null  and country != ''"> and country = #{country}</if>
+            <if test="qrScene != null  and qrScene != ''"> and qr_scene = #{qrScene}</if>
+            <if test="qrSceneStr != null  and qrSceneStr != ''"> and qr_scene_str = #{qrSceneStr}</if>
+            <if test="groupid != null  and groupid != ''"> and groupid = #{groupid}</if>
+            <if test="language != null  and language != ''"> and language = #{language}</if>
+            <if test="unionid != null  and unionid != ''"> and unionid = #{unionid}</if>
+            <if test="jwid != null  and jwid != ''"> and jwid = #{jwid}</if>
+        </where>
+    </select>
+    
+    <select id="selectWeixinGzuserById" parameterType="String" resultMap="WeixinGzuserResult">
+        <include refid="selectWeixinGzuserVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWeixinGzuser" parameterType="com.ss.wx.domain.WeixinGzuser">
+        insert into weixin_gzuser
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="openid != null  and openid != ''">openid,</if>
+            <if test="nickname != null  and nickname != ''">nickname,</if>
+            <if test="nicknameTxt != null  and nicknameTxt != ''">nickname_txt,</if>
+            <if test="bzname != null  and bzname != ''">bzname,</if>
+            <if test="headimgurl != null  and headimgurl != ''">headimgurl,</if>
+            <if test="sex != null  and sex != ''">sex,</if>
+            <if test="subscribe != null  and subscribe != ''">subscribe,</if>
+            <if test="subscribeTime != null  and subscribeTime != ''">subscribe_time,</if>
+            <if test="subscribeScene != null  and subscribeScene != ''">subscribe_scene,</if>
+            <if test="mobile != null  and mobile != ''">mobile,</if>
+            <if test="bindStatus != null  and bindStatus != ''">bind_status,</if>
+            <if test="bindTime != null ">bind_time,</if>
+            <if test="tagidList != null  and tagidList != ''">tagid_list,</if>
+            <if test="province != null  and province != ''">province,</if>
+            <if test="city != null  and city != ''">city,</if>
+            <if test="country != null  and country != ''">country,</if>
+            <if test="qrScene != null  and qrScene != ''">qr_scene,</if>
+            <if test="qrSceneStr != null  and qrSceneStr != ''">qr_scene_str,</if>
+            <if test="groupid != null  and groupid != ''">groupid,</if>
+            <if test="language != null  and language != ''">language,</if>
+            <if test="unionid != null  and unionid != ''">unionid,</if>
+            <if test="jwid != null  and jwid != ''">jwid,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="openid != null  and openid != ''">#{openid},</if>
+            <if test="nickname != null  and nickname != ''">#{nickname},</if>
+            <if test="nicknameTxt != null  and nicknameTxt != ''">#{nicknameTxt},</if>
+            <if test="bzname != null  and bzname != ''">#{bzname},</if>
+            <if test="headimgurl != null  and headimgurl != ''">#{headimgurl},</if>
+            <if test="sex != null  and sex != ''">#{sex},</if>
+            <if test="subscribe != null  and subscribe != ''">#{subscribe},</if>
+            <if test="subscribeTime != null  and subscribeTime != ''">#{subscribeTime},</if>
+            <if test="subscribeScene != null  and subscribeScene != ''">#{subscribeScene},</if>
+            <if test="mobile != null  and mobile != ''">#{mobile},</if>
+            <if test="bindStatus != null  and bindStatus != ''">#{bindStatus},</if>
+            <if test="bindTime != null ">#{bindTime},</if>
+            <if test="tagidList != null  and tagidList != ''">#{tagidList},</if>
+            <if test="province != null  and province != ''">#{province},</if>
+            <if test="city != null  and city != ''">#{city},</if>
+            <if test="country != null  and country != ''">#{country},</if>
+            <if test="qrScene != null  and qrScene != ''">#{qrScene},</if>
+            <if test="qrSceneStr != null  and qrSceneStr != ''">#{qrSceneStr},</if>
+            <if test="groupid != null  and groupid != ''">#{groupid},</if>
+            <if test="language != null  and language != ''">#{language},</if>
+            <if test="unionid != null  and unionid != ''">#{unionid},</if>
+            <if test="jwid != null  and jwid != ''">#{jwid},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeixinGzuser" parameterType="com.ss.wx.domain.WeixinGzuser">
+        update weixin_gzuser
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="openid != null  and openid != ''">openid = #{openid},</if>
+            <if test="nickname != null  and nickname != ''">nickname = #{nickname},</if>
+            <if test="nicknameTxt != null  and nicknameTxt != ''">nickname_txt = #{nicknameTxt},</if>
+            <if test="bzname != null  and bzname != ''">bzname = #{bzname},</if>
+            <if test="headimgurl != null  and headimgurl != ''">headimgurl = #{headimgurl},</if>
+            <if test="sex != null  and sex != ''">sex = #{sex},</if>
+            <if test="subscribe != null  and subscribe != ''">subscribe = #{subscribe},</if>
+            <if test="subscribeTime != null  and subscribeTime != ''">subscribe_time = #{subscribeTime},</if>
+            <if test="subscribeScene != null  and subscribeScene != ''">subscribe_scene = #{subscribeScene},</if>
+            <if test="mobile != null  and mobile != ''">mobile = #{mobile},</if>
+            <if test="bindStatus != null  and bindStatus != ''">bind_status = #{bindStatus},</if>
+            <if test="bindTime != null ">bind_time = #{bindTime},</if>
+            <if test="tagidList != null  and tagidList != ''">tagid_list = #{tagidList},</if>
+            <if test="province != null  and province != ''">province = #{province},</if>
+            <if test="city != null  and city != ''">city = #{city},</if>
+            <if test="country != null  and country != ''">country = #{country},</if>
+            <if test="qrScene != null  and qrScene != ''">qr_scene = #{qrScene},</if>
+            <if test="qrSceneStr != null  and qrSceneStr != ''">qr_scene_str = #{qrSceneStr},</if>
+            <if test="groupid != null  and groupid != ''">groupid = #{groupid},</if>
+            <if test="language != null  and language != ''">language = #{language},</if>
+            <if test="unionid != null  and unionid != ''">unionid = #{unionid},</if>
+            <if test="jwid != null  and jwid != ''">jwid = #{jwid},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWeixinGzuserById" parameterType="String">
+        delete from weixin_gzuser where id = #{id}
+    </delete>
+
+    <delete id="deleteWeixinGzuserByIds" parameterType="String">
+        delete from weixin_gzuser where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="queryByOpenId" parameterType="Object" resultMap="WeixinGzuserResult">
+        <include refid="selectWeixinGzuserVo"/>
+        <where>
+            and openid = #{openid}
+            and jwid = #{jwid}
+        </where>
+    </select>
+
+    <!--
+	方法名称: queryNumberByJwid
+	调用路径: com.jeecg.p3.weixin.entity.WeixinGzuser.queryNumberByJwid
+	开发信息:
+	处理信息: 根据JWID分页查询粉丝数据
+	-->
+    <select id="queryNumberByJwid" parameterType="Object" resultMap="WeixinGzuserResult">
+		    SELECT
+                   wg.id                            /* 序号 */
+                  ,wg.openid                        /* openid */
+                  ,wg.nickname                      /* 昵称 */
+                  ,wg.nickname_txt                  /* 过滤后昵称 */
+                  ,wg.bzname                        /* 备注名称 */
+                  ,wg.headimgurl                    /* 用户头像 */
+                  ,wg.sex                           /* 性别 */
+                  ,wg.subscribe                     /* 是否关注:'0':未关注；'1':关注 */
+                  ,wg.subscribe_time                /* 关注时间 */
+                  ,wg.subscribe_scene               /* 用户关注渠道来源 */
+                  ,wg.mobile                        /* 手机号 */
+                  ,wg.bind_status                   /* 绑定状态：'0':未绑定；'1':已绑定 */
+                  ,wg.bind_time                     /* 绑定时间 */
+                  ,wg.tagid_list                    /* 标签id */
+                  ,wg.province                      /* 省份 */
+                  ,wg.city                          /* 城市 */
+                  ,wg.country                       /* 地区 */
+                  ,wg.qr_scene                      /* 二维码扫码场景 */
+                  ,wg.qr_scene_str                  /* 二维码扫码常见描述 */
+                  ,wg.groupid                       /* 用户所在分组id */
+                  ,wg.language                      /* 用户的语言，简体中文为zh_CN */
+                  ,wg.unionid                       /* 公众号unionid */
+                  ,wg.jwid                          /* 公众号原始id */
+                  ,wg.create_time                   /* 创建时间 */
+		FROM   	 weixin_gzuser      AS wg      /* 粉丝表 */
+		WHERE wg.jwid = #{jwid}
+		AND (wg.subscribe is null or wg.subscribe = 1)      /*AND wg.nickname is null */
+		LIMIT  #{pageNo}  		/* 开始序号 */
+			  ,#{pageSize}		/* 每页显示条数 */
+	</select>
+
+    <update id="batchUpdateWeixinGzuser" parameterType="com.ss.wx.domain.WeixinGzuser">
+        update weixin_gzuser
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="openid != null  and openid != ''">openid = #{openid},</if>
+            <if test="nickname != null  and nickname != ''">nickname = #{nickname},</if>
+            <if test="nicknameTxt != null  and nicknameTxt != ''">nickname_txt = #{nicknameTxt},</if>
+            <if test="bzname != null  and bzname != ''">bzname = #{bzname},</if>
+            <if test="headimgurl != null  and headimgurl != ''">headimgurl = #{headimgurl},</if>
+            <if test="sex != null  and sex != ''">sex = #{sex},</if>
+            <if test="subscribe != null  and subscribe != ''">subscribe = #{subscribe},</if>
+            <if test="subscribeTime != null  and subscribeTime != ''">subscribe_time = #{subscribeTime},</if>
+            <if test="subscribeScene != null  and subscribeScene != ''">subscribe_scene = #{subscribeScene},</if>
+            <if test="mobile != null  and mobile != ''">mobile = #{mobile},</if>
+            <if test="bindStatus != null  and bindStatus != ''">bind_status = #{bindStatus},</if>
+            <if test="bindTime != null ">bind_time = #{bindTime},</if>
+            <if test="tagidList != null  and tagidList != ''">tagid_list = #{tagidList},</if>
+            <if test="province != null  and province != ''">province = #{province},</if>
+            <if test="city != null  and city != ''">city = #{city},</if>
+            <if test="country != null  and country != ''">country = #{country},</if>
+            <if test="qrScene != null  and qrScene != ''">qr_scene = #{qrScene},</if>
+            <if test="qrSceneStr != null  and qrSceneStr != ''">qr_scene_str = #{qrSceneStr},</if>
+            <if test="groupid != null  and groupid != ''">groupid = #{groupid},</if>
+            <if test="language != null  and language != ''">language = #{language},</if>
+            <if test="unionid != null  and unionid != ''">unionid = #{unionid},</if>
+            <if test="jwid != null  and jwid != ''">jwid = #{jwid},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        <where>
+            and id in
+            <foreach collection="ids" item="id" open="(" close=")" separator="," index="index">
+                #{id}
+            </foreach>
+        </where>
+    </update>
+    <!--根据tagid模糊查询-->
+    <select id="queryGzuserByTagId" parameterType="Object" resultMap="WeixinGzuserResult">
+        select wg.id,wg.openid from weixin_gzuser wg where 1=1
+         <if test="tagidList != null and tagidList != ''">
+             and find_in_set(#{tagidList},wg.tagid_list)
+         </if>
+    </select>
+
+    <select id="selectGzuserByTagIdAndJwid" parameterType="Object" resultMap="WeixinGzuserResult">
+        <include refid="selectWeixinGzuserVo"/>
+        where 1=1
+         <if test="tagidList!=null and tagidList != ''">
+             and not find_in_set(#{tagidList},tagid_list)
+         </if>
+         and jwid = #{jwid}
+    </select>
+
+    <update id="updateBatchTagidList" parameterType="java.util.List">
+        update weixin_gzuser
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="tagid_list=case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.tagidList !=null and item.tagidList != ''">
+                        when openid=#{item.openid} then #{item.tagidList}
+                    </if>
+                    <if test="item.tagidList == null or item.tagidList == ''">
+                        when openid=#{item.openid} then weixin_gzuser.tagidList//原数据
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where openid in
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item.openid,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+
+</mapper>

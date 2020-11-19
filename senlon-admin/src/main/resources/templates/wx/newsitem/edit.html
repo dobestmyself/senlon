@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改图文模板素材')"/>
+    <th:block th:include="include :: select2-css"/>
+    <style type="text/css">
+        .select-table table {
+            table-layout: fixed;
+        }
+
+        .table > thead > tr > th {
+            text-align: center;
+        }
+
+        .select-table .table td {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .form-control {
+            padding: 3px 6px 4px;
+            height: 30px;
+        }
+
+        .icheckbox-blue {
+            top: 0px;
+            left: 6px;
+        }
+
+        .form-control.select2-hidden-accessible {
+            position: static !important;
+        }
+
+        .select-table table label.error {
+            position: inherit;
+        }
+
+        select + label.error {
+            z-index: 1;
+            right: 40px;
+        }
+    </style>
+
+    <link th:href="@{/plug-in/plugin/hplus/css/style.css}" type="text/css" rel="stylesheet"/>
+    <link th:href="@{/plug-in/plugin/hplus/css/font-awesome.min.css}" type="text/css" rel="stylesheet"/>
+    <!--样式，文件上传-->
+    <link type="text/css" rel="stylesheet" th:href="@{/content/weixin/plug-in/css/appmsg_edit2.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/content/weixin/plug-in/css/jquery.fileupload.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/content/weixin/plug-in/css/weixin_article_edit.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/content/weixin/plug-in/css/tablefrom.css}"/>
+    <link th:href="@{/plug-in/plugin/UEditor/themes/default/css/umeditor.css}" type="text/css" rel="stylesheet">
+
+
+</head>
+<body class="gray-bg" style="font: 14px Helvetica Neue, Helvetica, PingFang SC, 微软雅黑, Tahoma, Arial, sans-serif !important;">
+<section class="section-content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content" style="border-style:none;">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab-basic" data-toggle="tab" aria-expanded="true">基本信息</a></li>
+                            <li id="article"><a href="#tab-field" data-toggle="tab" aria-expanded="false">文章内容</a></li>
+                        </ul>
+                        <form id="form-newsitem-edit" class="form-horizontal m" th:object="${weixinNewsitem}">
+
+                            <input name="id" th:field="*{id}" type="hidden">
+                            <div class="tab-content">
+                                <!--基本信息-start-->
+                                <div class="tab-pane active" id="tab-basic">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">标题：</label>
+                                        <div class="col-sm-8">
+                                            <input name="title" th:field="*{title}" class="form-control"
+                                                   type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">作者：</label>
+                                        <div class="col-sm-8">
+                                            <input name="author" th:field="*{author}" class="form-control"
+                                                   type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">图片链接：</label>
+                                        <div class="col-sm-8" style="position:relative;">
+                                            <input id="imagePath" name="imagePath" th:field="*{imagePath}" class="form-control" type="hidden">
+                                            <input type="file" id="file" name="file" onchange="fileChange(this);" style="display:none;">
+
+                                            <button id="uploadBtn"  type="button" class="btn btn-sm btn-primary" style="display: inline-block; width: 95px;position: relative;float: left;height: 33px;"><i class="fa fa-check"></i>浏览</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <img th:src="@{/img/noimg.jpg}" style="width:180px;height:180px;margin-top: 6px;" id="pic_view">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">是否显示封面：</label>
+                                        <div class="col-sm-8"><!--value="0"-->
+                                            <input type="checkbox" id="showCoverPic" name="showCoverPic" th:value="${weixinNewsitem.showCoverPic}"/>封面图片显示在正文中
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">摘要：</label>
+                                        <div class="col-sm-8">
+                                                    <textarea name="description"
+                                                              class="form-control">[[*{description}]]</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">跳转方式：</label>
+                                        <div class="col-sm-8">
+                                            <input type="hidden" id="newType" name="newType" style="margin-left:10px;" th:field="*{newType}">
+                                            <input type="radio" id="news" onclick="change('news')" value="news" th:checked="${weixinNewsitem.newType} == 'news'">跳转到正文&nbsp;&nbsp;
+                                            <input type="radio" id="tzurl" onclick="change('url')" value="url" th:field="*{newType}" th:checked="${weixinNewsitem.newType} == 'url'">跳转到链接
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="ywlj">
+                                        <label class="col-sm-3 control-label">原文链接：</label>
+                                        <div class="col-sm-8">
+                                            <textarea name="url" class="form-control">[[*{url}]]</textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" style="display: none;" id="tzlj">
+                                        <label class="col-sm-3 control-label">跳转链接：</label>
+                                        <div class="col-sm-8">
+                                            <textarea name="externalUrl" class="form-control">[[*{externalUrl}]]</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--基本信息-end-->
+
+                                <!-- 文章内容-start -->
+                                <div class="tab-pane" id="tab-field">
+                                    <table style="width: 100%;margin-bottom:15px" cellpadding="0" cellspacing="1"
+                                           class="formtable">
+                                        <div class="editor-zoom">
+                                            <div class="editor-left">
+                                                <div class="editor-sheetdiv">
+                                                    <ul class="editor-sheetlist editor-height" id="editor-sheetlist">
+
+                                                    </ul>
+                                                </div>
+                                                <div class="tplcontent tpl-sc-width">
+                                                    <div class="pre editor-height" id="preitem"></div>
+                                                </div>
+                                            </div>
+                                            <div class="editor-right">
+                                                <input type="hidden" id="neirong" name="content" th:value="${weixinNewsitem.content}"/>
+                                                <script type="text/plain" id="content"></script>
+                                            </div>
+                                        </div>
+                                    </table>
+                                </div>
+                                <!-- 文章内容-start -->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--<div class="box-footer">
+                    <div class="col-sm-offset-5 col-sm-6">
+                        <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i
+                                class="fa fa-check"></i>保 存
+                        </button>&nbsp;
+                        <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i
+                                class="fa fa-reply-all"></i>关 闭
+                        </button>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+</section>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: select2-js"/>
+
+
+<script type="text/javascript" th:src="@{/ajax/libs/plupload/plupload.full.min.js}"></script>
+
+
+<!--fileupload-->
+<script type="text/javascript" th:src="@{/content/weixin/plug-in/js/vendor/jquery.ui.widget.js}"></script>
+<script type="text/javascript" th:src="@{/content/weixin/plug-in/js/load-image.min.js}"></script>
+<script type="text/javascript" th:src="@{/content/weixin/plug-in/js/jquery.fileupload.js}"></script>
+<script type="text/javascript" th:src="@{/content/weixin/plug-in/js/jquery.fileupload-process.js}"></script>
+<script type="text/javascript" th:src="@{/content/weixin/plug-in/js/jquery.fileupload-image.js}"></script>
+<script type="text/javascript" th:src="@{/content/weixin/plug-in/js/jquery.iframe-transport.js}"></script>
+<script th:src="@{/content/weixin/js/newsItem-add.js?v=1.0}"></script>
+<!--文本编辑器-->
+<script type="text/javascript" charset="utf-8" th:src="@{/plug-in/plugin/UEditor/umeditor.config.js}"></script>
+<script type="text/javascript" charset="utf-8" th:src="@{/plug-in/plugin/UEditor/umeditor.min.js}"></script>
+<script type="text/javascript" th:src="@{/plug-in/plugin/UEditor/lang/zh-cn/zh-cn.js}"></script>
+
+
+<th:block th:include="include :: bootstrap-table-reorder-js"/>
+<script th:src="@{/js/jquery.tmpl.js}"></script>
+<script type="text/javascript">
+    var prefix = ctx + "wx/newsitem";
+    /*用户信息-修改*/
+    $("#form-table-edit").validate({
+        rules: {
+            tableName: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $("#form-newsitem-edit").serializeArray());
+        }
+    }
+
+
+    $("#showCoverPic").click(function(){
+        if($("#showCoverPic").is(":checked")){
+            $("#showCoverPic").val("1");
+        }else{
+            $("#showCoverPic").val("0");
+        }
+    })
+
+    $(function () {
+        //实例化文本编辑器
+        var um = UM.getEditor('content', {initialFrameHeight: 546, autoHeightEnabled: false});
+        $("#content").css("width", "100%");
+        UM.getEditor("content").setContent($("#neirong").val());
+    });
+
+    $(function(){
+    	$.ajax({
+			url: prefix + "/getSheet",
+			type: "post",
+			dataType: "json",
+			success: function (data) {
+				if(data.total<0){
+					alert('no weixin type data:');
+				}else{
+					var html="";
+					for(var element in data)
+					if(element=="WXNRQ"){
+						html += "<li><a href='javascript:void(0);' onclick='changeMySheet(\""+element+"\",this)' class='current' tab='tab"+element+"'>"+data[element]+"</a></li>";
+					}else{
+						html += "<li><a href='javascript:void(0);' onclick='changeMySheet(\""+element+"\",this)' tab='tab"+element+"'>"+data[element]+"</a></li>";
+					}
+				}
+				$("#editor-sheetlist").html(html);
+				changeMySheet("WXNRQ");
+			}
+		});
+
+        var imageUrl = $("#imagePath").val();
+        if(imageUrl.indexOf("/profile")!=-1){
+            var picUrl = ctx + imageUrl.substr(imageUrl.indexOf("/")+1);
+            $("#pic_view").attr("src",picUrl);
+        }else{
+            $("#pic_view").attr("src",imageUrl);
+        }
+	});
+
+	function changeMySheet(type,obj) {
+		$(obj).addClass("current");
+		$(obj).closest("li").siblings().find("a").removeClass("current");
+
+		var url = prefix + "/getContentTemplate/"+type;
+		$.ajax({
+            url: url,
+            type:'post',
+            dataType: 'json',
+            success: function (data) {
+                if(data.total > 0){
+                    var html="";
+                    jQuery(data.rows).each(function(index,element){
+                        html+='<div class="preitem" id="preitem'+index+'" onclick="pre(' + index + ')">'+element.content+'</div>';
+                    });
+                    $( "#preitem" ).html(html);
+                }else{
+                    mySheetTemplate = msg.rows;
+                }
+            }
+        })
+
+	}
+
+    //选中样式，添加到编辑器中
+    function pre(n){
+        var choseTemplate=$("#preitem"+n).html();
+        var um=UM.getEditor('content',{initialFrameHeight:525,autoHeightEnabled: false});
+        um.execCommand('inserthtml',choseTemplate);
+    }
+
+    $(function(){
+        var type = $("#newType").val();
+        change(type);
+    });
+
+    function change(type){
+        if(type == "url"){
+            $("#news").removeAttr("checked");
+            $("#tzurl").attr("checked","true");
+            $("#ywlj").css("display","none");
+            $("#tzlj").css("display","block");
+            $("#newType").val("url");
+            $("#article").css("display",'none');
+        }else{
+            $('#tzurl').removeAttr("checked");
+            $("#news").attr("checked","true");
+            $("#ywlj").css("display","block");
+            $("#tzlj").css("display","none");
+            $("#article").css("display","block");
+            $("#newType").val("news");
+
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    var uploader = new plupload.Uploader({ //实例化一个plupload上传对象
+        runtimes: 'html5,silverlight,html4,flash',
+        browse_button : 'uploadBtn',
+        url : ctx + "wx/jwid/upload",
+        flash_swf_url : "/ajax/libs/plupload/Moxie.swf",
+        silverlight_xap_url : "/ajax/libs/plupload/Moxie.xap",
+        filters: {
+            max_file_size: '10mb', //最大上传文件大小（格式100b, 10kb, 10mb, 1gb）
+            mime_types : [{ title : "图片文件", extensions:"jpg,jpeg,gif,png,bmp" },
+                {title: "视频文件", extensions: "mp4,mpeg4,3gp,wav,wma,wmv"},
+                {title: "文本文件", extensions: "txt,pdf,doc,docx,xls,xlsx,ppt,pptx,ini"},
+                {title: "视频文件", extensions: "zip,rar,gz,bz2,jar"},
+                {title: "音频文件", extensions: "mp3,mid,wav,wma,avi"}
+            ]
+        }//只允许上传图片文件
+    });
+    //绑定文件添加进队列事件
+    uploader.bind('FilesAdded',function(uploader,files){
+        uploader.start(); //开始上传
+    });
+    uploader.bind('Error',function(up, err){
+        alert(err.message);//上传出错的时候触发
+    });
+    uploader.bind("FileUploaded", function(up, file, res){
+        var json=res.response;
+        json=JSON.parse(json);
+
+        if(json.code!=0&&json.code!='0'){
+            $.modal.alertError(json.msg);
+        }
+        uploadCallback(json.data);
+
+    })
+    window.onload = function() {
+        uploader.init(); //初始化
+    };
+    function uploadCallback(json){
+        var end = "gif,jpeg,jpg,png,bmp";
+        var array = end.split(",");
+
+        var subfix = json.name.substring(json.name.lastIndexOf(".")+1);
+        debugger;
+        if(!array.indexOf(subfix)){
+            layer.alert("只能上传jpg,jpeg,gif,png,bmp图片格式文件!",{
+                icon:2,
+                title:"提示"
+            });
+            return;
+        }
+        $("#imagePath").val(json.url);//json.path
+        $("#pic_view").attr("src",json.url);
+    }
+
+    $(function(){
+        var currentPath = window.document.location.href;
+        var pathName = window.document.location.pathname;
+        var pos = currentPath.indexOf(pathName);
+        var cpath = currentPath.substr(0,pos);
+        var imageUrl = cpath + "/profile/"+$("#imagePath").val();
+        $("#pic_view").attr("src",$("#imagePath").val());
+    })
+
+</script>
+
+
+</body>
+</html>
+

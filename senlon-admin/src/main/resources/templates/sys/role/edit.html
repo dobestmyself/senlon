@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改系统角色')" />
+    <th:block th:include="include :: ztree-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-role-edit" th:object="${jwSystemRole}">
+            <input id="id" name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">角色编码：</label>
+                <div class="col-sm-8">
+                    <input id="roleId" name="roleId" th:field="*{roleId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">角色名称：</label>
+                <div class="col-sm-8">
+                    <input id="roleName" name="roleName" th:field="*{roleName}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">菜单权限</label>
+                <div class="col-sm-8">
+                    <div id="menuTrees" class="ztree"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: ztree-js" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/role";
+        $("#form-role-edit").validate({
+            onkeyup: false,
+            rules:{
+              roleName:{
+                  remote:{
+                      url: ctx + "sys/role/checkRoleNameUnique",
+                      type: "post",
+                      dataType:"json",
+                      data:{
+                          "id":function(){
+                              return $("#id").val();
+                          },
+                          "roleName":function(){
+                              return $.common.trim($("#roleName").val());
+                          }
+                      },
+                      dataFilter:function(data,type){
+                          return $.validate.unique(data);
+                      }
+                  }
+              },
+              roleId:{
+                  remote:{
+                      url: ctx + "sys/role/checkRoleIdUnique",
+                      type:"post",
+                      dataType: "json",
+                      data:{
+                          "id":function(){
+                              return $("#id").val();
+                          },
+                          "roleId": function(){
+                              return $.common.trim($("#roleId").val());
+                          }
+                      },
+                      dataFilter:function(data,type){
+                          return $.validate.unique(data);
+                      }
+                  }
+              }
+            },
+            message:{
+              "roleId":{
+                  remote: "该角色编码已存在"
+              },
+              "roleName":{
+                  remote:"该角色名称已存在"
+              }
+            },
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+            //    $.operate.save(prefix + "/edit", $('#form-role-edit').serialize());
+                edit();
+            }
+        }
+
+        function edit(){
+            var id = $("#id").val();
+            var roleId = $("#roleId").val();
+            var roleName = $("#roleName").val();
+            var authIds = $.tree.getCheckedNodes();
+            $.ajax({
+                url: ctx + "sys/role/edit",
+                cache: true,
+                type: 'post',
+                data:{
+                    "id":id,
+                    "roleId":roleId,
+                    "roleName":roleName,
+                    "authIds":authIds
+                },
+                async: false,
+                error:function (request) {
+                    $.modal.alertError("系统错误");
+                },
+                success:function(data){
+                    $.operate.successCallback(data);
+                }
+            });
+        }
+
+        $(function(){
+            var url = ctx + "system/auth/roleAuthTreeData?roleId="+$("#roleId").val();
+            var options = {
+                id: "menuTrees",
+                url: url,
+                check: {enable: true},
+                expandLevel: 0
+            };
+            $.tree.init(options);
+        });
+
+    </script>
+</body>
+</html>

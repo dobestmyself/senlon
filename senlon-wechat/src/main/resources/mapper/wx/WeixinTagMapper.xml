@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.WeixinTagMapper">
+    
+    <resultMap type="com.ss.wx.domain.WeixinTag" id="WeixinTagResult">
+        <result property="id"    column="id"    />
+        <result property="tagid"    column="tagid"    />
+        <result property="name"    column="name"    />
+        <result property="jwid"    column="jwid"    />
+        <result property="addtime"    column="addtime"    />
+        <result property="synctime"    column="synctime"    />
+    </resultMap>
+
+    <sql id="selectWeixinTagVo">
+        select id, tagid, name, jwid, addtime, synctime from weixin_tag
+    </sql>
+
+    <select id="selectWeixinTagList" parameterType="com.ss.wx.domain.WeixinTag" resultMap="WeixinTagResult">
+        <include refid="selectWeixinTagVo"/>
+        <where>  
+            <if test="tagid != null  and tagid != ''"> and tagid = #{tagid}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="jwid != null  and jwid != ''"> and jwid = #{jwid}</if>
+            <if test="addtime != null "> and addtime = #{addtime}</if>
+            <if test="synctime != null "> and synctime = #{synctime}</if>
+        </where>
+    </select>
+    
+    <select id="selectWeixinTagById" parameterType="String" resultMap="WeixinTagResult">
+        <include refid="selectWeixinTagVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWeixinTag" parameterType="com.ss.wx.domain.WeixinTag">
+        insert into weixin_tag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="tagid != null  and tagid != ''">tagid,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="jwid != null  and jwid != ''">jwid,</if>
+            <if test="addtime != null ">addtime,</if>
+            <if test="synctime != null ">synctime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="tagid != null  and tagid != ''">#{tagid},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="jwid != null  and jwid != ''">#{jwid},</if>
+            <if test="addtime != null ">#{addtime},</if>
+            <if test="synctime != null ">#{synctime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeixinTag" parameterType="com.ss.wx.domain.WeixinTag">
+        update weixin_tag
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tagid != null  and tagid != ''">tagid = #{tagid},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="jwid != null  and jwid != ''">jwid = #{jwid},</if>
+            <if test="addtime != null ">addtime = #{addtime},</if>
+            <if test="synctime != null ">synctime = #{synctime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWeixinTagById" parameterType="String">
+        delete from weixin_tag where id = #{id}
+    </delete>
+
+    <delete id="deleteWeixinTagByIds" parameterType="String">
+        delete from weixin_tag where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteTagsByJwid" parameterType="String">
+        delete from weixin_tag where jwid = #{jwid}
+    </delete>
+    <select id="selectTagByTagId" parameterType="String" resultMap="WeixinTagResult">
+        <include refid="selectWeixinTagVo"/>
+        <where>
+            and tagid = #{tagid}
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.system.mapper.JwSystemUserMapper">
+    
+    <resultMap type="com.ss.system.domain.JwSystemUser" id="JwSystemUserResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="password"    column="password"    />
+        <result property="userErpNo"    column="user_erp_no"    />
+        <result property="userTyp"    column="user_typ"    />
+        <result property="opeDepId"    column="ope_dep_id"    />
+        <result property="opePhoneNum"    column="ope_phone_num"    />
+        <result property="email"    column="email"    />
+        <result property="opeEmailAuthinfo"    column="ope_email_authinfo"    />
+        <result property="userIcon"    column="user_icon"    />
+        <result property="opeMobileAuthInd"    column="ope_mobile_auth_ind"    />
+        <result property="opeEmailAuthInd"    column="ope_email_auth_ind"    />
+        <result property="idNum"    column="id_num"    />
+        <result property="idTyp"    column="id_typ"    />
+        <result property="state"    column="state"    />
+        <result property="userStat"    column="user_stat"    />
+        <result property="lastLognDttm"    column="last_logn_dttm"    />
+        <result property="lastLognIp"    column="last_logn_ip"    />
+        <result property="opePasswdInd"    column="ope_passwd_ind"    />
+        <result property="delStat"    column="del_stat"    />
+        <result property="creator"    column="creator"    />
+        <result property="editor"    column="editor"    />
+        <result property="createDt"    column="create_dt"    />
+        <result property="editDt"    column="edit_dt"    />
+        <result property="lastEditDt"    column="last_edit_dt"    />
+        <result property="recordVersion"    column="record_version"    />
+        <result property="openid"    column="openid"    />
+        <result property="agentId"    column="agent_id"    />
+    </resultMap>
+
+    <sql id="selectJwSystemUserVo">
+        select id, user_id, user_name, password, user_erp_no, user_typ, ope_dep_id, ope_phone_num, email, ope_email_authinfo, user_icon, ope_mobile_auth_ind, ope_email_auth_ind, id_num, id_typ, state, user_stat, last_logn_dttm, last_logn_ip, ope_passwd_ind, del_stat, creator, editor, create_dt, edit_dt, last_edit_dt, record_version, openid, agent_id from jw_system_user
+    </sql>
+
+    <select id="selectJwSystemUserList" parameterType="com.ss.system.domain.JwSystemUser" resultMap="JwSystemUserResult">
+        <include refid="selectJwSystemUserVo"/>
+        <where>  
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="userStat != null  and userStat != ''"> and user_stat = #{userStat}</if>
+        </where>
+    </select>
+    
+    <select id="selectJwSystemUserById" parameterType="Long" resultMap="JwSystemUserResult">
+        <include refid="selectJwSystemUserVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertJwSystemUser" parameterType="com.ss.system.domain.JwSystemUser" useGeneratedKeys="true" keyProperty="id">
+        insert into jw_system_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null  and userId != ''">user_id,</if>
+            <if test="userName != null  and userName != ''">user_name,</if>
+            <if test="password != null  and password != ''">password,</if>
+            <if test="userErpNo != null  and userErpNo != ''">user_erp_no,</if>
+            <if test="userTyp != null  and userTyp != ''">user_typ,</if>
+            <if test="opeDepId != null  and opeDepId != ''">ope_dep_id,</if>
+            <if test="opePhoneNum != null  and opePhoneNum != ''">ope_phone_num,</if>
+            <if test="email != null  and email != ''">email,</if>
+            <if test="opeEmailAuthinfo != null  and opeEmailAuthinfo != ''">ope_email_authinfo,</if>
+            <if test="userIcon != null  and userIcon != ''">user_icon,</if>
+            <if test="opeMobileAuthInd != null  and opeMobileAuthInd != ''">ope_mobile_auth_ind,</if>
+            <if test="opeEmailAuthInd != null  and opeEmailAuthInd != ''">ope_email_auth_ind,</if>
+            <if test="idNum != null  and idNum != ''">id_num,</if>
+            <if test="idTyp != null  and idTyp != ''">id_typ,</if>
+            <if test="state != null  and state != ''">state,</if>
+            <if test="userStat != null  and userStat != ''">user_stat,</if>
+            <if test="lastLognDttm != null ">last_logn_dttm,</if>
+            <if test="lastLognIp != null  and lastLognIp != ''">last_logn_ip,</if>
+            <if test="opePasswdInd != null  and opePasswdInd != ''">ope_passwd_ind,</if>
+            <if test="delStat != null  and delStat != ''">del_stat,</if>
+            <if test="creator != null  and creator != ''">creator,</if>
+            <if test="editor != null  and editor != ''">editor,</if>
+            <if test="createDt != null ">create_dt,</if>
+            <if test="editDt != null ">edit_dt,</if>
+            <if test="lastEditDt != null ">last_edit_dt,</if>
+            <if test="recordVersion != null  and recordVersion != ''">record_version,</if>
+            <if test="openid != null  and openid != ''">openid,</if>
+            <if test="agentId != null  and agentId != ''">agent_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null  and userId != ''">#{userId},</if>
+            <if test="userName != null  and userName != ''">#{userName},</if>
+            <if test="password != null  and password != ''">#{password},</if>
+            <if test="userErpNo != null  and userErpNo != ''">#{userErpNo},</if>
+            <if test="userTyp != null  and userTyp != ''">#{userTyp},</if>
+            <if test="opeDepId != null  and opeDepId != ''">#{opeDepId},</if>
+            <if test="opePhoneNum != null  and opePhoneNum != ''">#{opePhoneNum},</if>
+            <if test="email != null  and email != ''">#{email},</if>
+            <if test="opeEmailAuthinfo != null  and opeEmailAuthinfo != ''">#{opeEmailAuthinfo},</if>
+            <if test="userIcon != null  and userIcon != ''">#{userIcon},</if>
+            <if test="opeMobileAuthInd != null  and opeMobileAuthInd != ''">#{opeMobileAuthInd},</if>
+            <if test="opeEmailAuthInd != null  and opeEmailAuthInd != ''">#{opeEmailAuthInd},</if>
+            <if test="idNum != null  and idNum != ''">#{idNum},</if>
+            <if test="idTyp != null  and idTyp != ''">#{idTyp},</if>
+            <if test="state != null  and state != ''">#{state},</if>
+            <if test="userStat != null  and userStat != ''">#{userStat},</if>
+            <if test="lastLognDttm != null ">#{lastLognDttm},</if>
+            <if test="lastLognIp != null  and lastLognIp != ''">#{lastLognIp},</if>
+            <if test="opePasswdInd != null  and opePasswdInd != ''">#{opePasswdInd},</if>
+            <if test="delStat != null  and delStat != ''">#{delStat},</if>
+            <if test="creator != null  and creator != ''">#{creator},</if>
+            <if test="editor != null  and editor != ''">#{editor},</if>
+            <if test="createDt != null ">#{createDt},</if>
+            <if test="editDt != null ">#{editDt},</if>
+            <if test="lastEditDt != null ">#{lastEditDt},</if>
+            <if test="recordVersion != null  and recordVersion != ''">#{recordVersion},</if>
+            <if test="openid != null  and openid != ''">#{openid},</if>
+            <if test="agentId != null  and agentId != ''">#{agentId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateJwSystemUser" parameterType="com.ss.system.domain.JwSystemUser">
+        update jw_system_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null  and userId != ''">user_id = #{userId},</if>
+            <if test="userName != null  and userName != ''">user_name = #{userName},</if>
+            <if test="password != null  and password != ''">password = #{password},</if>
+            <if test="userErpNo != null  and userErpNo != ''">user_erp_no = #{userErpNo},</if>
+            <if test="userTyp != null  and userTyp != ''">user_typ = #{userTyp},</if>
+            <if test="opeDepId != null  and opeDepId != ''">ope_dep_id = #{opeDepId},</if>
+            <if test="opePhoneNum != null  and opePhoneNum != ''">ope_phone_num = #{opePhoneNum},</if>
+            <if test="email != null  and email != ''">email = #{email},</if>
+            <if test="opeEmailAuthinfo != null  and opeEmailAuthinfo != ''">ope_email_authinfo = #{opeEmailAuthinfo},</if>
+            <if test="userIcon != null  and userIcon != ''">user_icon = #{userIcon},</if>
+            <if test="opeMobileAuthInd != null  and opeMobileAuthInd != ''">ope_mobile_auth_ind = #{opeMobileAuthInd},</if>
+            <if test="opeEmailAuthInd != null  and opeEmailAuthInd != ''">ope_email_auth_ind = #{opeEmailAuthInd},</if>
+            <if test="idNum != null  and idNum != ''">id_num = #{idNum},</if>
+            <if test="idTyp != null  and idTyp != ''">id_typ = #{idTyp},</if>
+            <if test="state != null  and state != ''">state = #{state},</if>
+            <if test="userStat != null  and userStat != ''">user_stat = #{userStat},</if>
+            <if test="lastLognDttm != null ">last_logn_dttm = #{lastLognDttm},</if>
+            <if test="lastLognIp != null  and lastLognIp != ''">last_logn_ip = #{lastLognIp},</if>
+            <if test="opePasswdInd != null  and opePasswdInd != ''">ope_passwd_ind = #{opePasswdInd},</if>
+            <if test="delStat != null  and delStat != ''">del_stat = #{delStat},</if>
+            <if test="creator != null  and creator != ''">creator = #{creator},</if>
+            <if test="editor != null  and editor != ''">editor = #{editor},</if>
+            <if test="createDt != null ">create_dt = #{createDt},</if>
+            <if test="editDt != null ">edit_dt = #{editDt},</if>
+            <if test="lastEditDt != null ">last_edit_dt = #{lastEditDt},</if>
+            <if test="recordVersion != null  and recordVersion != ''">record_version = #{recordVersion},</if>
+            <if test="openid != null  and openid != ''">openid = #{openid},</if>
+            <if test="agentId != null  and agentId != ''">agent_id = #{agentId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteJwSystemUserById" parameterType="Long">
+        delete from jw_system_user where id = #{id}
+    </delete>
+
+    <delete id="deleteJwSystemUserByIds" parameterType="String">
+        delete from jw_system_user where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

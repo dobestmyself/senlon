@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.system.mapper.JwSystemAuthMapper">
+    
+    <resultMap type="com.ss.system.domain.JwSystemAuth" id="JwSystemAuthResult">
+        <result property="id"    column="id"    />
+        <result property="authId"    column="auth_id"    />
+        <result property="authName"    column="auth_name"    />
+        <result property="isLogs"    column="is_logs"    />
+        <result property="authType"    column="auth_type"    />
+        <result property="authDesc"    column="auth_desc"    />
+        <result property="authContr"    column="auth_contr"    />
+        <result property="parentAuthId"    column="parent_auth_id"    />
+        <result property="sortNo"    column="sort_no"    />
+        <result property="bizLevel"    column="biz_level"    />
+        <result property="leafInd"    column="leaf_ind"    />
+        <result property="delStat"    column="del_stat"    />
+        <result property="iconType"    column="icon_type"    />
+        <result property="parentName" column="parent_name" />
+    </resultMap>
+
+    <sql id="selectJwSystemAuthVo">
+        select id, auth_id, auth_name, is_logs, auth_type, auth_desc, auth_contr, parent_auth_id, sort_no, biz_level, leaf_ind, del_stat, icon_type from jw_system_auth
+    </sql>
+
+    <select id="selectJwSystemAuthList" parameterType="com.ss.system.domain.JwSystemAuth" resultMap="JwSystemAuthResult">
+        <include refid="selectJwSystemAuthVo"/>
+        <where>  
+        </where>
+        order by sort_no asc
+    </select>
+    
+    <select id="selectJwSystemAuthById" parameterType="Long" resultMap="JwSystemAuthResult">
+        select t.id, t.auth_id, t.auth_name, t.is_logs, t.auth_type, t.auth_desc, t.auth_contr, t.parent_auth_id, t.sort_no, t.biz_level, t.leaf_ind, t.del_stat, t.icon_type,
+        (SELECT auth_name from jw_system_auth where auth_id = t.parent_auth_id) as parent_name
+        from jw_system_auth t
+        where t.id = #{id}
+    </select>
+
+    <select id="selectJwSystemAuthByAuthId" parameterType="Long" resultMap="JwSystemAuthResult">
+        select t.id, t.auth_id, t.auth_name, t.is_logs, t.auth_type, t.auth_desc, t.auth_contr, t.parent_auth_id, t.sort_no, t.biz_level, t.leaf_ind, t.del_stat, t.icon_type, p.auth_name as parent_name
+        from jw_system_auth t
+        left join jw_system_auth p on p.id = t.parent_auth_id
+        where t.auth_id = #{authId}
+    </select>
+        
+    <insert id="insertJwSystemAuth" parameterType="com.ss.system.domain.JwSystemAuth" useGeneratedKeys="true" keyProperty="id">
+        insert into jw_system_auth
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="authId != null  and authId != ''">auth_id,</if>
+            <if test="authName != null  and authName != ''">auth_name,</if>
+            <if test="isLogs != null  and isLogs != ''">is_logs,</if>
+            <if test="authType != null  and authType != ''">auth_type,</if>
+            <if test="authDesc != null  and authDesc != ''">auth_desc,</if>
+            <if test="authContr != null  and authContr != ''">auth_contr,</if>
+            <if test="parentAuthId != null  and parentAuthId != ''">parent_auth_id,</if>
+            <if test="sortNo != null ">sort_no,</if>
+            <if test="bizLevel != null  and bizLevel != ''">biz_level,</if>
+            <if test="leafInd != null  and leafInd != ''">leaf_ind,</if>
+            <if test="delStat != null  and delStat != ''">del_stat,</if>
+            <if test="iconType != null  and iconType != ''">icon_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="authId != null  and authId != ''">#{authId},</if>
+            <if test="authName != null  and authName != ''">#{authName},</if>
+            <if test="isLogs != null  and isLogs != ''">#{isLogs},</if>
+            <if test="authType != null  and authType != ''">#{authType},</if>
+            <if test="authDesc != null  and authDesc != ''">#{authDesc},</if>
+            <if test="authContr != null  and authContr != ''">#{authContr},</if>
+            <if test="parentAuthId != null  and parentAuthId != ''">#{parentAuthId},</if>
+            <if test="sortNo != null ">#{sortNo},</if>
+            <if test="bizLevel != null  and bizLevel != ''">#{bizLevel},</if>
+            <if test="leafInd != null  and leafInd != ''">#{leafInd},</if>
+            <if test="delStat != null  and delStat != ''">#{delStat},</if>
+            <if test="iconType != null  and iconType != ''">#{iconType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateJwSystemAuth" parameterType="com.ss.system.domain.JwSystemAuth">
+        update jw_system_auth
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="authId != null  and authId != ''">auth_id = #{authId},</if>
+            <if test="authName != null  and authName != ''">auth_name = #{authName},</if>
+            <if test="isLogs != null  and isLogs != ''">is_logs = #{isLogs},</if>
+            <if test="authType != null  and authType != ''">auth_type = #{authType},</if>
+            <if test="authDesc != null  and authDesc != ''">auth_desc = #{authDesc},</if>
+            <if test="authContr != null  and authContr != ''">auth_contr = #{authContr},</if>
+            <if test="parentAuthId != null  and parentAuthId != ''">parent_auth_id = #{parentAuthId},</if>
+            <if test="sortNo != null ">sort_no = #{sortNo},</if>
+            <if test="bizLevel != null  and bizLevel != ''">biz_level = #{bizLevel},</if>
+            <if test="leafInd != null  and leafInd != ''">leaf_ind = #{leafInd},</if>
+            <if test="delStat != null  and delStat != ''">del_stat = #{delStat},</if>
+            <if test="iconType != null  and iconType != ''">icon_type = #{iconType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteJwSystemAuthById" parameterType="Long">
+        delete from jw_system_auth where id = #{id}
+    </delete>
+
+    <delete id="deleteJwSystemAuthByIds" parameterType="String">
+        delete from jw_system_auth where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="selectAuthAllByUserId" parameterType="long" resultMap="JwSystemAuthResult">
+        select distinct a.id, a.auth_id, a.auth_name, a.is_logs, a.auth_type, a.auth_desc, a.auth_contr, a.parent_auth_id, a.sort_no, a.biz_level, a.leaf_ind, a.del_stat, a.icon_type from jw_system_auth a
+        left join jw_system_role_auth_rel ra on a.id = ra.auth_id
+        left join jw_system_user_role_rel ur on ra.role_id = ur.role_id
+        left join jw_system_role r on ur.role_id = r.id
+        where ur.user_id = #{userId}
+        order by a.parent_auth_id,a.sort_no
+    </select>
+
+    <select id="selectAuthTree" parameterType="string" resultType="string">
+        select concat(a.auth_id,ifnull(a.auth_contr,'')) as auth_contr
+        from jw_system_auth a
+        left join jw_system_role_auth_rel ra on ra.auth_id = a.auth_id
+        where ra.role_id = #{roleId}
+        order by a.parent_auth_id,a.sort_no
+    </select>
+
+    <select id="checkAuthNameUnique" parameterType="string" resultMap="JwSystemAuthResult">
+        <include refid="selectJwSystemAuthVo"/>
+        <where>
+            and auth_name = #{authName}
+        </where>
+    </select>
+
+    <select id="selectCountChildByParentId" parameterType="long" resultType="integer">
+        select count(1) from jw_system_auth where parent_auth_id = #{parentAuthId}
+    </select>
+
+</mapper>

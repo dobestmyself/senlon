@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.WeixinTmessageSendlogMapper">
+    
+    <resultMap type="com.ss.wx.domain.WeixinTmessageSendlog" id="WeixinTmessageSendlogResult">
+        <result property="id"    column="id"    />
+        <result property="openid"    column="openid"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="msgId"    column="msg_id"    />
+        <result property="status"    column="status"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="dataJson"    column="data_json"    />
+    </resultMap>
+
+    <sql id="selectWeixinTmessageSendlogVo">
+        select id, openid, task_id, msg_id, status, create_date, data_json from weixin_tmessage_sendlog
+    </sql>
+
+    <select id="selectWeixinTmessageSendlogList" parameterType="com.ss.wx.domain.WeixinTmessageSendlog" resultMap="WeixinTmessageSendlogResult">
+        <include refid="selectWeixinTmessageSendlogVo"/>
+        <where>  
+            <if test="openid != null  and openid != ''"> and openid = #{openid}</if>
+            <if test="taskId != null  and taskId != ''"> and task_id = #{taskId}</if>
+            <if test="msgId != null  and msgId != ''"> and msg_id = #{msgId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+            <if test="dataJson != null  and dataJson != ''"> and data_json = #{dataJson}</if>
+        </where>
+    </select>
+    
+    <select id="selectWeixinTmessageSendlogById" parameterType="String" resultMap="WeixinTmessageSendlogResult">
+        <include refid="selectWeixinTmessageSendlogVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWeixinTmessageSendlog" parameterType="com.ss.wx.domain.WeixinTmessageSendlog">
+        insert into weixin_tmessage_sendlog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="openid != null  and openid != ''">openid,</if>
+            <if test="taskId != null  and taskId != ''">task_id,</if>
+            <if test="msgId != null  and msgId != ''">msg_id,</if>
+            <if test="status != null  and status != ''">status,</if>
+            <if test="createDate != null ">create_date,</if>
+            <if test="dataJson != null  and dataJson != ''">data_json,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="openid != null  and openid != ''">#{openid},</if>
+            <if test="taskId != null  and taskId != ''">#{taskId},</if>
+            <if test="msgId != null  and msgId != ''">#{msgId},</if>
+            <if test="status != null  and status != ''">#{status},</if>
+            <if test="createDate != null ">#{createDate},</if>
+            <if test="dataJson != null  and dataJson != ''">#{dataJson},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeixinTmessageSendlog" parameterType="com.ss.wx.domain.WeixinTmessageSendlog">
+        update weixin_tmessage_sendlog
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="openid != null  and openid != ''">openid = #{openid},</if>
+            <if test="taskId != null  and taskId != ''">task_id = #{taskId},</if>
+            <if test="msgId != null  and msgId != ''">msg_id = #{msgId},</if>
+            <if test="status != null  and status != ''">status = #{status},</if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+            <if test="dataJson != null  and dataJson != ''">data_json = #{dataJson},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWeixinTmessageSendlogById" parameterType="String">
+        delete from weixin_tmessage_sendlog where id = #{id}
+    </delete>
+
+    <delete id="deleteWeixinTmessageSendlogByIds" parameterType="String">
+        delete from weixin_tmessage_sendlog where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

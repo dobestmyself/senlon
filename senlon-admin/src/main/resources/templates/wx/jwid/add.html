@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增系统公众号')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-jwid-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">公众号：</label>
+                <div class="col-sm-8">
+                    <input name="jwid" class="form-control" type="text" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">公众号昵称：</label>
+                <div class="col-sm-8">
+                    <input name="name" class="form-control" type="text" required>
+                </div>
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">微信号：</label>
+                <div class="col-sm-8">
+                    <input name="weixinNumber" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">微信AppId：</label>
+                <div class="col-sm-8">
+                    <input name="weixinAppid" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">微信AppSecret：</label>
+                <div class="col-sm-8">
+                    <input name="weixinAppsecret" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">公众号类型：</label>
+                <div class="col-sm-8">
+                    <select name="accountType" class="form-control m-b" required>
+                        <option value="">所有</option>
+                        <option value="1">服务号</option>
+                        <option value="2">订阅号</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否认证：</label>
+                <div class="col-sm-8">
+                    <label class="radio-box"> <input type="radio" name="authStatus" value="1" checked/> 认证 </label>
+                    <label class="radio-box"> <input type="radio" name="authStatus" value="2" /> 未认证 </label>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">令牌：</label>
+                <div class="col-sm-8">
+                    <input name="token" value="jeewx" class="form-control" type="text">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">微信二维码图片：</label>
+                <div class="col-sm-8" style="position:relative;">
+                    <input id="qrcodeimg" name="qrcodeimg" class="form-control" type="hidden">
+                    <input type="file" id="file" name="file" onchange="fileChange(this);" style="display:none;">
+
+                    <button id="uploadBtn"  type="button" class="btn btn-sm btn-primary" style="display: inline-block; width: 95px;position: relative;float: left;height: 33px;"><i class="fa fa-check"></i>上 传</button>
+                    <br/>
+                    <img th:src="@{/img/noimg.jpg}" style="width:180px;height:180px;margin-top: 6px;" id="pic_view">
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript" th:src="@{/ajax/libs/plupload/plupload.full.min.js}"></script>
+    <script type="text/javascript">
+        var prefix = ctx + "wx/jwid"
+        $("#form-jwid-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-jwid-add').serialize());
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        var uploader = new plupload.Uploader({ //实例化一个plupload上传对象
+            runtimes: 'html5,silverlight,html4,flash',
+            browse_button : 'uploadBtn',
+            url : prefix + "/upload",
+            flash_swf_url : "/ajax/libs/plupload/Moxie.swf",
+            silverlight_xap_url : "/ajax/libs/plupload/Moxie.xap",
+            filters: {
+                max_file_size: '10mb', //最大上传文件大小（格式100b, 10kb, 10mb, 1gb）
+                mime_types : [{ title : "图片文件", extensions:"jpg,jpeg,gif,png,bmp" },
+                    {title: "视频文件", extensions: "mp4,mpeg4,3gp,wav,wma,wmv"},
+                    {title: "文本文件", extensions: "txt,pdf,doc,docx,xls,xlsx,ppt,pptx,ini"},
+                    {title: "视频文件", extensions: "zip,rar,gz,bz2,jar"},
+                    {title: "音频文件", extensions: "mp3,mid,wav,wma,avi"}
+                ]
+            }//只允许上传图片文件
+        });
+        //绑定文件添加进队列事件
+        uploader.bind('FilesAdded',function(uploader,files){
+            uploader.start(); //开始上传
+        });
+        uploader.bind('Error',function(up, err){
+            alert(err.message);//上传出错的时候触发
+        });
+        uploader.bind("FileUploaded", function(up, file, res){
+            var json=res.response;
+            json=JSON.parse(json);
+
+            if(json.code!=0&&json.code!='0'){
+                $.modal.alertError(json.msg);
+            }
+            uploadCallback(json.data);
+
+        })
+        window.onload = function() {
+            uploader.init(); //初始化
+        };
+        function uploadCallback(json){
+            var end = "jpg,jpeg,gif,png,bmp";
+            var array = end.split(",");
+
+            var subfix = json.name.substring(json.name.lastIndexOf(".")+1);
+            if($.inArray(subfix,array)){
+                layer.alert("只能上传jpg,jpeg,gif,png,bmp图片格式文件!",{
+                    icon:2,
+                    title:"提示"
+                });
+                return;
+            }
+
+            $("#qrcodeimg").val(json.path);
+            $("#pic_view").attr("src",json.url);
+        }
+
+    </script>
+
+</body>
+</html>

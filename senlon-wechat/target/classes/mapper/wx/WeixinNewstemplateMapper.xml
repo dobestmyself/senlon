@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.WeixinNewstemplateMapper">
+    
+    <resultMap type="com.ss.wx.domain.WeixinNewstemplate" id="WeixinNewstemplateResult">
+        <result property="id"    column="id"    />
+        <result property="templateId" column="template_id" />
+        <result property="templateName"    column="template_name"    />
+        <result property="templateType"    column="template_type"    />
+        <result property="mediaId"    column="media_id"    />
+        <result property="jwid"    column="jwid"    />
+        <result property="uploadType"    column="upload_type"    />
+        <result property="uploadTime"    column="upload_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectWeixinNewstemplateVo">
+        select id,template_id, template_name, template_type, media_id, jwid, upload_type, upload_time, create_by, create_time, update_by, update_time from weixin_newstemplate
+    </sql>
+
+    <select id="selectWeixinNewstemplateList" parameterType="com.ss.wx.domain.WeixinNewstemplate" resultMap="WeixinNewstemplateResult">
+        <include refid="selectWeixinNewstemplateVo"/>
+        <where>  
+            <if test="templateName != null  and templateName != ''"> and template_name like concat('%', #{templateName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectWeixinNewstemplateById" parameterType="String" resultMap="WeixinNewstemplateResult">
+        <include refid="selectWeixinNewstemplateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWeixinNewstemplate" parameterType="com.ss.wx.domain.WeixinNewstemplate">
+        insert into weixin_newstemplate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="templateId != null and templateId != ''">template_id,</if>
+            <if test="templateName != null  and templateName != ''">template_name,</if>
+            <if test="templateType != null  and templateType != ''">template_type,</if>
+            <if test="mediaId != null  and mediaId != ''">media_id,</if>
+            <if test="jwid != null  and jwid != ''">jwid,</if>
+            <if test="uploadType != null  and uploadType != ''">upload_type,</if>
+            <if test="uploadTime != null ">upload_time,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="templateId != null and templateId != ''">#{templateId},</if>
+            <if test="templateName != null  and templateName != ''">#{templateName},</if>
+            <if test="templateType != null  and templateType != ''">#{templateType},</if>
+            <if test="mediaId != null  and mediaId != ''">#{mediaId},</if>
+            <if test="jwid != null  and jwid != ''">#{jwid},</if>
+            <if test="uploadType != null  and uploadType != ''">#{uploadType},</if>
+            <if test="uploadTime != null ">#{uploadTime},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeixinNewstemplate" parameterType="com.ss.wx.domain.WeixinNewstemplate">
+        update weixin_newstemplate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="templateId != null and templateId != ''">template_id = #{templateId},</if>
+            <if test="templateName != null  and templateName != ''">template_name = #{templateName},</if>
+            <if test="templateType != null  and templateType != ''">template_type = #{templateType},</if>
+            <if test="mediaId != null  and mediaId != ''">media_id = #{mediaId},</if>
+            <if test="jwid != null  and jwid != ''">jwid = #{jwid},</if>
+            <if test="uploadType != null  and uploadType != ''">upload_type = #{uploadType},</if>
+            <if test="uploadTime != null ">upload_time = #{uploadTime},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWeixinNewstemplateById" parameterType="String">
+        delete from weixin_newstemplate where id = #{id}
+    </delete>
+
+    <delete id="deleteWeixinNewstemplateByIds" parameterType="String">
+        delete from weixin_newstemplate where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="queryNewstemplateList" parameterType="String" resultMap="WeixinNewstemplateResult">
+        <include refid="selectWeixinNewstemplateVo"/>
+        <where>
+            and jwid = #{jwid}
+            and upload_type = 2
+        </where>
+    </select>
+
+    <select id="selectNewstemplateByTemplateId" parameterType="String" resultMap="WeixinNewstemplateResult">
+        <include refid="selectWeixinNewstemplateVo"/>
+        <where>
+            and template_id = #{templateId}
+        </where>
+    </select>
+
+</mapper>

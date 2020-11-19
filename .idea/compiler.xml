@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="senlon-common" />
+        <module name="senlon-cp-wx" />
+        <module name="senlon-generators" />
+        <module name="senlon-system" />
+        <module name="senlon-wechat" />
+        <module name="senlon-admin" />
+        <module name="senlon-framework" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/senlon-admin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/senlon-common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/senlon-cp-wx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/senlon-framework" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/senlon-generators" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/senlon-system" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/senlon-wechat" charset="UTF-8" />
+  </component>
+</project>

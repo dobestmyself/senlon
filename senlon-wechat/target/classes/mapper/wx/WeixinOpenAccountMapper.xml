@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.WeixinOpenAccountMapper">
+    
+    <resultMap type="com.ss.wx.domain.WeixinOpenAccount" id="WeixinOpenAccountResult">
+        <result property="id"    column="id"    />
+        <result property="appid"    column="appid"    />
+        <result property="appsecret"    column="appsecret"    />
+        <result property="ticket"    column="ticket"    />
+        <result property="getTicketTime"    column="get_ticket_time"    />
+        <result property="componentAccessToken"    column="component_access_token"    />
+        <result property="getAccessTokenTime"    column="get_access_token_time"    />
+    </resultMap>
+
+    <sql id="selectWeixinOpenAccountVo">
+        select id, appid, appsecret, ticket, get_ticket_time, component_access_token, get_access_token_time from weixin_open_account
+    </sql>
+
+    <select id="selectWeixinOpenAccountList" parameterType="com.ss.wx.domain.WeixinOpenAccount" resultMap="WeixinOpenAccountResult">
+        <include refid="selectWeixinOpenAccountVo"/>
+        <where>  
+            <if test="appid != null  and appid != ''"> and appid = #{appid}</if>
+            <if test="getTicketTime != null "> and get_ticket_time = #{getTicketTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectWeixinOpenAccountById" parameterType="String" resultMap="WeixinOpenAccountResult">
+        <include refid="selectWeixinOpenAccountVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWeixinOpenAccount" parameterType="com.ss.wx.domain.WeixinOpenAccount">
+        insert into weixin_open_account
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="appid != null  and appid != ''">appid,</if>
+            <if test="appsecret != null  and appsecret != ''">appsecret,</if>
+            <if test="ticket != null  and ticket != ''">ticket,</if>
+            <if test="getTicketTime != null ">get_ticket_time,</if>
+            <if test="componentAccessToken != null  and componentAccessToken != ''">component_access_token,</if>
+            <if test="getAccessTokenTime != null ">get_access_token_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="appid != null  and appid != ''">#{appid},</if>
+            <if test="appsecret != null  and appsecret != ''">#{appsecret},</if>
+            <if test="ticket != null  and ticket != ''">#{ticket},</if>
+            <if test="getTicketTime != null ">#{getTicketTime},</if>
+            <if test="componentAccessToken != null  and componentAccessToken != ''">#{componentAccessToken},</if>
+            <if test="getAccessTokenTime != null ">#{getAccessTokenTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeixinOpenAccount" parameterType="com.ss.wx.domain.WeixinOpenAccount">
+        update weixin_open_account
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="appid != null  and appid != ''">appid = #{appid},</if>
+            <if test="appsecret != null  and appsecret != ''">appsecret = #{appsecret},</if>
+            <if test="ticket != null  and ticket != ''">ticket = #{ticket},</if>
+            <if test="getTicketTime != null ">get_ticket_time = #{getTicketTime},</if>
+            <if test="componentAccessToken != null  and componentAccessToken != ''">component_access_token = #{componentAccessToken},</if>
+            <if test="getAccessTokenTime != null ">get_access_token_time = #{getAccessTokenTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWeixinOpenAccountById" parameterType="String">
+        delete from weixin_open_account where id = #{id}
+    </delete>
+
+    <delete id="deleteWeixinOpenAccountByIds" parameterType="String">
+        delete from weixin_open_account where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="queryOneByAppid" parameterType="string" resultMap="WeixinOpenAccountResult">
+        <include refid="selectWeixinOpenAccountVo"/>
+        <where>
+            and appid = #{appid}
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增住院医师教育经历')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-education-add">
+            <input type="hidden" name="residentId" id="residentId" th:value="${residentId}"/>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">身份证件类型：</label>
+                <div class="col-sm-8">
+                    <select name="idcardType" id="idcardType" class="form-control m-b" th:with="type=${@dict.getType('sys_dict_idcard')}" disabled="true">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="${residentBaseinfo.idcardType}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">身份证号：</label>
+                <div class="col-sm-8">
+                    <input name="idcard" th:value="${residentBaseinfo.idcard}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">全日制教育标志：</label>
+                <div class="col-sm-8">
+                    <select name="isDayEducation" class="form-control m-b" th:with="type=${@dict.getType('sys_yes_no')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">在读标志：</label>
+                <div class="col-sm-8">
+                    <select name="isReading" class="form-control m-b" th:with="type=${@dict.getType('sys_yes_no')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">在读学历：</label>
+                <div class="col-sm-8">
+                    <select name="readingEducationBg" class="form-control m-b" th:with="type=${@dict.getType('sys_dict_education')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">预计毕业时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="plainGraduationDate" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">所学专业：</label>
+                <div class="col-sm-8">
+                    <select name="learnMajor" class="form-control m-b" th:with="type=${@dict.getType('sys_dict_major')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">在读专业：</label>
+                <div class="col-sm-8">
+                    <input name="readingMajor" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">在读学校：</label>
+                <div class="col-sm-8">
+                    <select name="readingSchool" class="form-control m-b" th:with="type=${@dict.getType('sys_dict_school')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">其他在读学校：</label>
+                <div class="col-sm-8">
+                    <input name="otherReadingSchool" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学历：</label>
+                <div class="col-sm-8">
+                    <select name="educationBg" class="form-control m-b" th:with="type=${@dict.getType('sys_dict_education')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">毕业专业：</label>
+                <div class="col-sm-8">
+                    <select name="graduationMajor" class="form-control m-b" th:with="type=${@dict.getType('sys_dict_major')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">毕业院校：</label>
+                <div class="col-sm-8">
+                    <select name="graduationSchool" class="form-control m-b" th:with="type=${@dict.getType('sys_dict_school')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">其他毕业院校：</label>
+                <div class="col-sm-8">
+                    <input name="otherGraduationSchool" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">毕业证书标志：</label>
+                <div class="col-sm-8">
+                    <select name="isGraduationCertificate" class="form-control m-b" th:with="type=${@dict.getType('sys_yes_no')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">毕业证书编号：</label>
+                <div class="col-sm-8">
+                    <input name="educationCertificateNo" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">取得学历证书日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="achieveEducationCertificateDate" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学位证书标志：</label>
+                <div class="col-sm-8">
+                    <select name="isDegreeCertificate" class="form-control m-b" th:with="type=${@dict.getType('sys_yes_no')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学位：</label>
+                <div class="col-sm-8">
+                    <select name="degree" class="form-control m-b" th:with="type=${@dict.getType('sys_dict_degree')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学位类型：</label>
+                <div class="col-sm-8">
+                    <select name="degreeType" class="form-control m-b" th:with="type=${@dict.getType('sys_degree_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学位证书编号：</label>
+                <div class="col-sm-8">
+                    <input name="degreeCertificateNo" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">取得学位证书日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="achiveDegreeCertificateDate" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script type="text/javascript">
+        var prefix = ctx + "resident/education"
+        $("#form-education-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            debugger;
+            $("#idcardType").attr("disabled",false);
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-education-add').serialize());
+            }
+        }
+
+        $("input[name='plainGraduationDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='achieveEducationCertificateDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='achiveDegreeCertificateDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

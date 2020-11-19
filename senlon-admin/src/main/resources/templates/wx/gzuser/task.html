@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('粉丝列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-primary single disabled" onclick="updateTagidList()">
+                    <i class="fa fa-edit"></i> 打标签
+                </a>
+            </div>
+
+            <div class="col-sm-12 select-table table-striped">
+                <input type="hidden" name="tagId" id="tagId" th:value="${tagId}"/>
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('wx:gzuser:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('wx:gzuser:remove')}]];
+        var prefix = ctx + "wx/gzuser";
+
+        $(function() {
+            var options = {
+                url: prefix + "/listGzuser/"+$("#tagId").val(),
+                modalName: "粉丝",
+                columns: [{
+                    checkbox: true,
+                    formatter: function (value,row,index) {
+                        $('input:checkbox').eq(index).attr("value",row.openid);
+                    }
+                },
+                {
+                    field : 'id', 
+                    title : '序号',
+                    visible: false
+                },
+                {
+                    field : 'openid', 
+                    title : 'openid'
+                },
+                {
+                    field : 'nicknameTxt', 
+                    title : '昵称'
+                },
+                    {
+                        field : 'headimgurl',
+                        title : '用户头像',
+                        formatter: function (value, row, index) {
+                            return '<img src="'+row.headimgurl+'" style="width: 50px;height: 50px;"/>'
+                        }
+                    },
+                    {
+                        field : 'sex',
+                        title : '性别：',
+                        formatter: function(value,row,index){
+                            if(row.sex == '1'){
+                                return "男";
+                            }else if(row.sex == '2'){
+                                return "女"
+                            }else if(row.sex == '0'){
+                                return "未知";
+                            }
+                        }
+                    },
+                {
+                    field : 'subscribe', 
+                    title : '是否关注:',
+                    formatter: function (value,row,index) {
+                        if(row.subscribe == '1'){
+                            return "关注";
+                        }else if(row.subscribe == '0'){
+                            return "未关注";
+                        }
+                    }
+                },
+                {
+                    field : 'subscribeTime', 
+                    title : '关注时间'
+                },
+                {
+                    field : 'tagidList', 
+                    title : '标签id'
+                },
+                {
+                    field : 'province', 
+                    title : '省份'
+                },
+                {
+                    field : 'city', 
+                    title : '城市'
+                },
+                {
+                    field : 'country', 
+                    title : '地区'
+                }
+                /*{
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>分组</a> ');
+                        return actions.join('');
+                    }
+                }*/
+                ]
+            };
+            $.table.init(options);
+        });
+
+        function updateTagidList() {
+            var rows = $.table.selectColumns("openid");
+            if(rows.length == 0){
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            var data = {"openids":rows.join(),"tagid":$("#tagId").val()};
+            alert(JSON.stringify(data));
+            $.ajax({
+               url: prefix + "/updateTagValue",
+               type: "post",
+               data:data,
+               dataType:"json",
+               success: function(res){
+                   window.location.href = '';
+               }
+            });
+        }
+
+        function submitHandler() {
+
+        }
+
+        function getCkValue() {
+            var chk_value = '';
+            $('input[name="btSelectItem"]:checked').each(function(){
+                chk_value += $(this).parents('tr').children().eq(1).text() + ',';
+            });
+            return chk_value;
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.WeixinSubscribeMapper">
+    
+    <resultMap type="com.ss.wx.domain.WeixinSubscribe" id="WeixinSubscribeResult">
+        <result property="id"    column="ID"    />
+        <result property="jwid"    column="JWID"    />
+        <result property="msgType"    column="msg_Type"    />
+        <result property="templateId"    column="template_Id"    />
+        <result property="templateName"    column="template_Name"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectWeixinSubscribeVo">
+        select ID, JWID, msg_Type, template_Id, template_Name, create_by, create_time, update_by, update_time from weixin_subscribe
+    </sql>
+
+    <select id="selectWeixinSubscribeList" parameterType="com.ss.wx.domain.WeixinSubscribe" resultMap="WeixinSubscribeResult">
+        <include refid="selectWeixinSubscribeVo"/>
+        <where>  
+            <if test="msgType != null  and msgType != ''"> and msg_Type = #{msgType}</if>
+            <if test="templateName != null  and templateName != ''"> and template_Name like concat('%', #{templateName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectWeixinSubscribeById" parameterType="String" resultMap="WeixinSubscribeResult">
+        <include refid="selectWeixinSubscribeVo"/>
+        where ID = #{id}
+    </select>
+        
+    <insert id="insertWeixinSubscribe" parameterType="com.ss.wx.domain.WeixinSubscribe">
+        insert into weixin_subscribe
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">ID,</if>
+            <if test="jwid != null  and jwid != ''">JWID,</if>
+            <if test="msgType != null  and msgType != ''">msg_Type,</if>
+            <if test="templateId != null  and templateId != ''">template_Id,</if>
+            <if test="templateName != null  and templateName != ''">template_Name,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="jwid != null  and jwid != ''">#{jwid},</if>
+            <if test="msgType != null  and msgType != ''">#{msgType},</if>
+            <if test="templateId != null  and templateId != ''">#{templateId},</if>
+            <if test="templateName != null  and templateName != ''">#{templateName},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeixinSubscribe" parameterType="com.ss.wx.domain.WeixinSubscribe">
+        update weixin_subscribe
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="jwid != null  and jwid != ''">JWID = #{jwid},</if>
+            <if test="msgType != null  and msgType != ''">msg_Type = #{msgType},</if>
+            <if test="templateId != null  and templateId != ''">template_Id = #{templateId},</if>
+            <if test="templateName != null  and templateName != ''">template_Name = #{templateName},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteWeixinSubscribeById" parameterType="String">
+        delete from weixin_subscribe where ID = #{id}
+    </delete>
+
+    <delete id="deleteWeixinSubscribeByIds" parameterType="String">
+        delete from weixin_subscribe where ID in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.WeixinQrcodeMapper">
+    
+    <resultMap type="com.ss.wx.domain.WeixinQrcode" id="WeixinQrcodeResult">
+        <result property="id"    column="id"    />
+        <result property="actionInfo"    column="action_info"    />
+        <result property="actionName"    column="action_name"    />
+        <result property="sceneId"    column="scene_id"    />
+        <result property="sceneStr"    column="scene_str"    />
+        <result property="ticket"    column="ticket"    />
+        <result property="expireSeconds"    column="expire_seconds"    />
+        <result property="expireDate"    column="expire_date"    />
+        <result property="qrcodeUrl"    column="qrcode_url"    />
+        <result property="jwid"    column="jwid"    />
+        <result property="msgType"    column="msg_type"    />
+        <result property="textContent"    column="text_content"    />
+        <result property="actionNewsType"    column="action_news_type"    />
+        <result property="newsTitle"    column="news_title"    />
+        <result property="newsDesc"    column="news_desc"    />
+        <result property="newsImg"    column="news_img"    />
+        <result property="newsUrl"    column="news_url"    />
+        <result property="newsTemplateid"    column="news_templateid"    />
+        <result property="tags"    column="tags"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectWeixinQrcodeVo">
+        select id, action_info, action_name, scene_id, scene_str, ticket, expire_seconds, expire_date, qrcode_url, jwid, msg_type, text_content, action_news_type, news_title, news_desc, news_img, news_url, news_templateid, tags, create_by, create_time, update_by, update_time from weixin_qrcode
+    </sql>
+
+    <select id="selectWeixinQrcodeList" parameterType="com.ss.wx.domain.WeixinQrcode" resultMap="WeixinQrcodeResult">
+        <include refid="selectWeixinQrcodeVo"/>
+        <where>  
+            <if test="actionInfo != null  and actionInfo != ''"> and action_info = #{actionInfo}</if>
+            <if test="actionName != null  and actionName != ''"> and action_name like concat('%', #{actionName}, '%')</if>
+            <if test="tags != null  and tags != ''"> and tags = #{tags}</if>
+        </where>
+    </select>
+    
+    <select id="selectWeixinQrcodeById" parameterType="String" resultMap="WeixinQrcodeResult">
+        <include refid="selectWeixinQrcodeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWeixinQrcode" parameterType="com.ss.wx.domain.WeixinQrcode">
+        insert into weixin_qrcode
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="actionInfo != null  and actionInfo != ''">action_info,</if>
+            <if test="actionName != null  and actionName != ''">action_name,</if>
+            <if test="sceneId != null ">scene_id,</if>
+            <if test="sceneStr != null  and sceneStr != ''">scene_str,</if>
+            <if test="ticket != null  and ticket != ''">ticket,</if>
+            <if test="expireSeconds != null">expire_seconds,</if>
+            <if test="expireDate != null ">expire_date,</if>
+            <if test="qrcodeUrl != null  and qrcodeUrl != ''">qrcode_url,</if>
+            <if test="jwid != null  and jwid != ''">jwid,</if>
+            <if test="msgType != null  and msgType != ''">msg_type,</if>
+            <if test="textContent != null  and textContent != ''">text_content,</if>
+            <if test="actionNewsType != null  and actionNewsType != ''">action_news_type,</if>
+            <if test="newsTitle != null  and newsTitle != ''">news_title,</if>
+            <if test="newsDesc != null  and newsDesc != ''">news_desc,</if>
+            <if test="newsImg != null  and newsImg != ''">news_img,</if>
+            <if test="newsUrl != null  and newsUrl != ''">news_url,</if>
+            <if test="newsTemplateid != null  and newsTemplateid != ''">news_templateid,</if>
+            <if test="tags != null  and tags != ''">tags,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="actionInfo != null  and actionInfo != ''">#{actionInfo},</if>
+            <if test="actionName != null  and actionName != ''">#{actionName},</if>
+            <if test="sceneId != null ">#{sceneId},</if>
+            <if test="sceneStr != null  and sceneStr != ''">#{sceneStr},</if>
+            <if test="ticket != null  and ticket != ''">#{ticket},</if>
+            <if test="expireSeconds != null">#{expireSeconds},</if>
+            <if test="expireDate != null ">#{expireDate},</if>
+            <if test="qrcodeUrl != null  and qrcodeUrl != ''">#{qrcodeUrl},</if>
+            <if test="jwid != null  and jwid != ''">#{jwid},</if>
+            <if test="msgType != null  and msgType != ''">#{msgType},</if>
+            <if test="textContent != null  and textContent != ''">#{textContent},</if>
+            <if test="actionNewsType != null  and actionNewsType != ''">#{actionNewsType},</if>
+            <if test="newsTitle != null  and newsTitle != ''">#{newsTitle},</if>
+            <if test="newsDesc != null  and newsDesc != ''">#{newsDesc},</if>
+            <if test="newsImg != null  and newsImg != ''">#{newsImg},</if>
+            <if test="newsUrl != null  and newsUrl != ''">#{newsUrl},</if>
+            <if test="newsTemplateid != null  and newsTemplateid != ''">#{newsTemplateid},</if>
+            <if test="tags != null  and tags != ''">#{tags},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeixinQrcode" parameterType="com.ss.wx.domain.WeixinQrcode">
+        update weixin_qrcode
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="actionInfo != null  and actionInfo != ''">action_info = #{actionInfo},</if>
+            <if test="actionName != null  and actionName != ''">action_name = #{actionName},</if>
+            <if test="sceneId != null ">scene_id = #{sceneId},</if>
+            <if test="sceneStr != null  and sceneStr != ''">scene_str = #{sceneStr},</if>
+            <if test="ticket != null  and ticket != ''">ticket = #{ticket},</if>
+            <if test="expireSeconds != null">expire_seconds = #{expireSeconds},</if>
+            <if test="expireDate != null ">expire_date = #{expireDate},</if>
+            <if test="qrcodeUrl != null  and qrcodeUrl != ''">qrcode_url = #{qrcodeUrl},</if>
+            <if test="jwid != null  and jwid != ''">jwid = #{jwid},</if>
+            <if test="msgType != null  and msgType != ''">msg_type = #{msgType},</if>
+            <if test="textContent != null  and textContent != ''">text_content = #{textContent},</if>
+            <if test="actionNewsType != null  and actionNewsType != ''">action_news_type = #{actionNewsType},</if>
+            <if test="newsTitle != null  and newsTitle != ''">news_title = #{newsTitle},</if>
+            <if test="newsDesc != null  and newsDesc != ''">news_desc = #{newsDesc},</if>
+            <if test="newsImg != null  and newsImg != ''">news_img = #{newsImg},</if>
+            <if test="newsUrl != null  and newsUrl != ''">news_url = #{newsUrl},</if>
+            <if test="newsTemplateid != null  and newsTemplateid != ''">news_templateid = #{newsTemplateid},</if>
+            <if test="tags != null  and tags != ''">tags = #{tags},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWeixinQrcodeById" parameterType="String">
+        delete from weixin_qrcode where id = #{id}
+    </delete>
+
+    <delete id="deleteWeixinQrcodeByIds" parameterType="String">
+        delete from weixin_qrcode where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getScence" resultType="integer" parameterType="String">
+        select Max(qr.scene_id) from weixin_qrcode qr
+        where qr.jwid = #{jwid}
+        and qr.action_name = #{actionName}
+    </select>
+
+</mapper>

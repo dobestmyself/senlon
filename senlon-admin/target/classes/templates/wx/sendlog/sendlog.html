@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('发送模板消息日志列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <input type="hidden" id="taskId" name="taskId" th:value="${taskId}"/>
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <p>OPENID：</p>
+                                <input type="text" name="openid"/>
+                            </li>
+                            <li>
+                                <p>状态：</p>
+                                <select name="status">
+                                    <option value="">--请选择--</option>
+                                    <option value="0">成功</option>
+                                    <option value="1">失败</option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <!--<div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="wx:sendlog:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="wx:sendlog:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="wx:sendlog:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="wx:sendlog:export">
+                    <i class="fa fa-download"></i> 导出
+                 </a>
+            </div>-->
+            <div class="col-sm-12 select-table table-striped">
+
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('wx:sendlog:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('wx:sendlog:remove')}]];
+        var prefix = ctx + "wx/sendlog";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list/"+$("#taskId").val(),
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "发送模板消息日志",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field : 'id', 
+                    title : 'ID',
+                    visible: false
+                },
+                {
+                    field : 'openid', 
+                    title : 'OPENID'
+                },
+
+                {
+                    field : 'status', 
+                    title : '状态',
+                    formatter: function (value,row,index) {
+                        if(row.status == '0'){
+                            return "成功";
+                        }else{
+                            return "失败";
+                        }
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

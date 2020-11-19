@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.WeixinAutoresponseMapper">
+    
+    <resultMap type="com.ss.wx.domain.WeixinAutoresponse" id="WeixinAutoresponseResult">
+        <result property="id"    column="ID"    />
+        <result property="keyword"    column="keyword"    />
+        <result property="msgType"    column="msg_type"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="templateName"    column="template_name"    />
+        <result property="jwid"    column="JWID"    />
+        <result property="keywordType"    column="keyword_type"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="iswork"    column="ISWORK"    />
+    </resultMap>
+
+    <sql id="selectWeixinAutoresponseVo">
+        select ID, keyword, msg_type, template_id, template_name, JWID, keyword_type, create_by, create_time, update_by, update_time, ISWORK from weixin_autoresponse
+    </sql>
+
+    <select id="selectWeixinAutoresponseList" parameterType="com.ss.wx.domain.WeixinAutoresponse" resultMap="WeixinAutoresponseResult">
+        <include refid="selectWeixinAutoresponseVo"/>
+        <where>  
+            <if test="keyword != null  and keyword != ''"> and keyword = #{keyword}</if>
+            <if test="msgType != null  and msgType != ''"> and msg_type = #{msgType}</if>
+            <if test="templateId != null  and templateId != ''"> and template_id = #{templateId}</if>
+            <if test="templateName != null  and templateName != ''"> and template_name like concat('%', #{templateName}, '%')</if>
+            <if test="jwid != null  and jwid != ''"> and JWID = #{jwid}</if>
+            <if test="keywordType != null  and keywordType != ''"> and keyword_type = #{keywordType}</if>
+            <if test="iswork != null  and iswork != ''"> and ISWORK = #{iswork}</if>
+        </where>
+    </select>
+    
+    <select id="selectWeixinAutoresponseById" parameterType="String" resultMap="WeixinAutoresponseResult">
+        <include refid="selectWeixinAutoresponseVo"/>
+        where ID = #{id}
+    </select>
+        
+    <insert id="insertWeixinAutoresponse" parameterType="com.ss.wx.domain.WeixinAutoresponse">
+        insert into weixin_autoresponse
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">ID,</if>
+            <if test="keyword != null  and keyword != ''">keyword,</if>
+            <if test="msgType != null  and msgType != ''">msg_type,</if>
+            <if test="templateId != null  and templateId != ''">template_id,</if>
+            <if test="templateName != null  and templateName != ''">template_name,</if>
+            <if test="jwid != null  and jwid != ''">JWID,</if>
+            <if test="keywordType != null  and keywordType != ''">keyword_type,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="iswork != null  and iswork != ''">ISWORK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="keyword != null  and keyword != ''">#{keyword},</if>
+            <if test="msgType != null  and msgType != ''">#{msgType},</if>
+            <if test="templateId != null  and templateId != ''">#{templateId},</if>
+            <if test="templateName != null  and templateName != ''">#{templateName},</if>
+            <if test="jwid != null  and jwid != ''">#{jwid},</if>
+            <if test="keywordType != null  and keywordType != ''">#{keywordType},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="iswork != null  and iswork != ''">#{iswork},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeixinAutoresponse" parameterType="com.ss.wx.domain.WeixinAutoresponse">
+        update weixin_autoresponse
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="keyword != null  and keyword != ''">keyword = #{keyword},</if>
+            <if test="msgType != null  and msgType != ''">msg_type = #{msgType},</if>
+            <if test="templateId != null  and templateId != ''">template_id = #{templateId},</if>
+            <if test="templateName != null  and templateName != ''">template_name = #{templateName},</if>
+            <if test="jwid != null  and jwid != ''">JWID = #{jwid},</if>
+            <if test="keywordType != null  and keywordType != ''">keyword_type = #{keywordType},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="iswork != null  and iswork != ''">ISWORK = #{iswork},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteWeixinAutoresponseById" parameterType="String">
+        delete from weixin_autoresponse where ID = #{id}
+    </delete>
+
+    <delete id="deleteWeixinAutoresponseByIds" parameterType="String">
+        delete from weixin_autoresponse where ID in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

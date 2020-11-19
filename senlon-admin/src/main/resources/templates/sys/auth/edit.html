@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改系统权限菜单')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-auth-edit" th:object="${jwSystemAuth}">
+            <input name="id" th:field="*{id}" type="hidden">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">上一级权限编码：</label>
+                <div class="col-sm-8">
+                    <div class="input-group">
+                        <input id="treeId" name="parentAuthId" type="hidden" th:field="*{parentAuthId}" />
+                        <input class="form-control" type="text" onclick="selectAuthTree()" id="treeName" readonly="true" th:value="${jwSystemAuth.parentName == null ? '主目录' : jwSystemAuth.parentName}">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">权限名称：</label>
+                <div class="col-sm-8">
+                    <input name="authName" th:field="*{authName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">权限类型：</label>
+                <div class="col-sm-8">
+                    <select name="authType" th:value="${jwSystemAuth.authType}" class="form-control m-b">
+                        <option value="">所有</option>
+                        <option value="0" th:selected="${jwSystemAuth.authType} == 0">菜单</option>
+                        <option value="1" th:selected="${jwSystemAuth.authType} == 1">功能</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">权限控制：</label>
+                <div class="col-sm-8">
+                    <input name="authContr" th:field="*{authContr}" class="form-control" type="text">
+                </div>
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">排序：</label>
+                <div class="col-sm-8">
+                    <input name="sortNo" th:field="*{sortNo}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">图标类型：</label>
+                <div class="col-sm-8">
+                    <input id="icon" name="iconType" class="form-control" type="text" placeholder="选择图标" th:field="*{iconType}">
+                    <div class="ms-parent" style="width: 100%;">
+                        <div class="icon-drop animated flipInX" style="display: none;max-height:200px;overflow-y:auto">
+                            <div data-th-include="system/menu/icon"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/auth";
+        $("#form-auth-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-auth-edit').serialize());
+            }
+        }
+
+        $(function() {
+            $("input[name='iconType']").focus(function() {
+                $(".icon-drop").show();
+            });
+            $("#form-menu-add").click(function(event) {
+                var obj = event.srcElement || event.target;
+                if (!$(obj).is("input[name='iconType']")) {
+                    $(".icon-drop").hide();
+                }
+            });
+            $(".icon-drop").find(".ico-list i").on("click", function() {
+                $('#icon').val($(this).attr('class'));
+            });
+            $('input').on('ifChecked', function(event){
+                var menuType = $(event.target).val();
+                if (menuType == "M") {
+                    $("#url").parents(".form-group").hide();
+                    $("#perms").parents(".form-group").hide();
+                    $("#icon").parents(".form-group").show();
+                    $("#target").parents(".form-group").hide();
+                    $("input[name='visible']").parents(".form-group").show();
+                } else if (menuType == "C") {
+                    $("#url").parents(".form-group").show();
+                    $("#perms").parents(".form-group").show();
+                    $("#icon").parents(".form-group").show();
+                    $("#target").parents(".form-group").show();
+                    $("input[name='visible']").parents(".form-group").show();
+                } else if (menuType == "F") {
+                    $("#url").parents(".form-group").hide();
+                    $("#perms").parents(".form-group").show();
+                    $("#icon").parents(".form-group").hide();
+                    $("#target").parents(".form-group").hide();
+                    $("input[name='visible']").parents(".form-group").hide();
+                }
+            });
+        });
+
+        /*系统权限菜单-新增-选择父部门树*/
+        function selectAuthTree() {
+            var options = {
+                title: '系统权限菜单选择',
+                width: "380",
+                url: prefix + "/selectAuthTree/" + $("#treeId").val(),
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        }
+
+        function doSubmit(index, layero){
+            var body = layer.getChildFrame('body', index);
+               $("#treeId").val(body.find('#treeId').val());
+               $("#treeName").val(body.find('#treeName').val());
+               layer.close(index);
+        }
+    </script>
+</body>
+</html>

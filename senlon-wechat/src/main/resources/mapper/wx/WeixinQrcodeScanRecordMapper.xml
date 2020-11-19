@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.WeixinQrcodeScanRecordMapper">
+    
+    <resultMap type="com.ss.wx.domain.WeixinQrcodeScanRecord" id="WeixinQrcodeScanRecordResult">
+        <result property="id"    column="id"    />
+        <result property="openid"    column="openid"    />
+        <result property="scanTime"    column="scan_time"    />
+        <result property="sceneId"    column="scene_id"    />
+        <result property="jwid"    column="jwid"    />
+        <result property="isScanSubscribe"    column="is_scan_subscribe"    />
+    </resultMap>
+
+    <sql id="selectWeixinQrcodeScanRecordVo">
+        select id, openid, scan_time, scene_id, jwid, is_scan_subscribe from weixin_qrcode_scan_record
+    </sql>
+
+    <select id="selectWeixinQrcodeScanRecordList" parameterType="com.ss.wx.domain.WeixinQrcodeScanRecord" resultMap="WeixinQrcodeScanRecordResult">
+        <include refid="selectWeixinQrcodeScanRecordVo"/>
+        <where>  
+            <if test="isScanSubscribe != null  and isScanSubscribe != ''"> and is_scan_subscribe = #{isScanSubscribe}</if>
+        </where>
+    </select>
+    
+    <select id="selectWeixinQrcodeScanRecordById" parameterType="String" resultMap="WeixinQrcodeScanRecordResult">
+        <include refid="selectWeixinQrcodeScanRecordVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWeixinQrcodeScanRecord" parameterType="com.ss.wx.domain.WeixinQrcodeScanRecord">
+        insert into weixin_qrcode_scan_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="openid != null  and openid != ''">openid,</if>
+            <if test="scanTime != null ">scan_time,</if>
+            <if test="sceneId != null  and sceneId != ''">scene_id,</if>
+            <if test="jwid != null  and jwid != ''">jwid,</if>
+            <if test="isScanSubscribe != null  and isScanSubscribe != ''">is_scan_subscribe,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="openid != null  and openid != ''">#{openid},</if>
+            <if test="scanTime != null ">#{scanTime},</if>
+            <if test="sceneId != null  and sceneId != ''">#{sceneId},</if>
+            <if test="jwid != null  and jwid != ''">#{jwid},</if>
+            <if test="isScanSubscribe != null  and isScanSubscribe != ''">#{isScanSubscribe},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeixinQrcodeScanRecord" parameterType="com.ss.wx.domain.WeixinQrcodeScanRecord">
+        update weixin_qrcode_scan_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="openid != null  and openid != ''">openid = #{openid},</if>
+            <if test="scanTime != null ">scan_time = #{scanTime},</if>
+            <if test="sceneId != null  and sceneId != ''">scene_id = #{sceneId},</if>
+            <if test="jwid != null  and jwid != ''">jwid = #{jwid},</if>
+            <if test="isScanSubscribe != null  and isScanSubscribe != ''">is_scan_subscribe = #{isScanSubscribe},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWeixinQrcodeScanRecordById" parameterType="String">
+        delete from weixin_qrcode_scan_record where id = #{id}
+    </delete>
+
+    <delete id="deleteWeixinQrcodeScanRecordByIds" parameterType="String">
+        delete from weixin_qrcode_scan_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

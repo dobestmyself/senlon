@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.resident.mapper.ResidentEducationMapper">
+    
+    <resultMap type="com.ss.resident.domain.ResidentEducation" id="ResidentEducationResult">
+        <result property="id"    column="id"    />
+        <result property="idcardType"    column="idcard_type"    />
+        <result property="idcard"    column="idcard"    />
+        <result property="isDayEducation"    column="is_day_education"    />
+        <result property="isReading"    column="is_reading"    />
+        <result property="readingEducationBg"    column="reading_education_bg"    />
+        <result property="plainGraduationDate"    column="plain_graduation_date"    />
+        <result property="learnMajor"    column="learn_major"    />
+        <result property="readingMajor"    column="reading_major"    />
+        <result property="readingSchool"    column="reading_school"    />
+        <result property="otherReadingSchool"    column="other_reading_school"    />
+        <result property="educationBg"    column="education_bg"    />
+        <result property="graduationMajor"    column="graduation_major"    />
+        <result property="graduationSchool"    column="graduation_school"    />
+        <result property="otherGraduationSchool"    column="other_graduation_school"    />
+        <result property="isGraduationCertificate"    column="is_graduation_certificate"    />
+        <result property="educationCertificateNo"    column="education_certificate_no"    />
+        <result property="achieveEducationCertificateDate"    column="achieve_education_certificate_date"    />
+        <result property="isDegreeCertificate"    column="is_degree_certificate"    />
+        <result property="degree"    column="degree"    />
+        <result property="degreeType"    column="degree_type"    />
+        <result property="degreeCertificateNo"    column="degree_certificate_no"    />
+        <result property="achiveDegreeCertificateDate"    column="achive_degree_certificate_date"    />
+        <result property="residentId" column="resident_id"/>
+    </resultMap>
+
+    <sql id="selectResidentEducationVo">
+        select id, idcard_type, idcard, is_day_education, is_reading, reading_education_bg, plain_graduation_date, learn_major, reading_major, reading_school, other_reading_school, education_bg, graduation_major, graduation_school, other_graduation_school, is_graduation_certificate, education_certificate_no, achieve_education_certificate_date, is_degree_certificate, degree, degree_type, degree_certificate_no, achive_degree_certificate_date,resident_id from resident_education
+    </sql>
+
+    <select id="selectResidentEducationList" parameterType="com.ss.resident.domain.ResidentEducation" resultMap="ResidentEducationResult">
+        <include refid="selectResidentEducationVo"/>
+        <where>  
+            <if test="idcard != null  and idcard != ''"> and idcard like concat('%', #{idcard}, '%')</if>
+            <if test="educationBg != null  and educationBg != ''"> and education_bg = #{educationBg}</if>
+            <if test="graduationMajor != null  and graduationMajor != ''"> and graduation_major = #{graduationMajor}</if>
+            <if test="degree != null  and degree != ''"> and degree = #{degree}</if>
+            <if test="degreeType != null  and degreeType != ''"> and degree_type = #{degreeType}</if>
+        </where>
+    </select>
+    
+    <select id="selectResidentEducationById" parameterType="Long" resultMap="ResidentEducationResult">
+        <include refid="selectResidentEducationVo"/>
+        where id = #{id}
+    </select>
+    <insert id="insertResidentEducation" parameterType="com.ss.resident.domain.ResidentEducation" useGeneratedKeys="true" keyProperty="id">
+        insert into resident_education
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="idcardType != null  and idcardType != ''">idcard_type,</if>
+            <if test="idcard != null  and idcard != ''">idcard,</if>
+            <if test="isDayEducation != null  and isDayEducation != ''">is_day_education,</if>
+            <if test="isReading != null  and isReading != ''">is_reading,</if>
+            <if test="readingEducationBg != null  and readingEducationBg != ''">reading_education_bg,</if>
+            <if test="plainGraduationDate != null ">plain_graduation_date,</if>
+            <if test="learnMajor != null  and learnMajor != ''">learn_major,</if>
+            <if test="readingMajor != null  and readingMajor != ''">reading_major,</if>
+            <if test="readingSchool != null  and readingSchool != ''">reading_school,</if>
+            <if test="otherReadingSchool != null  and otherReadingSchool != ''">other_reading_school,</if>
+            <if test="educationBg != null  and educationBg != ''">education_bg,</if>
+            <if test="graduationMajor != null  and graduationMajor != ''">graduation_major,</if>
+            <if test="graduationSchool != null  and graduationSchool != ''">graduation_school,</if>
+            <if test="otherGraduationSchool != null  and otherGraduationSchool != ''">other_graduation_school,</if>
+            <if test="isGraduationCertificate != null  and isGraduationCertificate != ''">is_graduation_certificate,</if>
+            <if test="educationCertificateNo != null  and educationCertificateNo != ''">education_certificate_no,</if>
+            <if test="achieveEducationCertificateDate != null ">achieve_education_certificate_date,</if>
+            <if test="isDegreeCertificate != null  and isDegreeCertificate != ''">is_degree_certificate,</if>
+            <if test="degree != null  and degree != ''">degree,</if>
+            <if test="degreeType != null  and degreeType != ''">degree_type,</if>
+            <if test="degreeCertificateNo != null  and degreeCertificateNo != ''">degree_certificate_no,</if>
+            <if test="achiveDegreeCertificateDate != null ">achive_degree_certificate_date,</if>
+
+            <if test="residentId!=null and residentId!=0">resident_id,</if>
+
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="idcardType != null  and idcardType != ''">#{idcardType},</if>
+            <if test="idcard != null  and idcard != ''">#{idcard},</if>
+            <if test="isDayEducation != null  and isDayEducation != ''">#{isDayEducation},</if>
+            <if test="isReading != null  and isReading != ''">#{isReading},</if>
+            <if test="readingEducationBg != null  and readingEducationBg != ''">#{readingEducationBg},</if>
+            <if test="plainGraduationDate != null ">#{plainGraduationDate},</if>
+            <if test="learnMajor != null  and learnMajor != ''">#{learnMajor},</if>
+            <if test="readingMajor != null  and readingMajor != ''">#{readingMajor},</if>
+            <if test="readingSchool != null  and readingSchool != ''">#{readingSchool},</if>
+            <if test="otherReadingSchool != null  and otherReadingSchool != ''">#{otherReadingSchool},</if>
+            <if test="educationBg != null  and educationBg != ''">#{educationBg},</if>
+            <if test="graduationMajor != null  and graduationMajor != ''">#{graduationMajor},</if>
+            <if test="graduationSchool != null  and graduationSchool != ''">#{graduationSchool},</if>
+            <if test="otherGraduationSchool != null  and otherGraduationSchool != ''">#{otherGraduationSchool},</if>
+            <if test="isGraduationCertificate != null  and isGraduationCertificate != ''">#{isGraduationCertificate},</if>
+            <if test="educationCertificateNo != null  and educationCertificateNo != ''">#{educationCertificateNo},</if>
+            <if test="achieveEducationCertificateDate != null ">#{achieveEducationCertificateDate},</if>
+            <if test="isDegreeCertificate != null  and isDegreeCertificate != ''">#{isDegreeCertificate},</if>
+            <if test="degree != null  and degree != ''">#{degree},</if>
+            <if test="degreeType != null  and degreeType != ''">#{degreeType},</if>
+            <if test="degreeCertificateNo != null  and degreeCertificateNo != ''">#{degreeCertificateNo},</if>
+            <if test="achiveDegreeCertificateDate != null ">#{achiveDegreeCertificateDate},</if>
+            <if test="residentId!=null and residentId!=0">#{residentId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateResidentEducation" parameterType="com.ss.resident.domain.ResidentEducation">
+        update resident_education
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="idcardType != null  and idcardType != ''">idcard_type = #{idcardType},</if>
+            <if test="idcard != null  and idcard != ''">idcard = #{idcard},</if>
+            <if test="isDayEducation != null  and isDayEducation != ''">is_day_education = #{isDayEducation},</if>
+            <if test="isReading != null  and isReading != ''">is_reading = #{isReading},</if>
+            <if test="readingEducationBg != null  and readingEducationBg != ''">reading_education_bg = #{readingEducationBg},</if>
+            <if test="plainGraduationDate != null ">plain_graduation_date = #{plainGraduationDate},</if>
+            <if test="learnMajor != null  and learnMajor != ''">learn_major = #{learnMajor},</if>
+            <if test="readingMajor != null  and readingMajor != ''">reading_major = #{readingMajor},</if>
+            <if test="readingSchool != null  and readingSchool != ''">reading_school = #{readingSchool},</if>
+            <if test="otherReadingSchool != null  and otherReadingSchool != ''">other_reading_school = #{otherReadingSchool},</if>
+            <if test="educationBg != null  and educationBg != ''">education_bg = #{educationBg},</if>
+            <if test="graduationMajor != null  and graduationMajor != ''">graduation_major = #{graduationMajor},</if>
+            <if test="graduationSchool != null  and graduationSchool != ''">graduation_school = #{graduationSchool},</if>
+            <if test="otherGraduationSchool != null  and otherGraduationSchool != ''">other_graduation_school = #{otherGraduationSchool},</if>
+            <if test="isGraduationCertificate != null  and isGraduationCertificate != ''">is_graduation_certificate = #{isGraduationCertificate},</if>
+            <if test="educationCertificateNo != null  and educationCertificateNo != ''">education_certificate_no = #{educationCertificateNo},</if>
+            <if test="achieveEducationCertificateDate != null ">achieve_education_certificate_date = #{achieveEducationCertificateDate},</if>
+            <if test="isDegreeCertificate != null  and isDegreeCertificate != ''">is_degree_certificate = #{isDegreeCertificate},</if>
+            <if test="degree != null  and degree != ''">degree = #{degree},</if>
+            <if test="degreeType != null  and degreeType != ''">degree_type = #{degreeType},</if>
+            <if test="degreeCertificateNo != null  and degreeCertificateNo != ''">degree_certificate_no = #{degreeCertificateNo},</if>
+            <if test="achiveDegreeCertificateDate != null ">achive_degree_certificate_date = #{achiveDegreeCertificateDate},</if>
+            <if test="residentId!=null and residentId!=0">resident_id=#{residentId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteResidentEducationById" parameterType="Long">
+        delete from resident_education where id = #{id}
+    </delete>
+
+    <delete id="deleteResidentEducationByIds" parameterType="String">
+        delete from resident_education where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

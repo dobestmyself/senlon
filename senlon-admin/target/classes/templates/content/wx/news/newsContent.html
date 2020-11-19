@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div style="border:1px solid black;width: 50%;margin-left: auto;margin-right: auto;height: 100%" id="content" th:text="${newsItem.content}">
+
+    </div>
+</body>
+<script type="text/javascript" th:src="@{/plug-in/js/jquery-1.9.1.min.js}"></script>
+<script type="text/javascript">
+    $(function () {
+        var neirong = $("#content").text()
+        $("#content").html(neirong);
+    })
+</script>
+</html>

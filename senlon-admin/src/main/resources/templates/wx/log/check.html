@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('群发消息审核')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 select-table table-striped">
+                <form class="form-horizontal m" id="form-log-check">
+                    <input type="hidden" name="id" th:value="${id}"/>
+                    <table id="bootstrap-table">
+                        <tr>
+                            <td>审核状态：</td>
+                            <td><input type="radio" name="auditStatus" onchange="checkStatus('1')" value="1" id="pass"/>通过</td>
+                            <td><input type="radio" name="auditStatus" onchange="checkStatus('2')" value="2" id="unpass"/>未通过</td>
+                        </tr>
+                        <tr id="ywzz">
+                            <td>原文转载：</td>
+                            <td><input type="radio" name="sendIgnoreReprint" value="1" id="allow"/>允许</td>
+                            <td><input type="radio" name="sendIgnoreReprint" value="0" id="forbid"/>禁止</td>
+                        </tr>
+                    </table>
+                    <p style="font-size: 16px;font-weight: bold;color: red;">
+                        (允许:原创作者允许转载该文章,则可以进行群发<br/>
+                        禁止:原创作者禁止转载该文章,则不能进行群发)
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        function checkStatus() {
+            if($("input[name='auditStatus']:checked").val() == "2"){
+                $("#ywzz").css("display","none");
+            }
+        }
+
+        $("#form-log-check").validate({
+            focusCleanup: true
+        });
+        function submitHandler(){
+            if($.validate.form()){
+                $.operate.save(ctx + 'wx/log/check',$("#form-log-check").serialize());
+            }
+        }
+    </script>
+</body>
+</html>

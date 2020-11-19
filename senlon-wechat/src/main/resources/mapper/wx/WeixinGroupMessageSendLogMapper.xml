@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.WeixinGroupMessageSendLogMapper">
+    
+    <resultMap type="com.ss.wx.domain.WeixinGroupMessageSendLog" id="WeixinGroupMessageSendLogResult">
+        <result property="id"    column="id"    />
+        <result property="msgType"    column="msg_type"    />
+        <result property="groupId"    column="group_id"    />
+        <result property="isToAll"    column="is_to_all"    />
+        <result property="param"    column="param"    />
+        <result property="jwid"    column="jwid"    />
+        <result property="auditName"    column="audit_name"    />
+        <result property="auditDate"    column="audit_date"    />
+        <result property="auditRemark"    column="audit_remark"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="sendDate"    column="send_date"    />
+        <result property="sendStatus"    column="send_status"    />
+        <result property="sendResult"    column="send_result"    />
+        <result property="sendJwid"    column="send_jwid"    />
+        <result property="sendJwidName"    column="send_jwid_name"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="sendType"    column="send_type"    />
+        <result property="sendTaskTime"    column="send_task_time"    />
+        <result property="tagId"    column="tag_id"    />
+        <result property="sendIgnoreReprint"    column="send_ignore_reprint"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectWeixinGroupMessageSendLogVo">
+        select id, msg_type, group_id, is_to_all, param, jwid, audit_name, audit_date, audit_remark, audit_status, send_date, send_status, send_result, send_jwid, send_jwid_name, template_id, send_type, send_task_time, tag_id, send_ignore_reprint, create_by, create_time from weixin_group_message_send_log
+    </sql>
+
+    <select id="selectWeixinGroupMessageSendLogList" parameterType="com.ss.wx.domain.WeixinGroupMessageSendLog" resultMap="WeixinGroupMessageSendLogResult">
+        <include refid="selectWeixinGroupMessageSendLogVo"/>
+        <where>  
+            <if test="msgType != null  and msgType != ''"> and msg_type = #{msgType}</if>
+            <if test="groupId != null  and groupId != ''"> and group_id = #{groupId}</if>
+            <if test="isToAll != null  and isToAll != ''"> and is_to_all = #{isToAll}</if>
+            <if test="param != null  and param != ''"> and param = #{param}</if>
+            <if test="jwid != null  and jwid != ''"> and jwid = #{jwid}</if>
+            <if test="auditName != null  and auditName != ''"> and audit_name like concat('%', #{auditName}, '%')</if>
+            <if test="auditDate != null "> and audit_date = #{auditDate}</if>
+            <if test="auditRemark != null  and auditRemark != ''"> and audit_remark = #{auditRemark}</if>
+            <if test="auditStatus != null  and auditStatus != ''"> and audit_status = #{auditStatus}</if>
+            <if test="sendDate != null "> and send_date = #{sendDate}</if>
+            <if test="sendStatus != null  and sendStatus != ''"> and send_status = #{sendStatus}</if>
+            <if test="sendResult != null  and sendResult != ''"> and send_result = #{sendResult}</if>
+            <if test="sendJwid != null  and sendJwid != ''"> and send_jwid = #{sendJwid}</if>
+            <if test="sendJwidName != null  and sendJwidName != ''"> and send_jwid_name like concat('%', #{sendJwidName}, '%')</if>
+            <if test="templateId != null  and templateId != ''"> and template_id = #{templateId}</if>
+            <if test="sendType != null  and sendType != ''"> and send_type = #{sendType}</if>
+            <if test="sendTaskTime != null "> and send_task_time = #{sendTaskTime}</if>
+            <if test="tagId != null  and tagId != ''"> and tag_id = #{tagId}</if>
+            <if test="sendIgnoreReprint != null  and sendIgnoreReprint != ''"> and send_ignore_reprint = #{sendIgnoreReprint}</if>
+        </where>
+    </select>
+    
+    <select id="selectWeixinGroupMessageSendLogById" parameterType="String" resultMap="WeixinGroupMessageSendLogResult">
+        <include refid="selectWeixinGroupMessageSendLogVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWeixinGroupMessageSendLog" parameterType="com.ss.wx.domain.WeixinGroupMessageSendLog">
+        insert into weixin_group_message_send_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="msgType != null  and msgType != ''">msg_type,</if>
+            <if test="groupId != null  and groupId != ''">group_id,</if>
+            <if test="isToAll != null  and isToAll != ''">is_to_all,</if>
+            <if test="param != null  and param != ''">param,</if>
+            <if test="jwid != null  and jwid != ''">jwid,</if>
+            <if test="auditName != null  and auditName != ''">audit_name,</if>
+            <if test="auditDate != null ">audit_date,</if>
+            <if test="auditRemark != null  and auditRemark != ''">audit_remark,</if>
+            <if test="auditStatus != null  and auditStatus != ''">audit_status,</if>
+            <if test="sendDate != null ">send_date,</if>
+            <if test="sendStatus != null  and sendStatus != ''">send_status,</if>
+            <if test="sendResult != null  and sendResult != ''">send_result,</if>
+            <if test="sendJwid != null  and sendJwid != ''">send_jwid,</if>
+            <if test="sendJwidName != null  and sendJwidName != ''">send_jwid_name,</if>
+            <if test="templateId != null  and templateId != ''">template_id,</if>
+            <if test="sendType != null  and sendType != ''">send_type,</if>
+            <if test="sendTaskTime != null ">send_task_time,</if>
+            <if test="tagId != null  and tagId != ''">tag_id,</if>
+            <if test="sendIgnoreReprint != null  and sendIgnoreReprint != ''">send_ignore_reprint,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="msgType != null  and msgType != ''">#{msgType},</if>
+            <if test="groupId != null  and groupId != ''">#{groupId},</if>
+            <if test="isToAll != null  and isToAll != ''">#{isToAll},</if>
+            <if test="param != null  and param != ''">#{param},</if>
+            <if test="jwid != null  and jwid != ''">#{jwid},</if>
+            <if test="auditName != null  and auditName != ''">#{auditName},</if>
+            <if test="auditDate != null ">#{auditDate},</if>
+            <if test="auditRemark != null  and auditRemark != ''">#{auditRemark},</if>
+            <if test="auditStatus != null  and auditStatus != ''">#{auditStatus},</if>
+            <if test="sendDate != null ">#{sendDate},</if>
+            <if test="sendStatus != null  and sendStatus != ''">#{sendStatus},</if>
+            <if test="sendResult != null  and sendResult != ''">#{sendResult},</if>
+            <if test="sendJwid != null  and sendJwid != ''">#{sendJwid},</if>
+            <if test="sendJwidName != null  and sendJwidName != ''">#{sendJwidName},</if>
+            <if test="templateId != null  and templateId != ''">#{templateId},</if>
+            <if test="sendType != null  and sendType != ''">#{sendType},</if>
+            <if test="sendTaskTime != null ">#{sendTaskTime},</if>
+            <if test="tagId != null  and tagId != ''">#{tagId},</if>
+            <if test="sendIgnoreReprint != null  and sendIgnoreReprint != ''">#{sendIgnoreReprint},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeixinGroupMessageSendLog" parameterType="com.ss.wx.domain.WeixinGroupMessageSendLog">
+        update weixin_group_message_send_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="msgType != null  and msgType != ''">msg_type = #{msgType},</if>
+            <if test="groupId != null  and groupId != ''">group_id = #{groupId},</if>
+            <if test="isToAll != null  and isToAll != ''">is_to_all = #{isToAll},</if>
+            <if test="param != null  and param != ''">param = #{param},</if>
+            <if test="jwid != null  and jwid != ''">jwid = #{jwid},</if>
+            <if test="auditName != null  and auditName != ''">audit_name = #{auditName},</if>
+            <if test="auditDate != null ">audit_date = #{auditDate},</if>
+            <if test="auditRemark != null  and auditRemark != ''">audit_remark = #{auditRemark},</if>
+            <if test="auditStatus != null  and auditStatus != ''">audit_status = #{auditStatus},</if>
+            <if test="sendDate != null ">send_date = #{sendDate},</if>
+            <if test="sendStatus != null  and sendStatus != ''">send_status = #{sendStatus},</if>
+            <if test="sendResult != null  and sendResult != ''">send_result = #{sendResult},</if>
+            <if test="sendJwid != null  and sendJwid != ''">send_jwid = #{sendJwid},</if>
+            <if test="sendJwidName != null  and sendJwidName != ''">send_jwid_name = #{sendJwidName},</if>
+            <if test="templateId != null  and templateId != ''">template_id = #{templateId},</if>
+            <if test="sendType != null  and sendType != ''">send_type = #{sendType},</if>
+            <if test="sendTaskTime != null ">send_task_time = #{sendTaskTime},</if>
+            <if test="tagId != null  and tagId != ''">tag_id = #{tagId},</if>
+            <if test="sendIgnoreReprint != null  and sendIgnoreReprint != ''">send_ignore_reprint = #{sendIgnoreReprint},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWeixinGroupMessageSendLogById" parameterType="String">
+        delete from weixin_group_message_send_log where id = #{id}
+    </delete>
+
+    <delete id="deleteWeixinGroupMessageSendLogByIds" parameterType="String">
+        delete from weixin_group_message_send_log where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+	<head>
+		<link th:href="@{/css/plugins/bootstrap-table/bootstrap-table.min.css}" href="../../css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+		<link th:href="@{/css/bootstrap.min.css}" href="../../css/bootstrap.min.css" rel="stylesheet">
+		<link th:href="@{/css/font-awesome.min.css?v=4.4.0}" href="../../css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+		<link th:href="@{/ajax/libs/bootstrap-select/bootstrap-select.min.css}" href="../../ajax/libs/bootstrap-select/bootstrap-select.min.css" rel="stylesheet">
+		<!--<link th:href="@{/senlon/css/sl-ui.css}" href="../../senlon/css/sl-ui.css" rel="stylesheet">-->
+		<link th:href="@{/layui/css/layui.css}" rel="stylesheet"/>
+		
+		<script th:src="@{/js/jquery.min.js}" src="../../js/jquery.min.js"></script>
+		<script th:src="@{/js/bootstrap.min.js}" src="../../js/bootstrap.min.js"></script>
+		<script th:src="@{/ajax/libs/bootstrap-table/extensions/export/tableExport.js}" src="../../ajax/libs/bootstrap-table/extensions/export/tableExport.js"></script>
+		<script th:src="@{/ajax/libs/bootstrap-table/bootstrap-table.min.js}" src="../../ajax/libs/bootstrap-table/bootstrap-table.min.js"></script>
+		<script th:src="@{/ajax/libs/bootstrap-select/bootstrap-select.min.js}" src="../../ajax/libs/bootstrap-select/bootstrap-select.min.js"></script>
+		<script th:src="@{/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}" src="../../js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+		<script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+		<script th:src="@{/ajax/libs/layui/layui.js}"></script>
+		<script th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
+		<script th:src="@{/js/sl-ui.js}" src="../../js/sl-ui.js"></script>
+		<style>
+		  .select,
+		  #locale {
+			width: 100%;
+		  }
+		  .like {
+			margin-right: 10px;
+		  }
+		</style>
+	</head>
+	<body style="padding:20px;">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form role="form" class="form-inline">
+							<div class="form-group">
+								<label>用户名:</label>
+								<input type="text" placeholder="请输入用户名" id="loginName" name="loginName" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>手机号码:</label>
+								<input type="text" placeholder="请输入手机号码" id="phonenumber" name="phonenumber" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>用户状态:</label>
+								<select name="status" class="selectpicker form-control" data-live-search="true">
+									<option selected>所有</option>
+									<option>启用</option>
+									<option>禁用</option>
+								</select>
+							</div>
+							<a class="btn btn-primary" href=""><i class="fa fa-search"></i>搜索
+							</a>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="toolbar" style="margin-top:10px;">
+			<a class="btn btn-success" href="">
+				<i class="fa fa-plus"></i> 新增
+			</a>
+			 <a class="btn btn-primary single disabled" href="">
+				<i class="fa fa-edit"></i> 修改
+			</a>
+			<a class="btn btn-danger multiple disabled" href="">
+				<i class="fa fa-remove"></i> 删除
+			</a>
+			<a class="btn btn-info" href="">
+				<i class="fa fa-upload"></i> 导入
+			</a>
+			<a class="btn btn-warning" href="">
+				<i class="fa fa-download"></i> 导出
+			</a>
+		</div>
+		<table
+		  id="bootstrap-table"
+		  data-toolbar="#toolbar"
+		  data-search="false"
+		  data-show-refresh="true"
+		  data-show-toggle="true"
+		  data-show-fullscreen="true"
+		  data-show-columns="true"
+		  data-show-columns-toggle-all="true"
+		  
+		  data-show-export="true"
+		  data-click-to-select="true"
+		  
+		  data-minimum-count-columns="2"
+		  data-show-pagination-switch="true"
+		  data-pagination="true"
+		  data-id-field="id"
+		  data-page-list="[10, 25, 50, 100, all]"
+		  data-side-pagination="server"
+		  data-url="/system/user/list"
+		  >
+		</table>
+		<!-- data-detail-view="true"     data-detail-formatter="detailFormatter"  data-response-handler="responseHandler"-->
+
+		<script th:inline="javascript">
+			var ctx = [[@{/}]];
+			var editFlag = [[${@permission.hasPermi('system:user:edit')}]];
+			/*var removeFlag = [[${@permission.hasPermi('system:user:remove')}]];
+			var resetPwdFlag = [[${@permission.hasPermi('system:user:resetPwd')}]];*/
+		</script>
+
+		<script>
+		  var $table = $('#bootstrap-table')
+		  var $remove = $('#remove')
+		  var selections = []
+
+		  function getIdSelections() {
+			return $.map($table.bootstrapTable('getSelections'), function (row) {
+			  return row.id
+			})
+		  }
+
+		  /*function responseHandler(res) {
+			$.each(res.rows, function (i, row) {
+			  row.state = $.inArray(row.id, selections) !== -1
+			})
+			return res
+		  }*/
+
+		  /*function detailFormatter(index, row) {
+			var html = []
+			$.each(row, function (key, value) {
+			  html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+			})
+			return html.join('')
+		  }*/
+
+		  function operateFormatter(value, row, index) {
+			return [
+			  '<a class="like" href="javascript:void(0)" title="Like">',
+			  '<i class="fa fa-edit"></i> 编辑',
+			  '</a>  ',
+			  '<a class="remove" href="javascript:void(0)" title="Remove">',
+			  '<i class="fa fa-trash"></i> 删除',
+			  '</a>'
+			].join('')
+		  }
+
+		  window.operateEvents = {
+			'click .like': function (e, value, row, index) {
+			  alert('You click like action, row: ' + JSON.stringify(row))
+			},
+			'click .remove': function (e, value, row, index) {
+			  $table.bootstrapTable('remove', {
+				field: 'id',
+				values: [row.id]
+			  })
+			}
+		  }
+
+		  function initTable() {
+			$table.bootstrapTable('destroy').bootstrapTable({
+			  height: 550,
+			  locale: 'zh-CN',
+			  columns: [
+				[{
+				  field: 'state',
+				  checkbox: true,
+				  align: 'center',
+				  valign: 'middle'
+				}, {
+				  title: '用户ID',
+				  field: 'userId',
+				  align: 'center',
+				  valign: 'middle',
+				  sortable: true
+				}, {
+				  field: 'loginName',
+				  title: '登录名称',
+				  sortable: true,
+				  align: 'center'
+				}, {
+				  field: 'userName',
+				  title: '用户名称',
+				  sortable: true,
+				  align: 'center'
+				},{
+			  		field: 'dept.deptName',
+					title: '部门'
+				},{
+					field: 'email',
+					title:'邮箱',
+					visible: false
+				},{
+					field: 'phonenumber',
+					title: '手机'
+				},{
+			  		visible: editFlag =='hidden' ? false : true,
+					title: '用户状态',
+					align: 'center',
+					formatter:function(value,row,index){
+						return statusTools(row);
+					}
+				},{
+					field: 'createTime',
+					title: '创建时间',
+					sortable: true
+				},{
+				  field: 'operate',
+				  title: '操作',
+				  align: 'center',
+				  clickToSelect: false,
+				  events: window.operateEvents,
+				  formatter: operateFormatter
+				}]
+			  ]
+			})
+			$table.on('check.bs.table uncheck.bs.table ' +
+			  'check-all.bs.table uncheck-all.bs.table',
+			function () {
+			  $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
+
+			  // save your data, here just save the current page
+			  selections = getIdSelections()
+			  // push or splice the selections if you want to save all data selections
+			})
+			$table.on('all.bs.table', function (e, name, args) {
+			  console.log(name, args)
+			})
+			$remove.click(function () {
+			  var ids = getIdSelections()
+			  $table.bootstrapTable('remove', {
+				field: 'id',
+				values: ids
+			  })
+			  $remove.prop('disabled', true)
+			})
+		  }
+
+		  $(function() {
+			initTable()
+
+			$('#locale').change(initTable)
+		  })
+		</script>
+		<script type="text/javascript">
+			var prefix = ctx + "system/user";
+			$(window).on('load',function(){
+				$('.selectpicker').selectpicker({
+					'selectText':'cat'
+				});
+			});
+			/*用户状态显示*/
+			function statusTools(row) {
+				if(row.status == 1){
+					return '<i class=\"fa fa-toggle-off text-info fa-2x\" onclick="enable(\'' + row.userId + '\')"></i> ';
+				}else {
+					return '<i class=\"fa fa-toggle-on text-info fa-2x\" onclick="disable(\'' + row.userId + '\')"></i> ';
+				}
+			}
+			/*用户管理-停用*/
+			function disable(userId) {
+				$.modal.confirm("确认要停用该用户吗？",function(){
+					$.operate.post(prefix + "/changeStatus",{"userId":userId,"status":1});
+				})
+			}
+			/*用户管理-启用*/
+			function enable(userId){
+				$.modal.confirm("确定要启用该用户吗？",function(){
+					$.operate.post(prefix + "/changeStatus",{"userId":userId,"status":0})
+				});
+			}
+		</script>
+
+
+	</body>
+</html>

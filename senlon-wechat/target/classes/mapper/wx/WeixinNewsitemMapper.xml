@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.wx.mapper.WeixinNewsitemMapper">
+    
+    <resultMap type="com.ss.wx.domain.WeixinNewsitem" id="WeixinNewsitemResult">
+        <result property="id"    column="id"    />
+        <result property="newstemplateId"    column="newstemplate_id"    />
+        <result property="thumbMediaId"    column="thumb_media_id"    />
+        <result property="title"    column="title"    />
+        <result property="author"    column="author"    />
+        <result property="imagePath"    column="image_path"    />
+        <result property="content"    column="content"    />
+        <result property="description"    column="description"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="newType"    column="new_type"    />
+        <result property="url"    column="url"    />
+        <result property="externalUrl"    column="external_url"    />
+        <result property="showCoverPic"    column="show_cover_pic"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectWeixinNewsitemVo">
+        select id, newstemplate_id, thumb_media_id, title, author, image_path, content, description, order_no, new_type, url, external_url, show_cover_pic, create_by, create_time, update_by, update_time from weixin_newsitem
+    </sql>
+
+    <select id="selectWeixinNewsitemList" parameterType="com.ss.wx.domain.WeixinNewsitem" resultMap="WeixinNewsitemResult">
+        <include refid="selectWeixinNewsitemVo"/>
+        <where>
+            <if test="newstemplateId != null and newstemplateId != ''">
+                and newstemplate_id = #{newstemplateId}
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectWeixinNewsitemById" parameterType="String" resultMap="WeixinNewsitemResult">
+        <include refid="selectWeixinNewsitemVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWeixinNewsitem" parameterType="com.ss.wx.domain.WeixinNewsitem">
+        insert into weixin_newsitem
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="newstemplateId != null  and newstemplateId != ''">newstemplate_id,</if>
+            <if test="thumbMediaId != null  and thumbMediaId != ''">thumb_media_id,</if>
+            <if test="title != null  and title != ''">title,</if>
+            <if test="author != null  and author != ''">author,</if>
+            <if test="imagePath != null  and imagePath != ''">image_path,</if>
+            <if test="content != null  and content != ''">content,</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="orderNo != null  and orderNo != ''">order_no,</if>
+            <if test="newType != null  and newType != ''">new_type,</if>
+            <if test="url != null  and url != ''">url,</if>
+            <if test="externalUrl != null  and externalUrl != ''">external_url,</if>
+            <if test="showCoverPic != null  and showCoverPic != ''">show_cover_pic,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="newstemplateId != null  and newstemplateId != ''">#{newstemplateId},</if>
+            <if test="thumbMediaId != null  and thumbMediaId != ''">#{thumbMediaId},</if>
+            <if test="title != null  and title != ''">#{title},</if>
+            <if test="author != null  and author != ''">#{author},</if>
+            <if test="imagePath != null  and imagePath != ''">#{imagePath},</if>
+            <if test="content != null  and content != ''">#{content},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="orderNo != null  and orderNo != ''">#{orderNo},</if>
+            <if test="newType != null  and newType != ''">#{newType},</if>
+            <if test="url != null  and url != ''">#{url},</if>
+            <if test="externalUrl != null  and externalUrl != ''">#{externalUrl},</if>
+            <if test="showCoverPic != null  and showCoverPic != ''">#{showCoverPic},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWeixinNewsitem" parameterType="com.ss.wx.domain.WeixinNewsitem">
+        update weixin_newsitem
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="newstemplateId != null  and newstemplateId != ''">newstemplate_id = #{newstemplateId},</if>
+            <if test="thumbMediaId != null  and thumbMediaId != ''">thumb_media_id = #{thumbMediaId},</if>
+            <if test="title != null  and title != ''">title = #{title},</if>
+            <if test="author != null  and author != ''">author = #{author},</if>
+            <if test="imagePath != null  and imagePath != ''">image_path = #{imagePath},</if>
+            <if test="content != null  and content != ''">content = #{content},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+            <if test="orderNo != null  and orderNo != ''">order_no = #{orderNo},</if>
+            <if test="newType != null  and newType != ''">new_type = #{newType},</if>
+            <if test="url != null  and url != ''">url = #{url},</if>
+            <if test="externalUrl != null  and externalUrl != ''">external_url = #{externalUrl},</if>
+            <if test="showCoverPic != null  and showCoverPic != ''">show_cover_pic = #{showCoverPic},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWeixinNewsitemById" parameterType="String">
+        delete from weixin_newsitem where id = #{id}
+    </delete>
+
+    <delete id="deleteWeixinNewsitemByIds" parameterType="String">
+        delete from weixin_newsitem where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>
